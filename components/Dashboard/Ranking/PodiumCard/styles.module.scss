@@ -1,0 +1,357 @@
+.podiumCardWrapper {
+  position: relative;
+  z-index: 10;
+  
+  &.firstPlace {
+    @media (min-width: 640px) {
+      margin-top: -1.5rem;
+      transform: scale(1.06);
+      transform-origin: bottom;
+      z-index: 20;
+    }
+  }
+}
+
+/* ===== VƯƠNG MIỆN TRÊN ĐỈNH CARD ===== */
+.crownContainer {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.crownGlow {
+  position: absolute;
+  inset: -20px -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246, 196, 83, 0.4), transparent 70%);
+  filter: blur(20px);
+  animation: crownGlowPulse 2s ease-in-out infinite;
+}
+
+.crownIcon {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #F6C453;
+  filter: drop-shadow(0 0 20px rgba(246, 196, 83, 0.6));
+  animation: crownFloat 3s ease-in-out infinite;
+}
+
+.crownSparkles {
+  position: absolute;
+  inset: -15px -20px;
+  pointer-events: none;
+}
+
+.sparkleDot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #F6C453;
+  box-shadow: 0 0 10px rgba(246, 196, 83, 0.8);
+  animation: sparklePulse 2s ease-in-out infinite;
+  
+  &:nth-child(1) { top: -5px; left: 10%; }
+  &:nth-child(2) { top: -8px; left: 30%; }
+  &:nth-child(3) { top: -10px; left: 50%; }
+  &:nth-child(4) { top: -8px; left: 70%; }
+  &:nth-child(5) { top: -5px; left: 90%; }
+}
+
+@keyframes crownFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.05); }
+}
+
+@keyframes crownGlowPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes sparklePulse {
+  0%, 100% { opacity: 0.2; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* ===== CARD BORDER ===== */
+.podiumCardBorder {
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 1rem;
+  overflow: hidden;
+  clip-path: inset(0 round 1rem);
+}
+
+.podiumCardBorderInner {
+  position: absolute;
+  inset: -50%;
+  
+  &.spinSlow {
+    animation: spinSlow 8s linear infinite;
+  }
+}
+
+/* ===== CARD BODY ===== */
+.podiumCard {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  min-height: 400px;
+  clip-path: inset(0 round 1rem);
+  margin-top: 20px; /* Tạo khoảng trống cho vương miện */
+  
+  &.tall {
+    min-height: 460px;
+  }
+  
+  &:hover {
+    transform: translateY(-8px);
+  }
+}
+
+.pulseGold {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: pulseGold 3s ease-in-out infinite;
+}
+
+.topGlow {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 10rem;
+  pointer-events: none;
+}
+
+.edgeShimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  animation: shimmer 1.8s linear infinite;
+  
+  .podiumCard:hover & {
+    opacity: 1;
+  }
+}
+
+/* ===== CONTENT ===== */
+.podiumCardContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem 1.25rem 1.75rem;
+  height: 100%;
+  
+  @media (min-width: 640px) {
+    padding: 0.5rem 1.75rem 1.75rem;
+  }
+}
+
+/* ===== PLACE BADGE ===== */
+.placeBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+  padding: 0.2rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.placeNumber {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px currentColor;
+}
+
+/* ===== AVATAR ===== */
+.avatarWrapper {
+  position: relative;
+  margin-top: 0.25rem;
+  transition: transform 0.5s ease;
+  
+  .podiumCard:hover & {
+    transform: scale(1.05);
+  }
+}
+
+.avatarGlow {
+  position: absolute;
+  inset: -1rem;
+  border-radius: 9999px;
+  filter: blur(24px);
+}
+
+.avatarRing {
+  position: relative;
+  border-radius: 9999px;
+  padding: 2px;
+}
+
+.avatarInnerRing {
+  border-radius: 9999px;
+  padding: 3px;
+  background: #0b1226;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  height: 5.5rem;
+  width: 5.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  
+  &.avatarLarge {
+    height: 6.5rem;
+    width: 6.5rem;
+  }
+}
+
+/* ===== NAME & ROLE ===== */
+.podiumName {
+  margin-top: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  
+  @media (min-width: 640px) {
+    font-size: 1.25rem;
+  }
+}
+
+.podiumRole {
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.podiumDivider {
+  margin-top: 0.5rem;
+  height: 1px;
+  width: 66.666%;
+}
+
+/* ===== METRIC ===== */
+.podiumMetric {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.podiumMetricLabel {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+
+.podiumMetricValue {
+  margin-top: 0.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.podiumSpacer {
+  flex: 1;
+}
+
+/* ===== PROGRESS ===== */
+.podiumProgress {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.podiumProgressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+  margin-bottom: 0.375rem;
+}
+
+.podiumProgressLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.podiumProgressValue {
+  font-variant-numeric: tabular-nums;
+}
+
+.podiumProgressBar {
+  position: relative;
+  height: 0.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.podiumProgressFill {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  transition: width 0.6s ease;
+}
+
+.podiumProgressLight {
+  position: absolute;
+  inset: 0;
+  width: 33.333%;
+  animation: barFlow 1.5s ease-in-out infinite;
+}
+
+/* ===== RIBBON ===== */
+.podiumRibbon {
+  position: relative;
+  height: 0.25rem;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseGold {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes barFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}

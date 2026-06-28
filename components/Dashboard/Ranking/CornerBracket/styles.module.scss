@@ -1,0 +1,165 @@
+.cornerBracket {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.line {
+  display: block;
+  border-radius: 2px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.horizontal {
+  margin-bottom: 2px;
+}
+
+.vertical {
+  margin-left: 2px;
+}
+
+/* ===== DOT ===== */
+.dot {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  border-radius: 50%;
+  background: inherit;
+  box-shadow: inherit;
+}
+
+/* ===== PULSE RING ===== */
+.pulseRing {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid;
+  opacity: 0.6;
+}
+
+/* ===== SPARKLE ===== */
+.sparkle {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  filter: blur(6px);
+}
+
+/* ===== POSITIONS ===== */
+.topLeft {
+  top: -2px;
+  left: -2px;
+}
+
+.topRight {
+  top: -2px;
+  right: -2px;
+  align-items: flex-end;
+  
+  .horizontal {
+    order: 2;
+  }
+  
+  .vertical {
+    order: 1;
+    margin-left: 0;
+    margin-right: 2px;
+  }
+  
+  .dot {
+    top: -2px;
+    right: -2px;
+    left: auto;
+  }
+  
+  .pulseRing,
+  .sparkle {
+    top: -8px;
+    right: -8px;
+    left: auto;
+  }
+}
+
+.bottomRight {
+  bottom: -2px;
+  right: -2px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  
+  .horizontal {
+    order: 2;
+  }
+  
+  .vertical {
+    order: 1;
+    margin-left: 0;
+    margin-right: 2px;
+  }
+  
+  .dot {
+    bottom: -2px;
+    right: -2px;
+    top: auto;
+    left: auto;
+  }
+  
+  .pulseRing,
+  .sparkle {
+    bottom: -8px;
+    right: -8px;
+    top: auto;
+    left: auto;
+  }
+}
+
+.bottomLeft {
+  bottom: -2px;
+  left: -2px;
+  justify-content: flex-end;
+  
+  .horizontal {
+    order: 1;
+  }
+  
+  .vertical {
+    order: 2;
+    margin-left: 2px;
+  }
+  
+  .dot {
+    bottom: -2px;
+    left: -2px;
+    top: auto;
+  }
+  
+  .pulseRing,
+  .sparkle {
+    bottom: -8px;
+    left: -8px;
+    top: auto;
+  }
+}
+
+/* ===== HOVER EFFECTS ===== */
+.cornerBracket:hover {
+  .line {
+    box-shadow: var(--line-glow);
+    opacity: 1;
+  }
+  
+  .dot {
+    transform: scale(1.5);
+    transition: transform 0.3s ease;
+  }
+}

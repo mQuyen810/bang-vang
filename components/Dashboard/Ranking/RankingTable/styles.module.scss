@@ -1,0 +1,39 @@
+.rankingTable {
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  
+  @media (min-width: 640px) {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+.rankingTableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 0.5rem;
+}
+
+.rankingTableTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+}
+
+.rankingTableBadge {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.rankingTableBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
