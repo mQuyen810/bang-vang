@@ -1,0 +1,159 @@
+@use "tailwindcss";
+
+// :root {
+//   --background: #ffffff;
+//   --foreground: #171717;
+// }
+:root {
+  --background: #070b14;
+  --foreground: #fff;
+  --primary: #8b5cf6;
+  --secondary: #ec4899;
+  --accent: #fbbf24;
+  --muted-foreground: #94a3b8;
+  --muted: #1e293b;
+  --card: rgba(255, 255, 255, 0.03);
+  --surface: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.07);
+  --gold: #f6c453;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #070b14;
+    --foreground: #fff;
+  }
+}
+
+body {
+  margin: 0;
+
+  color: var(--foreground);
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(79,124,255,.25),
+      transparent 40%
+    ),
+
+    radial-gradient(
+      circle at top right,
+      rgba(139,92,246,.25),
+      transparent 40%
+    ),
+
+    var(--background);
+}
+
+/* ========== Glass Card ========== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== Text Gradient ========== */
+.text-gradient {
+  background: linear-gradient(135deg, #fbbf24, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========== Podium Animations ========== */
+.podium-stage-bg {
+  background: linear-gradient(180deg, rgba(8, 14, 28, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
+}
+
+.podium-rays {
+  animation: spin-slow 40s linear infinite;
+}
+
+.podium-fog-drift {
+  animation: fog-drift 8s ease-in-out infinite alternate;
+}
+
+.podium-pulse-gold {
+  animation: pulse-gold 3s ease-in-out infinite;
+}
+
+.podium-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.podium-rotate-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.podium-rotate-rev {
+  animation: spin-slow 20s linear infinite reverse;
+}
+
+.podium-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+.podium-border-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.podium-bar-flow {
+  animation: bar-flow 1.5s ease-in-out infinite;
+}
+
+.podium-clip {
+  border-radius: 1rem;
+  clip-path: inset(0 round 1rem);
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -55%) scale(1.05); }
+}
+
+@keyframes fog-drift {
+  0% { transform: translateX(-5%) scale(1); opacity: 0.5; }
+  100% { transform: translateX(5%) scale(1.1); opacity: 0.3; }
+}
+
+@keyframes bar-flow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes podium-particle {
+  0% { transform: translateY(0) scale(0); opacity: 0; }
+  20% { opacity: 1; transform: translateY(-20px) scale(1.5); }
+  80% { opacity: 1; }
+  100% { transform: translateY(-80px) scale(0.5); opacity: 0; }
+}
