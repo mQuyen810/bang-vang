@@ -1,4 +1,5 @@
-import { Award } from "lucide-react";
+import { Award, ChevronRight, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import styles from "./styles.module.scss";
 
 interface SectionHeaderProps {
@@ -6,13 +7,18 @@ interface SectionHeaderProps {
   title: string;
   desc: string;
   variant?: "default" | "bug";
+  viewAll?: {
+    href: string;
+    label?: string;
+  };
 }
 
 export function SectionHeader({ 
   eyebrow, 
   title, 
   desc, 
-  variant = "default" 
+  variant = "default",
+  viewAll,
 }: SectionHeaderProps) {
   const gradientClass = variant === "bug" 
     ? styles.bugGradient 
@@ -20,7 +26,7 @@ export function SectionHeader({
 
   return (
     <div className={styles.headerWrapper}>
-      <div>
+      <div className={styles.headerLeft}>
         <div className={styles.eyebrow}>
           <Award className={styles.eyebrowIcon} />
           {eyebrow}
@@ -30,6 +36,15 @@ export function SectionHeader({
         </h2>
         <p className={styles.description}>{desc}</p>
       </div>
+      
+      {viewAll && (
+        <div className={styles.headerRight}>
+          <Link href={viewAll.href} className={styles.viewAll}>
+            <span>{viewAll.label || "Xem tất cả"}</span>
+            <ArrowRight className={styles.viewAllIcon} />
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

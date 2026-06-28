@@ -21,12 +21,20 @@ export function Ranking({ title, type }: RankingProps) {
         title,
         desc: "Những chiến binh thầm lặng — xử lý nhanh, dứt điểm và chính xác.",
         variant: "bug" as const,
+        viewAll: {
+          href: `/ranking/${type}`,
+          label: "Xem tất cả"
+        }
       }
     : {
         eyebrow: "Hall of Fame",
         title,
         desc: "Vinh danh những cá nhân dẫn đầu về sản lượng và năng lực ước tính trong kỳ.",
         variant: "default" as const,
+        viewAll: {
+          href: `/ranking/${type}`,
+          label: "Xem tất cả"
+        }
       };
 
   const podiumData = ranking.slice(0, 3);
