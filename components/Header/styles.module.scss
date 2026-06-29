@@ -241,6 +241,19 @@
   animation: spin .8s linear infinite;
 }
 
+.userName {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0);

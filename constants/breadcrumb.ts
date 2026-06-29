@@ -5,14 +5,14 @@ export const breadcrumbMap: Record<
     href?: string;
   }[]
 > = {
-  "/": [
+  "/dashboard": [
     {
       title: "Trang chủ",
       href: "/",
     },
     {
       title: "Tổng quan",
-      href: "/",
+      href: "/dashboard",
     },
   ],
 
@@ -61,7 +61,7 @@ export const breadcrumbMap: Record<
   "/ranking/performance": [
     {
       title: "Trang chủ",
-      href: "/",
+      href: "/dashboard",
     },
     {
       title: "Bảng xếp hạng",

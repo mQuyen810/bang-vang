@@ -1,12 +1,9 @@
 "use client";
 
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, theme, App } from "antd";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
-export default function Providers({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ConfigProvider
       theme={{
@@ -23,7 +20,9 @@ export default function Providers({
         },
       }}
     >
-      {children}
+      <AntdRegistry>
+        <App>{children}</App>
+      </AntdRegistry>
     </ConfigProvider>
   );
 }
