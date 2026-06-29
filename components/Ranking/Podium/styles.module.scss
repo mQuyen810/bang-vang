@@ -1,0 +1,185 @@
+.podiumSection {
+  margin-bottom: 2rem;
+}
+
+.podiumContainer {
+  padding: 2rem 1.5rem;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+  }
+}
+
+.podiumGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  align-items: flex-end;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
+}
+
+.podiumPlace {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.podiumFirst {
+  transform: scale(1.05);
+  
+  @media (max-width: 768px) {
+    transform: scale(1);
+  }
+}
+
+.podiumBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  
+  @media (max-width: 768px) {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+}
+
+.gold {
+  background: linear-gradient(180deg, #fbd96b, #c68a1b);
+  color: #1a1410;
+  box-shadow: 0 0 30px rgba(245, 194, 74, 0.4);
+}
+
+.silver {
+  background: linear-gradient(180deg, #e2e8f4, #7e93bd);
+  color: #1a1410;
+  box-shadow: 0 0 20px rgba(155, 176, 214, 0.3);
+}
+
+.bronze {
+  background: linear-gradient(180deg, #f1b98a, #a35e33);
+  color: #1a1410;
+  box-shadow: 0 0 20px rgba(232, 160, 117, 0.3);
+}
+
+.podiumAvatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #3a4a78, #1f2a47);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  border: 2px solid var(--border);
+  color: white;
+  
+  @media (max-width: 768px) {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+  }
+}
+
+.avatarGold {
+  border-color: var(--gold);
+  box-shadow: 0 0 30px rgba(245, 194, 74, 0.2);
+}
+
+.crown {
+  position: absolute;
+  top: -18px;
+  right: -8px;
+  font-size: 1.25rem;
+  
+  @media (max-width: 768px) {
+    top: -14px;
+    right: -6px;
+    font-size: 1rem;
+  }
+}
+
+.podiumName {
+  font-weight: 600;
+  font-size: 0.938rem;
+  margin-bottom: 2px;
+  
+  @media (max-width: 768px) {
+    font-size: 0.813rem;
+  }
+}
+
+.podiumScore {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.podiumStand {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 0.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.688rem;
+  color: var(--muted-foreground);
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  
+  @media (max-width: 768px) {
+    min-height: 36px;
+    font-size: 0.625rem;
+  }
+}
+
+.standGold {
+  background: linear-gradient(180deg, rgba(245, 194, 74, 0.2), rgba(245, 194, 74, 0.05));
+  border: 1px solid rgba(245, 194, 74, 0.2);
+  min-height: 80px;
+  
+  @media (max-width: 768px) {
+    min-height: 60px;
+  }
+}
+
+.standSilver {
+  background: linear-gradient(180deg, rgba(155, 176, 214, 0.15), rgba(155, 176, 214, 0.05));
+  border: 1px solid rgba(155, 176, 214, 0.15);
+  min-height: 64px;
+  
+  @media (max-width: 768px) {
+    min-height: 48px;
+  }
+}
+
+.standBronze {
+  background: linear-gradient(180deg, rgba(232, 160, 117, 0.15), rgba(232, 160, 117, 0.05));
+  border: 1px solid rgba(232, 160, 117, 0.15);
+  min-height: 48px;
+  
+  @media (max-width: 768px) {
+    min-height: 36px;
+  }
+}
