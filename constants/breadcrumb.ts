@@ -44,6 +44,17 @@ export const breadcrumbMap: Record<
     },
   ],
 
+    "/ranking": [
+    {
+      title: "Trang chủ",
+      href: "/",
+    },
+    {
+      title: "Tổng xếp hạng",
+      href: "/ranking",
+    }
+  ],
+
   "/ranking/bug": [
     {
       title: "Trang chủ",
