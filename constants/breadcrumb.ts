@@ -15,6 +15,16 @@ export const breadcrumbMap: Record<
       href: "/",
     },
   ],
+  "/personal": [
+    {
+      title: "Trang chủ",
+      href: "/",
+    },
+    {
+      title: "Cá nhân",
+      href: "/personal",
+    },
+  ],
 
   "/personal/bugs": [
     {
