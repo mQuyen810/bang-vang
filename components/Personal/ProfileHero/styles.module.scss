@@ -1,0 +1,169 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.heroBackground {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 30%, rgba(139, 92, 246, 0.15), transparent 60%),
+              radial-gradient(ellipse at 70% 70%, rgba(236, 72, 153, 0.1), transparent 60%);
+  opacity: 0.8;
+}
+
+.heroContent {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+}
+
+.avatarWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatarGlow {
+  position: absolute;
+  inset: -0.5rem;
+  border-radius: 9999px;
+  background: var(--gradient-primary);
+  filter: blur(20px);
+  opacity: 0.5;
+}
+
+.avatar {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  font-size: 2.25rem;
+  font-weight: 700;
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+  
+  @media (max-width: 768px) {
+    width: 96px;
+    height: 96px;
+    font-size: 2rem;
+    margin: 0 auto;
+  }
+}
+
+.userInfo {
+  min-width: 0;
+  
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.badge {
+  font-size: 0.688rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.name {
+  margin-top: 0.25rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+    white-space: normal;
+  }
+}
+
+.meta {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.badges {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+}
+
+.badgeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 0.688rem;
+  color: var(--muted-foreground);
+}
+
+.badgeIcon {
+  width: 12px;
+  height: 12px;
+  color: var(--accent);
+}
+
+.rankWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.375rem;
+  flex-shrink: 0;
+  
+  @media (max-width: 768px) {
+    align-items: center;
+  }
+}
+
+.rankBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: rgba(245, 194, 74, 0.15);
+  border: 1px solid rgba(245, 194, 74, 0.3);
+  color: var(--gold);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.rankIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.rankLabel {
+  font-size: 0.688rem;
+  color: var(--muted-foreground);
+}
