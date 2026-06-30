@@ -20,4 +20,13 @@ axiosClient.interceptors.request.use((config) => {
   return config;
 });
 
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error(error.response);
+
+    return Promise.reject(error);
+  },
+);
+
 export default axiosClient;

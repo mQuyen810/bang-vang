@@ -15,15 +15,15 @@ import { useEffect } from "react";
 import { useSidebar } from "@/components/Sidebar/SidebarProvider";
 
 import styles from "./styles.module.scss";
-import { currentUser } from "@/lib/mock-data";
+import { useAuthStore } from "@/stores/auth.store";
 
 export default function Sidebar() {
-  const {
-    collapsed,
-    setCollapsed,
-    mobileOpen,
-    setMobileOpen,
-  } = useSidebar();
+  const { collapsed, setCollapsed, mobileOpen, setMobileOpen } = useSidebar();
+  const { user } = useAuthStore();
+  const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
+
+  const fullName = match?.[1] ?? user?.display_name;
+  const userId = match?.[2] ?? "";
 
   const pathname = usePathname() ?? "";
   useEffect(() => {
@@ -68,13 +68,9 @@ export default function Sidebar() {
 
             {!collapsed && (
               <div className={styles.logoContent}>
-                <div className={styles.logoTitle}>
-                  Bảng Vàng
-                </div>
+                <div className={styles.logoTitle}>Bảng Vàng</div>
 
-                <div className={styles.logoSub}>
-                  Vinh danh đóng góp
-                </div>
+                <div className={styles.logoSub}>Vinh danh đóng góp</div>
               </div>
             )}
           </Link>
@@ -82,23 +78,15 @@ export default function Sidebar() {
           {/* Desktop Collapse */}
           <button
             className={styles.collapseBtn}
-            onClick={() =>
-              setCollapsed(!collapsed)
-            }
+            onClick={() => setCollapsed(!collapsed)}
           >
-            {collapsed ? (
-              <ChevronRight size={16} />
-            ) : (
-              <ChevronLeft size={16} />
-            )}
+            {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
           </button>
 
           {/* Mobile Close */}
           <button
             className={styles.closeBtn}
-            onClick={() =>
-              setMobileOpen(false)
-            }
+            onClick={() => setMobileOpen(false)}
           >
             <X size={16} />
           </button>
@@ -106,98 +94,64 @@ export default function Sidebar() {
 
         {/* Menu */}
         <nav className={styles.menu}>
-        {SIDEBAR_MENU.map((group) => (
-            <div
-            key={group.title}
-            className={styles.group}
-            >
-            {!collapsed && (
-                <div className={styles.groupTitle}>
-                {group.title}
-                </div>
-            )}
+          {SIDEBAR_MENU.map((group) => (
+            <div key={group.title} className={styles.group}>
+              {!collapsed && (
+                <div className={styles.groupTitle}>{group.title}</div>
+              )}
 
-            {group.items.map(
-                ({
-                path,
-                label,
-                icon: Icon,
-                }) => {
+              {group.items.map(({ path, label, icon: Icon }) => {
                 const active =
-                    path === "/"
-                    ? pathname === "/"
-                    : pathname.startsWith(path);
+                  path === "/" ? pathname === "/" : pathname.startsWith(path);
 
                 return (
-                    <Link
+                  <Link
                     key={path}
                     href={path}
-                    title={
-                        collapsed
-                        ? label
-                        : undefined
-                    }
-                    onClick={() =>
-                        setMobileOpen(false)
-                    }
+                    title={collapsed ? label : undefined}
+                    onClick={() => setMobileOpen(false)}
                     className={`
                         ${styles.menuItem}
-                        ${
-                        active
-                            ? styles.active
-                            : ""
-                        }
+                        ${active ? styles.active : ""}
                     `}
-                    >
-                    <Icon
-                        className={
-                        styles.icon
-                        }
-                    />
+                  >
+                    <Icon className={styles.icon} />
 
-                    {!collapsed && (
-                        <span>{label}</span>
-                    )}
-                    </Link>
+                    {!collapsed && <span>{label}</span>}
+                  </Link>
                 );
-                }
-            )}
+              })}
             </div>
-        ))}
+          ))}
         </nav>
 
         {/* Footer */}
         <div className={styles.footer}>
-        <div
-        className={`
+          <div
+            className={`
             ${styles.userCard}
             ${collapsed ? styles.userCardCollapsed : ""}
         `}
-        >
-        <div className={styles.avatarWrapper}>
-            <img
-            src={currentUser.avatar}
-            alt={currentUser.name}
-            className={styles.avatar}
-            />
-
-            <span className={styles.statusDot} />
-        </div>
-
-        {!collapsed && (
-            <div className={styles.userInfo}>
-            <p className={styles.userName}>
-                {currentUser.name}
-            </p>
-
-            <div className={styles.roleWrapper}>
-                <span className={styles.roleBadge}>
-                {currentUser.department}
-                </span>
+          >
+            <div className={styles.avatarWrapper}>
+              <div className={styles.avatar}>
+                {user?.display_name?.charAt(0).toUpperCase()}
+              </div>
+              <span className={styles.statusDot} />
             </div>
-            </div>
-        )}
-        </div>
+
+            {!collapsed && (
+              <div className={styles.userInfo}>
+                <p className={styles.userName}>{fullName}</p>
+
+                <div className={styles.roleWrapper}>
+                  <span className={styles.roleBadge}>
+                    {userId}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </aside>
     </>

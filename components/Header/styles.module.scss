@@ -25,7 +25,7 @@
   box-shadow:
     0 8px 32px rgba(0,0,0,.25);
 
-  overflow: hidden;
+  overflow: visible;
 }
 
 .header::before {
@@ -34,7 +34,7 @@
   position: absolute;
 
   inset: 0;
-
+  border-radius: inherit;
   background:
     radial-gradient(
       circle at top left,
@@ -60,102 +60,214 @@
   gap: 8px;
 }
 
+.projectDropdown {
+  position: relative;
+}
+
 .projectSelector {
   display: flex;
   align-items: center;
   gap: 12px;
-
-  min-width: 220px;
-
-  border: none;
-
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
   cursor: pointer;
-
-  padding: 8px 14px;
-
-  border-radius: 18px;
-
-  background: rgba(255,255,255,.05);
-
-  color: white;
-
-  transition: .25s;
 }
 
-.projectSelector:hover {
-  background: rgba(255,255,255,.08);
-}
-
-.projectAvatar {
-  width: 38px;
-  height: 38px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #4f7cff,
-      #8b5cf6
-    );
-
-  box-shadow:
-    0 0 20px rgba(79,124,255,.3);
+.projectDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#F59E0B,#F97316);
 }
 
 .projectInfo {
   display: flex;
   flex-direction: column;
-
   text-align: left;
 
-  min-width: 0;
-
-  flex: 1;
-  span{
-      font-size: 10px;
-
-    color: #94a3b8;
-
-    text-transform: uppercase;
-
-    letter-spacing: .12em;
+  span {
+    font-size: 11px;
+    color: #9ca3af;
   }
-  strong{
-      font-size: 14px;
 
-    font-weight: 600;
-
+  strong {
+    font-size: 14px;
     color: white;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
 
+.projectCount {
+  min-width: 20px;
+  height: 20px;
 
-.projectLabel {
-  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  color: #94a3b8;
+  border-radius: 999px;
 
-  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+
+  color: white;
+
+  background: linear-gradient(135deg,#F59E0B,#F97316);
 }
 
-.projectName {
-  font-size: 14px;
+.rotate {
+  transform: rotate(180deg);
+  transition: .2s;
+}
 
-  font-weight: 600;
+.projectMenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+
+  width: 290px;
+
+  background: rgba(15, 23, 42, .92);
+  backdrop-filter: blur(24px);
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  border-radius: 18px;
+
+  box-shadow:
+      0 15px 40px rgba(0,0,0,.45),
+      inset 0 1px rgba(255,255,255,.05);
+
+  padding: 8px;
+
+  z-index: 1000;
+}
+
+.projectMenuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 8px;
+
+  span {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+
+  button {
+    color: #f59e0b;
+    font-size: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.projectItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+
+  transition: .2s;
+
+  color: white;
+  position:relative;
+  overflow:hidden;
+  &:hover {
+    background: rgba(255,255,255,.05);
+  }
+}
+
+.projectItem::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+
+    width:4px;
+
+    background:#F59E0B;
+
+    transform:scaleY(0);
+
+    transition:.25s;
+}
+
+.projectItem:hover::before{
+    transform:scaleY(1);
+}
+
+.active{
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(245,158,11,.15),
+        rgba(245,158,11,.03)
+      );
+
+    border:1px solid rgba(245,158,11,.25);
+
+    box-shadow:
+      0 0 18px rgba(245,158,11,.15);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #64748b;
+}
+
+.dotActive {
+  background: linear-gradient(135deg,#F59E0B,#F97316);
+  box-shadow: 0 0 10px rgba(245,158,11,.6);
+}
+
+.projectContent {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+
+  strong {
+    color: white;
+  }
+
+  small {
+    color: #94a3b8;
+  }
+}
+
+.check {
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg,#F59E0B,#F97316);
+
+  color: white;
 }
 
 .actions {
