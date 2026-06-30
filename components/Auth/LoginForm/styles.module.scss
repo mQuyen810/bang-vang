@@ -1,0 +1,320 @@
+/* ===== CONTAINER ===== */
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #071122;
+}
+
+.wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  padding: 0 1rem;
+}
+
+/* ===== LOGO ===== */
+.logoWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.logoBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 213, 79, 0.9);
+}
+
+.logoIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.logoLabel {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+}
+
+.logoTitle {
+  margin-top: 0.5rem;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  background: linear-gradient(180deg, #FFE89A 0%, #FFD54F 50%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 18px rgba(255, 213, 79, 0.45));
+}
+
+.logoSubtitle {
+  margin-top: 0.25rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.3em;
+  color: rgba(128, 200, 255, 0.7);
+}
+
+/* ===== MASCOT ===== */
+.mascotWrapper {
+  position: relative;
+  height: 210px;
+  width: 100%;
+}
+
+.mascotContainer {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ===== CARD ===== */
+.cardWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.cardGlow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 1.5rem;
+  opacity: 0.9;
+  background: linear-gradient(135deg, rgba(79, 195, 247, 0.8), rgba(139, 92, 246, 0.8), rgba(255, 213, 79, 0.5));
+  filter: blur(10px);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  background: linear-gradient(145deg, rgba(20, 30, 60, 0.65), rgba(35, 20, 70, 0.55));
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(154, 216, 255, 0.35);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 40px rgba(79, 195, 247, 0.25);
+}
+
+.cardShine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #4FC3F7, transparent);
+  animation: shineMove 4s linear infinite;
+}
+
+@keyframes shineMove {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(150%); }
+}
+
+/* ===== FORM ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.error {
+  padding: 0.625rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  text-align: center;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* ===== NEON FIELD ===== */
+.neonField {
+  position: relative;
+}
+
+.neonFieldGlow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 0.75rem;
+}
+
+.neonFieldInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(8, 14, 32, 0.65);
+  border: 1px solid rgba(154, 216, 255, 0.2);
+}
+
+.fieldIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #4FC3F7;
+  flex-shrink: 0;
+}
+
+.fieldInput {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  color: white;
+  
+  &::placeholder {
+    color: rgba(128, 200, 255, 0.4);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.eyeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: rgba(128, 200, 255, 0.7);
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+  
+  &:hover {
+    color: #4FC3F7;
+  }
+}
+
+.eyeIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.submitButton {
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(90deg, #4FC3F7 0%, #6a7dfb 50%, #8B5CF6 100%);
+  box-shadow: 0 10px 30px rgba(79, 195, 247, 0.35), 0 10px 30px rgba(139, 92, 246, 0.35);
+  transition: all 0.3s ease;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.submitShine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+}
+
+.submitText {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ===== DEMO ACCOUNTS ===== */
+.demoSection {
+  margin-top: 0.5rem;
+}
+
+.demoLabel {
+  text-align: center;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(128, 200, 255, 0.4);
+  margin-bottom: 0.5rem;
+}
+
+.demoButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.demoButton {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: rgba(128, 200, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(128, 200, 255, 1);
+  }
+}
+
+/* ===== FOOTER ===== */
+.poweredBy {
+  margin-top: 1.5rem;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: rgba(128, 200, 255, 0.4);
+}
+
+/* ===== FLOATING DECOR ===== */
+.floatingDecor {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.floatingItem {
+  position: absolute;
+  filter: drop-shadow(0 0 12px rgba(255, 213, 79, 0.6)) drop-shadow(0 0 24px rgba(79, 195, 247, 0.3));
+}

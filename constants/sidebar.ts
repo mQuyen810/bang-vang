@@ -12,7 +12,7 @@ export const SIDEBAR_MENU = [
     items: [
       {
         label: "Tổng quan",
-        path: "/",
+        path: "/dashboard",
         icon: LayoutDashboard,
       },
     ],
@@ -36,7 +36,7 @@ export const SIDEBAR_MENU = [
         label: "Tổng xếp hạng",
         path: "/ranking",
         icon: ClipboardCheck,
-      }
+      },
     ],
   },
 ];
