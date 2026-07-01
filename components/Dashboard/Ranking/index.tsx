@@ -10,7 +10,7 @@ import { mapProductivityRanking } from "@/utils/rankingProductivity";
 
 interface RankingProps {
   title: string;
-  type: "productivity" | "bug";
+  type: "prod" | "bug";
 }
 
 export function Ranking({ title, type }: RankingProps) {
@@ -28,7 +28,7 @@ export function Ranking({ title, type }: RankingProps) {
         desc: "Những chiến binh thầm lặng — xử lý nhanh, dứt điểm và chính xác.",
         variant: "bug" as const,
         viewAll: {
-          href: `/ranking/${type}`,
+          href: `/ranking/?tab=${type}`,
           label: "Xem tất cả",
         },
       }
@@ -38,7 +38,7 @@ export function Ranking({ title, type }: RankingProps) {
         desc: "Vinh danh những cá nhân dẫn đầu về sản lượng và năng lực ước tính trong kỳ.",
         variant: "default" as const,
         viewAll: {
-          href: `/ranking/${type}`,
+          href: `/ranking/?tab=${type}`,
           label: "Xem tất cả",
         },
       };

@@ -44,7 +44,7 @@ export default function Dashboard() {
 
         <KPI data={kpiData} />
 
-        <Ranking title="Productivity Champions" type="productivity" />
+        <Ranking title="Productivity Champions" type="prod" />
 
         <Ranking title="Bug Champions" type="bug" />
 
