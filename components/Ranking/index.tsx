@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Sparkles, Star } from 'lucide-react';
-import { FilterBar } from './FilterBar';
-import { RankingItem } from './RankingItem';
-import { Podium } from './Podium';
-import { 
-  productivityRanking, 
-  bugRanking, 
-  employees 
-} from '@/lib/mock-data';
-import styles from './styles.module.scss';
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Trophy, Sparkles, Star } from "lucide-react";
+import { FilterBar } from "./FilterBar";
+import { RankingItem } from "./RankingItem";
+import { Podium } from "./Podium";
+import { useSearchParams, useRouter } from "next/navigation";
+import { productivityRanking, bugRanking, employees } from "@/lib/mock-data";
+import styles from "./styles.module.scss";
 
-type TabType = 'prod' | 'bug';
+type TabType = "prod" | "bug";
 
 const RankingsPage: React.FC = () => {
-  const [tab, setTab] = useState<TabType>('prod');
-  const [search, setSearch] = useState('');
-  const [dept, setDept] = useState('all');
-  const [selectedMonth, setSelectedMonth] = useState<string>('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const tab: TabType = searchParams.get("tab") === "bug" ? "bug" : "prod";
+  const [search, setSearch] = useState("");
+  const [dept, setDept] = useState("all");
+  const [selectedMonth, setSelectedMonth] = useState<string>("");
 
   const departments = useMemo(
     () => Array.from(new Set(employees.map((e) => e.department))).sort(),
-    []
+    [],
   );
 
-  const base = tab === 'prod' ? productivityRanking : bugRanking;
+  const base = tab === "prod" ? productivityRanking : bugRanking;
   const list = useMemo(() => {
     const q = search.trim().toLowerCase();
     return base.filter((e) => {
@@ -35,25 +35,25 @@ const RankingsPage: React.FC = () => {
         e.name.toLowerCase().includes(q) ||
         e.id.toLowerCase().includes(q) ||
         e.department.toLowerCase().includes(q);
-      const matchDept = dept === 'all' || e.department === dept;
+      const matchDept = dept === "all" || e.department === dept;
       return matchSearch && matchDept;
     });
   }, [base, search, dept]);
 
-  const metric = tab === 'prod' ? 'Production Output' : 'Bugs Resolved';
-  const max = tab === 'prod' ? 140 : 100;
+  const metric = tab === "prod" ? "Production Output" : "Bugs Resolved";
+  const max = tab === "prod" ? 140 : 100;
 
-  const top3 = list.slice(0, 3).map(emp => ({
+  const top3 = list.slice(0, 3).map((emp) => ({
     id: emp.id,
     name: emp.name,
     avatar: emp.avatar,
-    value: tab === 'prod' ? emp.output : emp.bugsResolved,
+    value: tab === "prod" ? emp.output : emp.bugsResolved,
   }));
 
   const handleReset = () => {
-    setSearch('');
-    setDept('all');
-    setSelectedMonth('');
+    setSearch("");
+    setDept("all");
+    setSelectedMonth("");
   };
 
   return (
@@ -72,16 +72,16 @@ const RankingsPage: React.FC = () => {
             Tôn vinh những thành viên xuất sắc nhất theo từng tiêu chí.
           </p>
         </div>
-        
+
         <div className={styles.tabGroup}>
           {[
-            { key: 'prod', label: 'Sản lượng', icon: <Sparkles size={16} /> },
-            { key: 'bug', label: 'Bug Resolution', icon: <Star size={16} /> },
+            { key: "prod", label: "Sản lượng", icon: <Sparkles size={16} /> },
+            { key: "bug", label: "Bug Resolution", icon: <Star size={16} /> },
           ].map((t) => (
             <button
               key={t.key}
-              onClick={() => setTab(t.key as TabType)}
-              className={`${styles.tabButton} ${tab === t.key ? styles.tabActive : ''}`}
+              onClick={() => router.push(`/ranking?tab=${t.key}`)}
+              className={`${styles.tabButton} ${tab === t.key ? styles.tabActive : ""}`}
             >
               {t.icon}
               {t.label}
@@ -102,12 +102,12 @@ const RankingsPage: React.FC = () => {
         onMonthChange={setSelectedMonth}
         selects={[
           {
-            key: 'dept',
-            label: 'Phòng ban',
+            key: "dept",
+            label: "Phòng ban",
             value: dept,
             onChange: setDept,
             options: [
-              { value: 'all', label: 'Tất cả' },
+              { value: "all", label: "Tất cả" },
               ...departments.map((d) => ({ value: d, label: d })),
             ],
           },
@@ -131,9 +131,9 @@ const RankingsPage: React.FC = () => {
               Không tìm thấy thành viên phù hợp.
             </motion.div>
           )}
-          
+
           {list.map((emp, i) => {
-            const value = tab === 'prod' ? emp.output : emp.bugsResolved;
+            const value = tab === "prod" ? emp.output : emp.bugsResolved;
             return (
               <RankingItem
                 key={emp.id}

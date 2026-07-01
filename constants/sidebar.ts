@@ -34,7 +34,7 @@ export const SIDEBAR_MENU = [
     items: [
       {
         label: "Tổng xếp hạng",
-        path: "/ranking",
+        path: "/ranking?tab=prod",
         icon: ClipboardCheck,
       },
     ],

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Bell,
@@ -12,22 +12,25 @@ import {
   User,
   LogOut,
   Settings,
+  Check,
 } from "lucide-react";
 import { Avatar, Badge, Dropdown, MenuProps, message } from "antd";
-import { PROJECTS } from "@/lib/mock-data";
 import { useSidebar } from "@/components/Sidebar/SidebarProvider";
 import { useAuthStore } from "@/stores/auth.store";
 import styles from "./styles.module.scss";
+import { useDashboardStore } from "@/stores/dashboard.store";
 
 export default function Header() {
   const { setMobileOpen } = useSidebar();
   const { user, logout } = useAuthStore();
-  console.log("user", user);
+  const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
+  const fullName = match?.[1] ?? user?.display_name;
   const router = useRouter();
-
   const [dark, setDark] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [project, setProject] = useState(PROJECTS[0]);
+  const { projects, selectedProjects, setSelectedProjects } =
+    useDashboardStore();
+  const [projectOpen, setProjectOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -75,15 +78,36 @@ export default function Header() {
     },
   ];
 
-  const projectItems: MenuProps["items"] = PROJECTS.map((p) => ({
-    key: p.id,
-    label: (
-      <div onClick={() => setProject(p)}>
-        <div>{p.name}</div>
-        <small>{p.code}</small>
-      </div>
-    ),
-  }));
+  const toggleProject = (name: string) => {
+    if (selectedProjects.includes(name)) {
+      setSelectedProjects(selectedProjects.filter((x) => x !== name));
+    } else {
+      setSelectedProjects([...selectedProjects, name]);
+    }
+  };
+
+  const projectLabel =
+    selectedProjects.length === 0
+      ? "Tất cả"
+      : selectedProjects.length === 1
+        ? selectedProjects[0]
+        : `${selectedProjects.length} dự án`;
+  const projectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        projectRef.current &&
+        !projectRef.current.contains(e.target as Node)
+      ) {
+        setProjectOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSync = () => {
     setLoading(true);
@@ -103,16 +127,90 @@ export default function Header() {
           <Menu size={20} />
         </button>
 
-        <Dropdown menu={{ items: projectItems }} trigger={["click"]}>
-          <button className={styles.projectSelector}>
-            <div className={styles.projectAvatar}>{project.code}</div>
+        <div className={styles.projectDropdown} ref={projectRef}>
+          <button
+            className={styles.projectSelector}
+            onClick={() => setProjectOpen(!projectOpen)}
+          >
+            <span className={styles.projectDot} />
+
             <div className={styles.projectInfo}>
-              <span>Project</span>
-              <strong>{project.name}</strong>
+              <span>Dự án</span>
+              <strong>{projectLabel}</strong>
             </div>
-            <ChevronDown size={14} />
+
+            {selectedProjects.length > 1 && (
+              <span className={styles.projectCount}>
+                {selectedProjects.length}
+              </span>
+            )}
+
+            <ChevronDown
+              size={14}
+              className={projectOpen ? styles.rotate : ""}
+            />
           </button>
-        </Dropdown>
+
+          {projectOpen && (
+            <div className={styles.projectMenu}>
+              <div className={styles.projectMenuHeader}>
+                <span>Dự án</span>
+              </div>
+              <button
+                className={`${styles.projectItem} ${
+                  selectedProjects.length === 0 ? styles.active : ""
+                }`}
+                onClick={() => setSelectedProjects([])}
+              >
+                <span
+                  className={`${styles.dot} ${
+                    selectedProjects.length === 0 ? styles.dotActive : ""
+                  }`}
+                />
+
+                <div className={styles.projectContent}>
+                  <strong>Tất cả</strong>
+                </div>
+
+                {selectedProjects.length === 0 && (
+                  <span className={styles.check}>
+                    <Check size={12} />
+                  </span>
+                )}
+              </button>
+
+              {projects.map((p) => {
+                const active = selectedProjects.includes(p.name);
+
+                return (
+                  <button
+                    key={p.key}
+                    className={`${styles.projectItem} ${
+                      active ? styles.active : ""
+                    }`}
+                    onClick={() => toggleProject(p.name)}
+                  >
+                    <span
+                      className={`${styles.dot} ${
+                        active ? styles.dotActive : ""
+                      }`}
+                    />
+
+                    <div className={styles.projectContent}>
+                      <strong>{p.name}</strong>
+                    </div>
+
+                    {active && (
+                      <span className={styles.check}>
+                        <Check size={12} />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className={styles.actions}>
@@ -140,12 +238,10 @@ export default function Header() {
           placement="bottomRight"
         >
           <button className={styles.userBtn}>
-            <Avatar size={32} src="/avatar.png">
+            <Avatar size={32}>
               {user?.display_name?.charAt(0).toUpperCase()}
             </Avatar>
-            <span className={styles.userName}>
-              {user?.display_name || "User"}
-            </span>
+            <span className={styles.userName}>{fullName || "User"}</span>
             <ChevronDown size={14} />
           </button>
         </Dropdown>

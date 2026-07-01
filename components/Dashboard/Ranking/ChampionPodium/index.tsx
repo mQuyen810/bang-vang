@@ -3,41 +3,24 @@
 import { STAR_POSITIONS, PARTICLES } from "@/constants/ranking";
 import { PodiumCard } from "../PodiumCard";
 import styles from "./styles.module.scss";
+import { RankingBug, RankingProductivity } from "@/types/rankingItem";
 
-type PodiumVariant = "default" | "bug";
+type PodiumVariant = "bug" | "default";
 
 interface ChampionPodiumProps {
-  first: {
-    id: string;
-    name: string;
-    avatar: string;
-    department: string;
-    output: number;
-    bugsResolved?: number;
-    capacity?: number;
-  };
-  second: {
-    id: string;
-    name: string;
-    avatar: string;
-    department: string;
-    output: number;
-    bugsResolved?: number;
-    capacity?: number;
-  };
-  third: {
-    id: string;
-    name: string;
-    avatar: string;
-    department: string;
-    output: number;
-    bugsResolved?: number;
-    capacity?: number;
-  };
+  first: RankingBug | RankingProductivity;
+  second: RankingBug | RankingProductivity;
+  third: RankingBug | RankingProductivity;
+
   variant?: PodiumVariant;
 }
 
-export function ChampionPodium({ first, second, third, variant = "default" }: ChampionPodiumProps) {
+export function ChampionPodium({
+  first,
+  second,
+  third,
+  variant = "default",
+}: ChampionPodiumProps) {
   return (
     <div className={styles.podiumStage}>
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -48,7 +31,11 @@ export function ChampionPodium({ first, second, third, variant = "default" }: Ch
             <span
               key={i}
               className={styles.podiumStar}
-              style={{ left: `${s.x}%`, top: `${s.y}%`, animationDelay: `${s.d}s` }}
+              style={{
+                left: `${s.x}%`,
+                top: `${s.y}%`,
+                animationDelay: `${s.d}s`,
+              }}
             />
           ))}
         </div>
@@ -91,7 +78,10 @@ export function ChampionPodium({ first, second, third, variant = "default" }: Ch
               style={{
                 left: `${p.x}%`,
                 background: i % 3 === 0 ? "#F6C453" : "rgba(255,255,255,0.9)",
-                boxShadow: i % 3 === 0 ? "0 0 8px #F6C453" : "0 0 6px rgba(255,255,255,0.8)",
+                boxShadow:
+                  i % 3 === 0
+                    ? "0 0 8px #F6C453"
+                    : "0 0 6px rgba(255,255,255,0.8)",
                 animation: `particleFloat ${p.dur}s ease-out ${p.delay}s infinite`,
               }}
             />
@@ -100,9 +90,25 @@ export function ChampionPodium({ first, second, third, variant = "default" }: Ch
       </div>
 
       <div className={styles.podiumGrid}>
-        <PodiumCard place={2} emp={second} variant={variant} className="sm:mb-2" />
-        <PodiumCard place={1} emp={first} variant={variant} />
-        <PodiumCard place={3} emp={third} variant={variant} className="sm:mb-2" />
+        {second && (
+          <PodiumCard
+            place={2}
+            emp={second}
+            variant={variant}
+            className="sm:mb-2"
+          />
+        )}
+
+        {first && <PodiumCard place={1} emp={first} variant={variant} />}
+
+        {third && (
+          <PodiumCard
+            place={3}
+            emp={third}
+            variant={variant}
+            className="sm:mb-2"
+          />
+        )}
       </div>
 
       <div className={styles.podiumFloor} />

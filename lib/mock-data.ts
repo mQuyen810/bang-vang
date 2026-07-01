@@ -37,29 +37,41 @@ function seededRand(seed: number) {
   };
 }
 
-export const employees: Employee[] = names.map(([name, dept], i) => {
-  const rnd = seededRand(i + 7);
-  const output = Math.round(80 + rnd() * 60);
-  const capacity = Math.round(60 + rnd() * 50);
-  return {
-    id: `EMP-${1000 + i}`,
-    name,
-    department: dept,
-    avatar: name.split(" ").map((p) => p[0]).slice(-2).join(""),
-    output,
-    capacity,
-    bugsResolved: Math.round(15 + rnd() * 80),
-    tasksCompleted: Math.round(40 + rnd() * 120),
-    completionRate: Math.round(70 + rnd() * 28),
-    badges: ["Sprint Star", "Code Sniper", "Bug Hunter", "Mentor"].slice(0, 1 + Math.floor(rnd() * 3)),
-  };
-}).sort((a, b) => b.output - a.output);
+export const employees: Employee[] = names
+  .map(([name, dept], i) => {
+    const rnd = seededRand(i + 7);
+    const output = Math.round(80 + rnd() * 60);
+    const capacity = Math.round(60 + rnd() * 50);
+    return {
+      id: `EMP-${1000 + i}`,
+      name,
+      department: dept,
+      avatar: name
+        .split(" ")
+        .map((p) => p[0])
+        .slice(-2)
+        .join(""),
+      output,
+      capacity,
+      bugsResolved: Math.round(15 + rnd() * 80),
+      tasksCompleted: Math.round(40 + rnd() * 120),
+      completionRate: Math.round(70 + rnd() * 28),
+      badges: ["Sprint Star", "Code Sniper", "Bug Hunter", "Mentor"].slice(
+        0,
+        1 + Math.floor(rnd() * 3),
+      ),
+    };
+  })
+  .sort((a, b) => b.output - a.output);
 
-export const productivityRanking = [...employees].sort((a, b) => b.output - a.output);
-export const bugRanking = [...employees].sort((a, b) => b.bugsResolved - a.bugsResolved);
+export const productivityRanking = [...employees].sort(
+  (a, b) => b.output - a.output,
+);
+export const bugRanking = [...employees].sort(
+  (a, b) => b.bugsResolved - a.bugsResolved,
+);
 
 export const currentUser = employees[3];
-
 
 export const weeklyTrend = Array.from({ length: 12 }, (_, i) => ({
   week: `W${i + 1}`,
