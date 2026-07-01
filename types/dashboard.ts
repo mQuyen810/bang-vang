@@ -4,7 +4,7 @@ export interface ApiResponse<T> {
 }
 
 export interface DashboardFilter {
-  period: string;
+  period: string | null;
   project_names: string[] | null;
 }
 

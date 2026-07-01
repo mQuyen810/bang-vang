@@ -1,28 +1,21 @@
 "use client";
 
+import { RankingBug, RankingProductivity } from "@/types/rankingItem";
 import { RankRow } from "../RankRow";
 import styles from "./styles.module.scss";
 
 interface RankingTableProps {
-  ranking: Array<{
-    id: string;
-    name: string;
-    avatar: string;
-    department: string;
-    output: number;
-    capacity: number;
-    bugsResolved?: number;
-  }>;
+  ranking: RankingBug[] | RankingProductivity[];
   startRank: number;
   metricLabel: string;
   variant?: "default" | "bug";
 }
 
-export function RankingTable({ 
-  ranking, 
-  startRank, 
-  metricLabel, 
-  variant = "default" 
+export function RankingTable({
+  ranking,
+  startRank,
+  metricLabel,
+  variant = "default",
 }: RankingTableProps) {
   if (!ranking || ranking.length === 0) {
     return null;
@@ -38,7 +31,7 @@ export function RankingTable({
           Top {startRank} — Top {startRank + ranking.length - 1}
         </span>
       </div>
-      
+
       <div className={styles.rankingTableBody}>
         {ranking.map((emp, i) => (
           <RankRow

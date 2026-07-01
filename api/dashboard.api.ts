@@ -12,32 +12,44 @@ import {
   LeaderboardSlsxResponse,
 } from "@/types";
 
-export const getOverviewApi = () =>
-  axiosClient.get<ApiResponse<Overview>>("/issues/dashboard/overview");
+export const getOverviewApi = (filter: DashboardFilter) =>
+  axiosClient.get<ApiResponse<Overview>>("/issues/dashboard/overview", {
+    params: filter,
+  });
 
-export const getProjectsApi = () =>
-  axiosClient.get<ApiResponse<Project[]>>("/issues/dashboard/projects");
+export const getProjectsApi = (filter: DashboardFilter) =>
+  axiosClient.get<ApiResponse<Project[]>>("/issues/dashboard/projects", {
+    params: filter,
+  });
 
 export const getMyBugRatioApi = (filter: DashboardFilter) =>
-  axiosClient.post<ApiResponse<MyBugRatioResponse>>(
+  axiosClient.get<ApiResponse<MyBugRatioResponse>>(
     "/issues/dashboard/bug_ratio/myself",
-    filter,
+    {
+      params: filter,
+    },
   );
 
 export const getLeaderboardBugRatioApi = (filter: LeaderboardFilter) =>
-  axiosClient.post<ApiResponse<LeaderboardBugResponse>>(
+  axiosClient.get<ApiResponse<LeaderboardBugResponse>>(
     "/issues/dashboard/bug_ratio/leaderboard",
-    filter,
+    {
+      params: filter,
+    },
   );
 
 export const getMySlsxRatioApi = (filter: DashboardFilter) =>
-  axiosClient.post<ApiResponse<MySlsxResponse>>(
-    "/issues/dashboard/slsx_unlh_ratio/myself",
-    filter,
+  axiosClient.get<ApiResponse<MySlsxResponse>>(
+    "/issues/dashboard/slsx_ulnl_ratio/myself",
+    {
+      params: filter,
+    },
   );
 
 export const getLeaderboardSlsxRatioApi = (filter: LeaderboardFilter) =>
-  axiosClient.post<ApiResponse<LeaderboardSlsxResponse>>(
-    "/issues/dashboard/slsx_unlh_ratio/leaderboard",
-    filter,
+  axiosClient.get<ApiResponse<LeaderboardSlsxResponse>>(
+    "/issues/dashboard/slsx_ulnl_ratio/leaderboard",
+    {
+      params: filter,
+    },
   );

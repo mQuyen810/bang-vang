@@ -15,7 +15,6 @@ import {
   Check,
 } from "lucide-react";
 import { Avatar, Badge, Dropdown, MenuProps, message } from "antd";
-import { PROJECTS } from "@/lib/mock-data";
 import { useSidebar } from "@/components/Sidebar/SidebarProvider";
 import { useAuthStore } from "@/stores/auth.store";
 import styles from "./styles.module.scss";
@@ -29,11 +28,8 @@ export default function Header() {
   const router = useRouter();
   const [dark, setDark] = useState(true);
   const [loading, setLoading] = useState(false);
-  const { projects } = useDashboardStore();
-  console.log("projects", projects);
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([
-    PROJECTS[0].name,
-  ]);
+  const { projects, selectedProjects, setSelectedProjects } =
+    useDashboardStore();
   const [projectOpen, setProjectOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -83,25 +79,19 @@ export default function Header() {
   ];
 
   const toggleProject = (name: string) => {
-    setSelectedProjects((prev) =>
-      prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name],
-    );
+    if (selectedProjects.includes(name)) {
+      setSelectedProjects(selectedProjects.filter((x) => x !== name));
+    } else {
+      setSelectedProjects([...selectedProjects, name]);
+    }
   };
 
-  const projectLabel = (() => {
-    if (
-      selectedProjects.length === 0 ||
-      selectedProjects.length === PROJECTS.length
-    ) {
-      return "Tất cả";
-    }
-
-    if (selectedProjects.length === 1) {
-      return selectedProjects[0];
-    }
-
-    return `${selectedProjects.length} projects`;
-  })();
+  const projectLabel =
+    selectedProjects.length === 0
+      ? "Tất cả"
+      : selectedProjects.length === 1
+        ? selectedProjects[0]
+        : `${selectedProjects.length} dự án`;
   const projectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -165,28 +155,36 @@ export default function Header() {
             <div className={styles.projectMenu}>
               <div className={styles.projectMenuHeader}>
                 <span>Dự án</span>
-
-                <button
-                  onClick={() =>
-                    setSelectedProjects(
-                      selectedProjects.length === PROJECTS.length
-                        ? []
-                        : PROJECTS.map((p) => p.name),
-                    )
-                  }
-                >
-                  {selectedProjects.length === PROJECTS.length
-                    ? "Bỏ chọn"
-                    : "Chọn tất cả"}
-                </button>
               </div>
+              <button
+                className={`${styles.projectItem} ${
+                  selectedProjects.length === 0 ? styles.active : ""
+                }`}
+                onClick={() => setSelectedProjects([])}
+              >
+                <span
+                  className={`${styles.dot} ${
+                    selectedProjects.length === 0 ? styles.dotActive : ""
+                  }`}
+                />
 
-              {PROJECTS.map((p) => {
+                <div className={styles.projectContent}>
+                  <strong>Tất cả</strong>
+                </div>
+
+                {selectedProjects.length === 0 && (
+                  <span className={styles.check}>
+                    <Check size={12} />
+                  </span>
+                )}
+              </button>
+
+              {projects.map((p) => {
                 const active = selectedProjects.includes(p.name);
 
                 return (
                   <button
-                    key={p.id}
+                    key={p.key}
                     className={`${styles.projectItem} ${
                       active ? styles.active : ""
                     }`}
@@ -200,7 +198,6 @@ export default function Header() {
 
                     <div className={styles.projectContent}>
                       <strong>{p.name}</strong>
-                      <small>{p.code}</small>
                     </div>
 
                     {active && (

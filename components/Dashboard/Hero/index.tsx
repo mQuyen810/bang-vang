@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Sparkles, Crown } from "lucide-react";
 import { currentUser, productivityRanking } from "@/lib/mock-data";
 import styles from "./styles.module.scss";
+import { useAuthStore } from "@/stores/auth.store";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -18,6 +19,9 @@ const fadeUp = {
 };
 
 export function Hero() {
+  const { user } = useAuthStore();
+  const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
+  const fullName = match?.[1] ?? user?.display_name;
   return (
     <motion.section
       initial="hidden"
@@ -35,8 +39,7 @@ export function Hero() {
         </div>
 
         <h1 className={styles.title}>
-          Chào mừng,{" "}
-          <span className={styles.gradientText}>{currentUser.name}</span>
+          Chào mừng, <span className={styles.gradientText}>{fullName}</span>
         </h1>
 
         <p className={styles.description}>
