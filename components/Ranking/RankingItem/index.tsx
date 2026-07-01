@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import styles from './styles.module.scss';
+import React from "react";
+import { motion } from "framer-motion";
+import styles from "./styles.module.scss";
 
 interface RankingItemProps {
   rank: number;
@@ -10,11 +10,18 @@ interface RankingItemProps {
   id: string;
   department: string;
   avatar: string;
-  value: number;
-  max: number;
-  metric: string;
-  tab: 'prod' | 'bug';
+
+  tab: "prod" | "bug";
+
   index: number;
+
+  output?: number;
+  capacity?: number;
+
+  bugCount?: number;
+  subtaskCount?: number;
+
+  ratio?: number;
 }
 
 export const RankingItem: React.FC<RankingItemProps> = ({
@@ -23,13 +30,21 @@ export const RankingItem: React.FC<RankingItemProps> = ({
   id,
   department,
   avatar,
-  value,
-  max,
-  metric,
+  output,
+  capacity,
+  bugCount,
+  subtaskCount,
+  ratio,
   tab,
   index,
 }) => {
-  const pct = Math.min(100, Math.round((value / max) * 100));
+  const pct =
+    tab === "prod"
+      ? Math.min(100, ratio ?? 0)
+      : Math.min(
+          100,
+          Math.round(((bugCount ?? 0) / (subtaskCount || 1)) * 100),
+        );
   const isTop3 = rank <= 3;
 
   const getMedal = (rank: number) => {
@@ -63,13 +78,11 @@ export const RankingItem: React.FC<RankingItemProps> = ({
       viewport={{ once: true }}
       transition={{ duration: 0.3, delay: index * 0.02 }}
       whileHover={{ x: 2 }}
-      className={`${styles.rankingItem} ${isTop3 ? styles.rankingItemTop : ''}`}
+      className={`${styles.rankingItem} ${isTop3 ? styles.rankingItemTop : ""}`}
     >
       <div className={styles.rankColumn}>
         {medal ? (
-          <div className={`${styles.medal} ${medal.className}`}>
-            {rank}
-          </div>
+          <div className={`${styles.medal} ${medal.className}`}>{rank}</div>
         ) : (
           <div className={styles.rankNumber}>{rank}</div>
         )}
@@ -87,21 +100,21 @@ export const RankingItem: React.FC<RankingItemProps> = ({
 
       <div className={styles.progressColumn}>
         <div className={styles.progressHeader}>
-          <span>{metric}</span>
+          {/* <span>{metric}</span> */}
+
           <span className={styles.progressValue}>
-            {value} / {max}
+            {tab === "prod"
+              ? `${output} / ${capacity}`
+              : `${bugCount} / ${subtaskCount}`}
           </span>
         </div>
         <div className={styles.progressBar}>
-          <div 
-            className={styles.progressFill} 
-            style={{ width: `${pct}%` }}
-          />
+          <div className={styles.progressFill} style={{ width: `${pct}%` }} />
         </div>
       </div>
 
-      <div className={`${styles.scoreColumn} ${medal ? medal.textColor : ''}`}>
-        {value}{tab === 'prod' ? '%' : ''}
+      <div className={`${styles.scoreColumn} ${medal ? medal.textColor : ""}`}>
+        {tab === "prod" ? `${ratio?.toFixed(2)}%` : `${pct}%`}
       </div>
     </motion.div>
   );

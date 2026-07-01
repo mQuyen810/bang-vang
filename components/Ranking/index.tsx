@@ -8,6 +8,9 @@ import { RankingItem } from "./RankingItem";
 import { Podium } from "./Podium";
 import { useSearchParams, useRouter } from "next/navigation";
 import { productivityRanking, bugRanking, employees } from "@/lib/mock-data";
+import { useDashboardStore } from "@/stores/dashboard.store";
+import { mapBugRanking } from "@/utils/rankingBug";
+import { mapProductivityRanking } from "@/utils/rankingProductivity";
 import styles from "./styles.module.scss";
 
 type TabType = "prod" | "bug";
@@ -21,12 +24,25 @@ const RankingsPage: React.FC = () => {
   const [dept, setDept] = useState("all");
   const [selectedMonth, setSelectedMonth] = useState<string>("");
 
-  const departments = useMemo(
-    () => Array.from(new Set(employees.map((e) => e.department))).sort(),
-    [],
+  const { leaderboardBugRatio, leaderboardSlsxRatio } = useDashboardStore();
+
+  const productivityData = useMemo(
+    () =>
+      mapProductivityRanking(leaderboardSlsxRatio?.issues.details.list ?? []),
+    [leaderboardSlsxRatio],
   );
 
-  const base = tab === "prod" ? productivityRanking : bugRanking;
+  const bugData = useMemo(
+    () => mapBugRanking(leaderboardBugRatio?.issues.details.list ?? []),
+    [leaderboardBugRatio],
+  );
+  const base = tab === "prod" ? productivityData : bugData;
+  const departments = useMemo(
+    () =>
+      Array.from(new Set(base.map((e) => e.department).filter(Boolean))).sort(),
+    [base],
+  );
+
   const list = useMemo(() => {
     const q = search.trim().toLowerCase();
     return base.filter((e) => {
@@ -47,7 +63,8 @@ const RankingsPage: React.FC = () => {
     id: emp.id,
     name: emp.name,
     avatar: emp.avatar,
-    value: tab === "prod" ? emp.output : emp.bugsResolved,
+
+    value: tab === "prod" ? emp.ratio : emp.bugPercent,
   }));
 
   const handleReset = () => {
@@ -133,7 +150,6 @@ const RankingsPage: React.FC = () => {
           )}
 
           {list.map((emp, i) => {
-            const value = tab === "prod" ? emp.output : emp.bugsResolved;
             return (
               <RankingItem
                 key={emp.id}
@@ -142,11 +158,13 @@ const RankingsPage: React.FC = () => {
                 id={emp.id}
                 department={emp.department}
                 avatar={emp.avatar}
-                value={value}
-                max={max}
-                metric={metric}
                 tab={tab}
                 index={i}
+                output={tab === "prod" ? emp.output : undefined}
+                capacity={tab === "prod" ? emp.capacity : undefined}
+                ratio={tab === "prod" ? emp.ratio : undefined}
+                bugCount={tab === "bug" ? emp.bugCount : undefined}
+                subtaskCount={tab === "bug" ? emp.subtaskCount : undefined}
               />
             );
           })}
