@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Search, X, Calendar } from 'lucide-react';
-import { DatePicker } from 'antd';
-import type { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
-import styles from './styles.module.scss';
+import React from "react";
+import { Search, X, Calendar } from "lucide-react";
+import { DatePicker } from "antd";
+import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+import styles from "./styles.module.scss";
 
 const { MonthPicker } = DatePicker;
 
@@ -39,18 +39,20 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   selectedMonth,
   onMonthChange,
 }) => {
-  const hasFilters = !!search || selects.some((s) => s.value && s.value !== "all") || !!selectedMonth;
+  const hasFilters =
+    !!search ||
+    selects.some((s) => s.value && s.value !== "all") ||
+    !!selectedMonth;
 
   // Xử lý change month
   const handleMonthChange = (date: Dayjs | null) => {
     if (date && onMonthChange) {
-      onMonthChange(date.format('YYYY-MM'));
+      onMonthChange(date.format("YYYY-MM"));
     } else if (onMonthChange) {
-      onMonthChange('');
+      onMonthChange("");
     }
   };
 
-  // Parse selected month to Dayjs
   const monthValue = selectedMonth ? dayjs(selectedMonth) : null;
 
   return (
@@ -87,7 +89,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   format="MM/YYYY"
                   className={styles.monthPicker}
                   popupClassName={styles.monthPickerPopup}
-                  suffixIcon={<Calendar size={14} className={styles.calendarIcon} />}
+                  suffixIcon={
+                    <Calendar size={14} className={styles.calendarIcon} />
+                  }
                   allowClear
                 />
               </div>
@@ -96,9 +100,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
           {/* Result Count */}
           {typeof resultCount === "number" && (
-            <span className={styles.resultCount}>
-              {resultCount} kết quả
-            </span>
+            <span className={styles.resultCount}>{resultCount} kết quả</span>
           )}
 
           {/* Reset Button */}

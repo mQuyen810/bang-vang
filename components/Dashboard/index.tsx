@@ -12,7 +12,6 @@ import { useDashboardStore } from "@/stores/dashboard.store";
 
 export default function Dashboard() {
   const { overview } = useDashboardStore();
-  console.log("overview", overview);
   const kpiData = [
     {
       label: "Tổng Thành Viên",

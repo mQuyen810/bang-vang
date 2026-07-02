@@ -100,9 +100,11 @@ export default function Sidebar() {
                 <div className={styles.groupTitle}>{group.title}</div>
               )}
 
-              {group.items.map(({ path, label, icon: Icon }) => {
+              {group.items.map(({ path, activePath, label, icon: Icon }) => {
                 const active =
-                  path === "/" ? pathname === "/" : pathname.startsWith(path);
+                  (activePath ?? path) === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(activePath ?? path);
 
                 return (
                   <Link
@@ -145,9 +147,7 @@ export default function Sidebar() {
                 <p className={styles.userName}>{fullName}</p>
 
                 <div className={styles.roleWrapper}>
-                  <span className={styles.roleBadge}>
-                    {userId}
-                  </span>
+                  <span className={styles.roleBadge}>{userId}</span>
                 </div>
               </div>
             )}

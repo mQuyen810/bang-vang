@@ -2,6 +2,7 @@
 
 import { ConfigProvider, theme, App as AntdApp } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import viVN from "antd/locale/vi_VN";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -19,6 +20,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           colorBgContainer: "rgba(255,255,255,0.05)",
         },
       }}
+      locale={viVN}
     >
       <AntdRegistry>
         <AntdApp>{children}</AntdApp>
