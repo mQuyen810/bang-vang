@@ -3,9 +3,9 @@ export interface RankingBug {
 
   name: string;
 
-  avatar: string;
+  username: string;
 
-  department: string;
+  avatar: string;
 
   bugPercent: number;
 
@@ -19,9 +19,9 @@ export interface RankingProductivity {
 
   name: string;
 
-  avatar: string;
+  username: string;
 
-  department: string;
+  avatar: string;
 
   ratio: number;
 

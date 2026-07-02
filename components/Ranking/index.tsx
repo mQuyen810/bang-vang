@@ -1,19 +1,42 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Sparkles, Star } from "lucide-react";
 import { FilterBar } from "./FilterBar";
 import { RankingItem } from "./RankingItem";
-import { Podium } from "./Podium";
+import { PaginationBar } from "./PaginationBar";
 import { useSearchParams, useRouter } from "next/navigation";
-import { productivityRanking, bugRanking, employees } from "@/lib/mock-data";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import { mapBugRanking } from "@/utils/rankingBug";
 import { mapProductivityRanking } from "@/utils/rankingProductivity";
+import type { RankingBug, RankingProductivity } from "@/types/rankingItem";
 import styles from "./styles.module.scss";
+import dayjs from "dayjs";
 
 type TabType = "prod" | "bug";
+const DEFAULT_PAGE_SIZE = 10;
+
+type CommonRankingItem = Pick<
+  RankingProductivity,
+  "id" | "name" | "username" | "avatar"
+>;
+
+const filterRankingItems = <T extends CommonRankingItem>(
+  items: T[],
+  search: string,
+) => {
+  const q = search.trim().toLowerCase();
+
+  return items.filter((item) => {
+    const matchSearch =
+      !q ||
+      item.username.toLowerCase().includes(q) ||
+      item.id.toLowerCase().includes(q)
+
+    return matchSearch ;
+  });
+};
 
 const RankingsPage: React.FC = () => {
   const router = useRouter();
@@ -22,9 +45,20 @@ const RankingsPage: React.FC = () => {
   const tab: TabType = searchParams.get("tab") === "bug" ? "bug" : "prod";
   const [search, setSearch] = useState("");
   const [dept, setDept] = useState("all");
-  const [selectedMonth, setSelectedMonth] = useState<string>("");
-
-  const { leaderboardBugRatio, leaderboardSlsxRatio } = useDashboardStore();
+  const [page, setPage] = useState(1);
+  const {
+    period,
+    selectedProjects,
+    leaderboardBugRatio,
+    leaderboardSlsxRatio,
+    fetchLeaderboardBugRatio,
+    fetchLeaderboardSlsxRatio,
+  } = useDashboardStore();
+  const apiPeriod =
+    leaderboardSlsxRatio?.period ?? leaderboardBugRatio?.period ?? period;
+  const [rankingPeriod, setRankingPeriod] = useState(period);
+  const [defaultMonth, setDefaultMonth] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
 
   const productivityData = useMemo(
     () =>
@@ -36,42 +70,109 @@ const RankingsPage: React.FC = () => {
     () => mapBugRanking(leaderboardBugRatio?.issues.details.list ?? []),
     [leaderboardBugRatio],
   );
-  const base = tab === "prod" ? productivityData : bugData;
-  const departments = useMemo(
-    () =>
-      Array.from(new Set(base.map((e) => e.department).filter(Boolean))).sort(),
-    [base],
+
+  const filteredProductivityData = useMemo(
+    () => filterRankingItems(productivityData, search),
+    [productivityData, search],
   );
 
-  const list = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return base.filter((e) => {
-      const matchSearch =
-        !q ||
-        e.name.toLowerCase().includes(q) ||
-        e.id.toLowerCase().includes(q) ||
-        e.department.toLowerCase().includes(q);
-      const matchDept = dept === "all" || e.department === dept;
-      return matchSearch && matchDept;
-    });
-  }, [base, search, dept]);
+  const filteredBugData = useMemo(
+    () => filterRankingItems(bugData, search),
+    [bugData, search],
+  );
 
-  const metric = tab === "prod" ? "Production Output" : "Bugs Resolved";
-  const max = tab === "prod" ? 140 : 100;
+  const base = tab === "prod" ? filteredProductivityData : filteredBugData;
+  const activeMeta =
+    tab === "prod"
+      ? leaderboardSlsxRatio?.issues.details.meta
+      : leaderboardBugRatio?.issues.details.meta;
 
-  const top3 = list.slice(0, 3).map((emp) => ({
-    id: emp.id,
-    name: emp.name,
-    avatar: emp.avatar,
 
-    value: tab === "prod" ? emp.ratio : emp.bugPercent,
-  }));
+  const list = base;
+  const totalPages = activeMeta?.last_page ?? 1;
+  const currentPage = activeMeta?.current_page ?? page;
+  const rankStart = activeMeta?.from ?? 1;
+  const pageSize = activeMeta?.per_page ?? DEFAULT_PAGE_SIZE;
+  const totalResults = activeMeta?.total ?? list.length;
+
+  const productivityRankById = useMemo(
+    () =>
+      new Map(
+        productivityData.map((item, index) => [item.id, rankStart + index]),
+      ),
+    [productivityData, rankStart],
+  );
+
+  const bugRankById = useMemo(
+    () => new Map(bugData.map((item, index) => [item.id, rankStart + index])),
+    [bugData, rankStart],
+  );
 
   const handleReset = () => {
     setSearch("");
     setDept("all");
-    setSelectedMonth("");
+    setPage(1);
+
+    if (defaultMonth) {
+      setSelectedMonth(dayjs(defaultMonth, "MM-YYYY").format("YYYY-MM"));
+      setRankingPeriod(defaultMonth);
+    }
   };
+
+  const handleMonthChange = (month: string) => {
+    if (!month) {
+      if (defaultMonth) {
+        setPage(1);
+        setSelectedMonth(dayjs(defaultMonth, "MM-YYYY").format("YYYY-MM"));
+        setRankingPeriod(defaultMonth);
+      }
+
+      return;
+    }
+
+    setSelectedMonth(month);
+    setRankingPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
+  };
+
+  useEffect(() => {
+    if (tab === "prod") {
+      fetchLeaderboardSlsxRatio(null, page, pageSize, rankingPeriod);
+      return;
+    }
+
+    fetchLeaderboardBugRatio(null, page, pageSize, rankingPeriod);
+  }, [
+    tab,
+    page,
+    rankingPeriod,
+    pageSize,
+    selectedProjects,
+    fetchLeaderboardBugRatio,
+    fetchLeaderboardSlsxRatio,
+  ]);
+
+  useEffect(() => {
+    if (!apiPeriod) return;
+
+    if (!defaultMonth) {
+      setDefaultMonth(apiPeriod);
+      setRankingPeriod(apiPeriod);
+    }
+
+    if (!selectedMonth) {
+      setSelectedMonth(dayjs(apiPeriod, "MM-YYYY").format("YYYY-MM"));
+    }
+  }, [apiPeriod, defaultMonth, selectedMonth]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [tab, search, dept, selectedMonth]);
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [page, totalPages]);
 
   return (
     <div className={styles.container}>
@@ -82,7 +183,9 @@ const RankingsPage: React.FC = () => {
             Hall of Fame
           </div>
           <h1 className={styles.title}>
-            Bảng Xếp Hạng
+            {tab === "prod"
+              ? "Bảng xếp hạng Sản Lượng"
+              : "Bảng Xếp Hạng Bug Resolution"}
             <span className="text-gradient"> ✦</span>
           </h1>
           <p className={styles.subtitle}>
@@ -107,28 +210,28 @@ const RankingsPage: React.FC = () => {
         </div>
       </header>
 
-      <Podium top3={top3} metric={metric} tab={tab} />
+      {/* <Podium top3={top3} metric={metric} tab={tab} /> */}
 
       <FilterBar
         search={search}
         onSearch={setSearch}
         searchPlaceholder="Tìm theo tên, mã NV, phòng ban..."
-        resultCount={list.length}
+        resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}
-        onMonthChange={setSelectedMonth}
-        selects={[
-          {
-            key: "dept",
-            label: "Phòng ban",
-            value: dept,
-            onChange: setDept,
-            options: [
-              { value: "all", label: "Tất cả" },
-              ...departments.map((d) => ({ value: d, label: d })),
-            ],
-          },
-        ]}
+        onMonthChange={handleMonthChange}
+        // selects={[
+        //   {
+        //     key: "dept",
+        //     label: "Phòng ban",
+        //     value: dept,
+        //     onChange: setDept,
+        //     options: [
+        //       { value: "all", label: "Tất cả" },
+        //       ...departments.map((d) => ({ value: d, label: d })),
+        //     ],
+        //   },
+        // ]}
       />
 
       <motion.div
@@ -149,27 +252,42 @@ const RankingsPage: React.FC = () => {
             </motion.div>
           )}
 
-          {list.map((emp, i) => {
-            return (
-              <RankingItem
-                key={emp.id}
-                rank={i + 1}
-                name={emp.name}
-                id={emp.id}
-                department={emp.department}
-                avatar={emp.avatar}
-                tab={tab}
-                index={i}
-                output={tab === "prod" ? emp.output : undefined}
-                capacity={tab === "prod" ? emp.capacity : undefined}
-                ratio={tab === "prod" ? emp.ratio : undefined}
-                bugCount={tab === "bug" ? emp.bugCount : undefined}
-                subtaskCount={tab === "bug" ? emp.subtaskCount : undefined}
-              />
-            );
-          })}
+          {tab === "prod"
+            ? (list as RankingProductivity[]).map((emp, i) => (
+                <RankingItem
+                  key={emp.id}
+                  rank={productivityRankById.get(emp.id) ?? rankStart}
+                  name={emp.name}
+                  id={emp.id}
+                  avatar={emp.avatar}
+                  tab={tab}
+                  index={i}
+                  output={emp.slsx}
+                  capacity={emp.ulnl}
+                  ratio={emp.ratio}
+                />
+              ))
+            : (list as RankingBug[]).map((emp, i) => (
+                <RankingItem
+                  key={emp.id}
+                  rank={bugRankById.get(emp.id) ?? rankStart}
+                  name={emp.name}
+                  id={emp.id}
+                  avatar={emp.avatar}
+                  tab={tab}
+                  index={i}
+                  bugCount={emp.bugCount}
+                  subtaskCount={emp.subtaskCount}
+                />
+              ))}
         </AnimatePresence>
       </motion.div>
+
+      <PaginationBar
+        page={currentPage}
+        totalPages={totalPages}
+        onChange={setPage}
+      />
     </div>
   );
 };

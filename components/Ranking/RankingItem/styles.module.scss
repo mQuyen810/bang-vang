@@ -184,8 +184,15 @@
 .progressFill {
   height: 100%;
   border-radius: 9999px;
-  background: var(--gradient-primary);
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.defaultGradient {
+  background: var(--gradient-primary);
+}
+
+.bugGradient {
+  background: linear-gradient(90deg, #ff7a59, #ff3d6e);
 }
 
 .scoreColumn {

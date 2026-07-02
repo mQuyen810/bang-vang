@@ -16,6 +16,10 @@
   --surface: rgba(255, 255, 255, 0.05);
   --border: rgba(255, 255, 255, 0.07);
   --gold: #f6c453;
+  --gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --gradient-gold: linear-gradient(180deg, #fbd96b 0%, #c68a1b 100%);
+  --gradient-silver: linear-gradient(180deg, #e2e8f4 0%, #7e93bd 100%);
+  --gradient-bronze: linear-gradient(180deg, #f1b98a 0%, #a35e33 100%);
 }
 
 @theme inline {

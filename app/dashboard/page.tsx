@@ -8,12 +8,29 @@ import { useEffect } from "react";
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
-  const { period, selectedProjects, fetchDashboard } = useDashboardStore();
+  const {
+    period,
+    selectedProjects,
+    fetchOverview,
+    fetchProjects,
+    fetchLeaderboardBugRatio,
+    fetchLeaderboardSlsxRatio,
+  } = useDashboardStore();
   useEffect(() => {
     if (user) {
-      fetchDashboard();
+      fetchOverview();
+      fetchProjects();
+      fetchLeaderboardBugRatio();
+      fetchLeaderboardSlsxRatio();
     }
-  }, [user, fetchDashboard, period, selectedProjects]);
+  }, [
+    fetchOverview,
+    fetchProjects,
+    fetchLeaderboardBugRatio,
+    fetchLeaderboardSlsxRatio,
+    period,
+    selectedProjects,
+  ]);
 
   if (!user) {
     return null;

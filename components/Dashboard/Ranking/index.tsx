@@ -61,7 +61,7 @@ export function Ranking({ title, type }: RankingProps) {
         <RankingTable
           ranking={tableData}
           startRank={4}
-          metricLabel={isBug ? "Bug Resolved" : "Sản lượng"}
+          metricLabel={isBug ? "Bug Percent" : "Sản lượng"}
           variant={isBug ? "bug" : "default"}
         />
       )}

@@ -11,9 +11,9 @@ export const mapProductivityRanking = (
 
       name: item.user_name,
 
-      avatar: "",
+      username: item.user_name,
 
-      department: item.project_name,
+      avatar: "",
 
       ratio: Number(item.slsx_vs_ulnl_ratio),
 

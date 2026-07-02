@@ -10,6 +10,8 @@ export interface DashboardFilter {
 
 export interface LeaderboardFilter extends DashboardFilter {
   user_name: string | null;
+  page?: number;
+  per_page?: number;
 }
 
 export interface Overview {

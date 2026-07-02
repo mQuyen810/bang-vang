@@ -8,7 +8,6 @@ interface RankingItemProps {
   rank: number;
   name: string;
   id: string;
-  department: string;
   avatar: string;
 
   tab: "prod" | "bug";
@@ -28,7 +27,6 @@ export const RankingItem: React.FC<RankingItemProps> = ({
   rank,
   name,
   id,
-  department,
   avatar,
   output,
   capacity,
@@ -38,6 +36,9 @@ export const RankingItem: React.FC<RankingItemProps> = ({
   tab,
   index,
 }) => {
+  const gradientClass =
+    tab === "bug" ? styles.bugGradient : styles.defaultGradient;
+
   const pct =
     tab === "prod"
       ? Math.min(100, ratio ?? 0)
@@ -70,7 +71,9 @@ export const RankingItem: React.FC<RankingItemProps> = ({
   };
 
   const medal = getMedal(rank);
-
+  const match = name.match(/^(.*?)\s*\((.*?)\)$/);
+  const fullName = match?.[1] ?? name;
+  const userId = match?.[2] ?? id;
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}
@@ -91,30 +94,31 @@ export const RankingItem: React.FC<RankingItemProps> = ({
       <div className={styles.userColumn}>
         <div className={styles.avatar}>{avatar}</div>
         <div className={styles.userInfo}>
-          <div className={styles.userName}>{name}</div>
+          <div className={styles.userName}>{fullName}</div>
           <div className={styles.userMeta}>
-            {department} · {id}
+            {userId}
           </div>
         </div>
       </div>
 
       <div className={styles.progressColumn}>
         <div className={styles.progressHeader}>
-          {/* <span>{metric}</span> */}
+          <span>{tab === "prod" ? `Sản lượng` : `Bug Percent`}</span>
 
           <span className={styles.progressValue}>
-            {tab === "prod"
-              ? `${output} / ${capacity}`
-              : `${bugCount} / ${subtaskCount}`}
+            {tab === "prod" ? `${output}/${capacity}` : `${pct}/100`}
           </span>
         </div>
         <div className={styles.progressBar}>
-          <div className={styles.progressFill} style={{ width: `${pct}%` }} />
+          <div
+            className={`${styles.progressFill} ${gradientClass}`}
+            style={{ width: `${pct}%` }}
+          />
         </div>
       </div>
 
       <div className={`${styles.scoreColumn} ${medal ? medal.textColor : ""}`}>
-        {tab === "prod" ? `${ratio?.toFixed(2)}%` : `${pct}%`}
+        {tab === "prod" ? `${ratio}` : `${bugCount}`}
       </div>
     </motion.div>
   );

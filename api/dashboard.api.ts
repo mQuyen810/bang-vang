@@ -32,7 +32,7 @@ export const getMyBugRatioApi = (filter: DashboardFilter) =>
 
 export const getLeaderboardBugRatioApi = (filter: LeaderboardFilter) =>
   axiosClient.get<ApiResponse<LeaderboardBugResponse>>(
-    "/issues/dashboard/bug_ratio/leaderboard",
+    "/issues/dashboard/leaderboard/bug_ratio",
     {
       params: filter,
     },
@@ -48,7 +48,7 @@ export const getMySlsxRatioApi = (filter: DashboardFilter) =>
 
 export const getLeaderboardSlsxRatioApi = (filter: LeaderboardFilter) =>
   axiosClient.get<ApiResponse<LeaderboardSlsxResponse>>(
-    "/issues/dashboard/slsx_ulnl_ratio/leaderboard",
+    "/issues/dashboard/leaderboard/slsx_ulnl_ratio",
     {
       params: filter,
     },

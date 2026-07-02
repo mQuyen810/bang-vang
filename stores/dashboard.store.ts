@@ -18,153 +18,194 @@ interface DashboardState {
   loading: boolean;
 
   period: string;
-
   selectedProjects: string[];
 
   overview: Overview | null;
-
   projects: Project[];
 
   myBugRatio: MyBugRatioResponse | null;
-
   leaderboardBugRatio: LeaderboardBugResponse | null;
 
   mySlsxRatio: MySlsxResponse | null;
-
   leaderboardSlsxRatio: LeaderboardSlsxResponse | null;
 
   setPeriod: (period: string) => void;
-
   setSelectedProjects: (projects: string[]) => void;
 
-  fetchDashboard: (userName?: string | null) => Promise<void>;
+  fetchOverview: () => Promise<void>;
+  fetchProjects: () => Promise<void>;
+  fetchMyBugRatio: () => Promise<void>;
+  fetchLeaderboardBugRatio: (
+    userName?: string | null,
+    page?: number,
+    perPage?: number,
+    periodOverride?: string,
+  ) => Promise<void>;
+
+  fetchMySlsxRatio: () => Promise<void>;
+  fetchLeaderboardSlsxRatio: (
+    userName?: string | null,
+    page?: number,
+    perPage?: number,
+    periodOverride?: string,
+  ) => Promise<void>;
 }
 
-export const useDashboardStore = create<DashboardState>((set, get) => ({
-  loading: false,
+export const useDashboardStore = create<DashboardState>((set, get) => {
+  const getDashboardFilter = (): DashboardFilter => {
+    const { period, selectedProjects } = get();
 
-  period: getCurrentPeriod(),
-
-  selectedProjects: [],
-
-  overview: null,
-
-  projects: [],
-
-  myBugRatio: null,
-
-  leaderboardBugRatio: null,
-
-  mySlsxRatio: null,
-
-  leaderboardSlsxRatio: null,
-
-  setPeriod: (period) =>
-    set({
+    return {
       period,
-    }),
+      project_names: selectedProjects.length ? selectedProjects : null,
+    };
+  };
 
-  setSelectedProjects: (projects) =>
-    set({
-      selectedProjects: projects,
-    }),
+  const getLeaderboardFilter = (
+    userName?: string | null,
+    page?: number,
+    perPage?: number,
+    periodOverride?: string,
+  ): LeaderboardFilter => {
+    const { period, selectedProjects } = get();
 
-  fetchDashboard: async (userName = null) => {
-    set({
-      loading: true,
-    });
+    return {
+      period: periodOverride ?? period,
+      project_names: selectedProjects.length ? selectedProjects : null,
+      user_name: userName ?? null,
+      page,
+      per_page: perPage,
+    };
+  };
 
-    try {
-      const { period, selectedProjects } = get();
+  return {
+    loading: false,
 
-      const dashboardFilter: DashboardFilter = {
-        period,
-        project_names: selectedProjects.length === 0 ? null : selectedProjects,
-      };
+    period: getCurrentPeriod(),
 
-      const leaderboardFilter: LeaderboardFilter = {
-        period,
-        project_names: selectedProjects.length === 0 ? null : selectedProjects,
-        user_name: userName,
-      };
+    selectedProjects: [],
 
-      const [
-        overviewRes,
-        projectsRes,
-        myBugRatioRes,
-        leaderboardBugRatioRes,
-        mySlsxRatioRes,
-        leaderboardSlsxRatioRes,
-      ] = await Promise.allSettled([
-        dashboardService.getOverview(dashboardFilter),
-        dashboardService.getProjects(dashboardFilter),
-        dashboardService.getMyBugRatio(dashboardFilter),
-        dashboardService.getLeaderboardBugRatio(leaderboardFilter),
-        dashboardService.getMySlsxRatio(dashboardFilter),
-        dashboardService.getLeaderboardSlsxRatio(leaderboardFilter),
-      ]);
+    overview: null,
 
-      if (overviewRes.status === "rejected") {
-        console.error("Overview API:", overviewRes.reason);
-      }
+    projects: [],
 
-      if (projectsRes.status === "rejected") {
-        console.error("Projects API:", projectsRes.reason);
-      }
+    myBugRatio: null,
 
-      if (myBugRatioRes.status === "rejected") {
-        console.error("My Bug Ratio API:", myBugRatioRes.reason);
-      }
+    leaderboardBugRatio: null,
 
-      if (leaderboardBugRatioRes.status === "rejected") {
-        console.error(
-          "Leaderboard Bug Ratio API:",
-          leaderboardBugRatioRes.reason,
-        );
-      }
+    mySlsxRatio: null,
 
-      if (mySlsxRatioRes.status === "rejected") {
-        console.error("My SLSX API:", mySlsxRatioRes.reason);
-      }
+    leaderboardSlsxRatio: null,
 
-      if (leaderboardSlsxRatioRes.status === "rejected") {
-        console.error("Leaderboard SLSX API:", leaderboardSlsxRatioRes.reason);
-      }
+    setPeriod: (period) => set({ period }),
 
-      const overview =
-        overviewRes.status === "fulfilled" ? overviewRes.value : null;
-
-      const projects =
-        projectsRes.status === "fulfilled" ? projectsRes.value : [];
-
-      const myBugRatio =
-        myBugRatioRes.status === "fulfilled" ? myBugRatioRes.value : null;
-
-      const leaderboardBugRatio =
-        leaderboardBugRatioRes.status === "fulfilled"
-          ? leaderboardBugRatioRes.value
-          : null;
-
-      const mySlsxRatio =
-        mySlsxRatioRes.status === "fulfilled" ? mySlsxRatioRes.value : null;
-
-      const leaderboardSlsxRatio =
-        leaderboardSlsxRatioRes.status === "fulfilled"
-          ? leaderboardSlsxRatioRes.value
-          : null;
-
+    setSelectedProjects: (projects) =>
       set({
-        overview,
-        projects,
-        myBugRatio,
-        leaderboardBugRatio,
-        mySlsxRatio,
-        leaderboardSlsxRatio,
-      });
-    } finally {
-      set({
-        loading: false,
-      });
-    }
-  },
-}));
+        selectedProjects: projects,
+      }),
+
+    fetchOverview: async () => {
+      set({ loading: true });
+
+      try {
+        const overview =
+          await dashboardService.getOverview(getDashboardFilter());
+
+        set({ overview });
+      } catch (error) {
+        console.error("Overview API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+
+    fetchProjects: async () => {
+      set({ loading: true });
+
+      try {
+        const projects =
+          await dashboardService.getProjects(getDashboardFilter());
+
+        set({ projects });
+      } catch (error) {
+        console.error("Projects API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+
+    fetchMyBugRatio: async () => {
+      set({ loading: true });
+
+      try {
+        const myBugRatio =
+          await dashboardService.getMyBugRatio(getDashboardFilter());
+
+        set({ myBugRatio });
+      } catch (error) {
+        console.error("My Bug Ratio API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+
+    fetchLeaderboardBugRatio: async (
+      userName = null,
+      page = 1,
+      perPage = 10,
+      periodOverride,
+    ) => {
+      set({ loading: true });
+
+      try {
+        const leaderboardBugRatio =
+          await dashboardService.getLeaderboardBugRatio(
+            getLeaderboardFilter(userName, page, perPage, periodOverride),
+          );
+
+        set({ leaderboardBugRatio });
+      } catch (error) {
+        console.error("Leaderboard Bug Ratio API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+
+    fetchMySlsxRatio: async () => {
+      set({ loading: true });
+
+      try {
+        const mySlsxRatio =
+          await dashboardService.getMySlsxRatio(getDashboardFilter());
+
+        set({ mySlsxRatio });
+      } catch (error) {
+        console.error("My SLSX Ratio API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+
+    fetchLeaderboardSlsxRatio: async (
+      userName = null,
+      page = 1,
+      perPage = 10,
+      periodOverride,
+    ) => {
+      set({ loading: true });
+
+      try {
+        const leaderboardSlsxRatio =
+          await dashboardService.getLeaderboardSlsxRatio(
+            getLeaderboardFilter(userName, page, perPage, periodOverride),
+          );
+
+        set({ leaderboardSlsxRatio });
+      } catch (error) {
+        console.error("Leaderboard SLSX API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+  };
+});

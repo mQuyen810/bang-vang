@@ -9,6 +9,8 @@ export const mapBugRanking = (list: BugRatio[]): RankingBug[] =>
 
       name: item.user_name,
 
+      username: item.user_name,
+
       avatar: "",
 
       department: item.project_name,
