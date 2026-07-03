@@ -1,19 +1,15 @@
 "use client";
 
-import RankingsPage from "@/components/Ranking";
+import OverdueLogWork from "@/components/OverdueLogWork";
 import MainLayout from "@/components/MainLayout";
-
 import { useAuthStore } from "@/stores/auth.store";
 
-export default function RankingPage() {
+export default function OverduePage() {
   const { user } = useAuthStore();
 
   if (!user) {
     return null;
   }
-  return (
-    <MainLayout>
-      <RankingsPage />
-    </MainLayout>
-  );
+
+  return <MainLayout>{<OverdueLogWork />}</MainLayout>;
 }

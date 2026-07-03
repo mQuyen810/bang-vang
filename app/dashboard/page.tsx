@@ -1,7 +1,7 @@
 "use client";
 
 import Dashboard from "@/components/Dashboard";
-import MainLayout from "@/layouts/MainLayout";
+import MainLayout from "@/components/MainLayout";
 import { useAuthStore } from "@/stores/auth.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import { useEffect } from "react";

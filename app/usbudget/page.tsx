@@ -1,19 +1,15 @@
 "use client";
 
-import RankingsPage from "@/components/Ranking";
 import MainLayout from "@/components/MainLayout";
-
+import USBudget from "@/components/USBudget";
 import { useAuthStore } from "@/stores/auth.store";
 
-export default function RankingPage() {
+export default function OverbudgetPage() {
   const { user } = useAuthStore();
 
   if (!user) {
     return null;
   }
-  return (
-    <MainLayout>
-      <RankingsPage />
-    </MainLayout>
-  );
+
+  return <MainLayout>{<USBudget />}</MainLayout>;
 }

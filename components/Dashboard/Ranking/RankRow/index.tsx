@@ -56,7 +56,7 @@ export function RankRow({
         <div className={styles.avatar}>{emp.avatar}</div>
         <div className={styles.userDetails}>
           <div className={styles.userName}>{emp.name}</div>
-          <div className={styles.userMeta}>{emp.department}</div>
+          {/* <div className={styles.userMeta}>{emp.department}</div> */}
         </div>
       </div>
 

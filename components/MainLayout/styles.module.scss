@@ -1,0 +1,29 @@
+.layout {
+  min-height: 100vh;
+}
+
+.main {
+  margin-left: 264px;
+  width: calc(100% - 264px);
+
+  min-height: 100vh;
+
+  transition: margin-left .3s ease, width .3s ease;
+}
+
+.mainCollapsed {
+  margin-left: 92px;
+  width: calc(100% - 92px);
+}
+
+.content {
+  padding: 16px;
+}
+
+@media (max-width: 1024px) {
+  .main,
+  .mainCollapsed {
+    margin-left: 0;
+    width: 100%;
+  }
+}

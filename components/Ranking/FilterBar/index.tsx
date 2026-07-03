@@ -78,6 +78,23 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         </div>
 
         <div className={styles.filterControls}>
+          {selects.map((select) => (
+            <div key={select.key} className={styles.filterGroup}>
+              <span className={styles.filterLabel}>{select.label}</span>
+              <select
+                value={select.value}
+                onChange={(e) => select.onChange(e.target.value)}
+                className={styles.filterSelect}
+              >
+                {select.options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+
           {onMonthChange && (
             <div className={styles.filterGroup}>
               <span className={styles.filterLabel}>Tháng</span>

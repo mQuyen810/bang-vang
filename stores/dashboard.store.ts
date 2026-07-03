@@ -12,6 +12,9 @@ import {
   LeaderboardBugResponse,
   MySlsxResponse,
   LeaderboardSlsxResponse,
+  OverdueResponseType,
+  OverdueLogWorkResponseType,
+  USBudgetResponseType,
 } from "@/types/dashboard";
 
 interface DashboardState {
@@ -29,6 +32,12 @@ interface DashboardState {
   mySlsxRatio: MySlsxResponse | null;
   leaderboardSlsxRatio: LeaderboardSlsxResponse | null;
 
+  overdue: OverdueResponseType | null;
+
+  overdueLogWork: OverdueLogWorkResponseType | null;
+
+  usBudget: USBudgetResponseType | null;
+
   setPeriod: (period: string) => void;
   setSelectedProjects: (projects: string[]) => void;
 
@@ -44,6 +53,31 @@ interface DashboardState {
 
   fetchMySlsxRatio: () => Promise<void>;
   fetchLeaderboardSlsxRatio: (
+    userName?: string | null,
+    page?: number,
+    perPage?: number,
+    periodOverride?: string,
+  ) => Promise<void>;
+
+  fetchOverdue: (
+    issuetype?: string | null,
+    status?: "Overdue" | "Warning" | null,
+    table_id?: number,
+    userName?: string | null,
+    page?: number,
+    perPage?: number,
+  ) => Promise<void>;
+
+  fetchOverdueLogWork: (
+    issuetype?: string | null,
+    status?: "Overdue" | "Warning" | "Missing" | null,
+    table_id?: number,
+    userName?: string | null,
+    page?: number,
+    perPage?: number,
+  ) => Promise<void>;
+
+  fetchUSBudget: (
     userName?: string | null,
     page?: number,
     perPage?: number,
@@ -96,6 +130,12 @@ export const useDashboardStore = create<DashboardState>((set, get) => {
     mySlsxRatio: null,
 
     leaderboardSlsxRatio: null,
+
+    overdue: null,
+
+    overdueLogWork: null,
+
+    usBudget: null,
 
     setPeriod: (period) => set({ period }),
 
@@ -203,6 +243,74 @@ export const useDashboardStore = create<DashboardState>((set, get) => {
         set({ leaderboardSlsxRatio });
       } catch (error) {
         console.error("Leaderboard SLSX API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+
+    fetchOverdue: async (
+      issuetype = null,
+      status = null,
+      table_id = 1,
+      userName = null,
+      page = 1,
+      perPage = 10,
+    ) => {
+      set({ loading: true });
+
+      try {
+        const overdue = await dashboardService.getOverdue({
+          ...getLeaderboardFilter(userName, page, perPage),
+          table_id,
+          issuetype,
+          status,
+        });
+
+        set({ overdue });
+      } catch (error) {
+        console.error("Overdue API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+    fetchOverdueLogWork: async (
+      issuetype = null,
+      statusLogWork = null,
+      table_id = 2,
+      userName = null,
+      page = 1,
+      perPage = 10,
+    ) => {
+      set({ loading: true });
+
+      try {
+        const overdueLogWork = await dashboardService.getOverdueLogWork({
+          ...getLeaderboardFilter(userName, page, perPage),
+          table_id,
+          issuetype,
+          statusLogWork,
+        });
+
+        set({
+          overdueLogWork,
+        });
+      } catch (error) {
+        console.error("Overdue LogWork API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+    fetchUSBudget: async () => {
+      set({ loading: true });
+
+      try {
+        const usBudget = await dashboardService.getUSBudget(
+          getLeaderboardFilter(),
+        );
+
+        set({ usBudget });
+      } catch (error) {
+        console.error("API:", error);
       } finally {
         set({ loading: false });
       }

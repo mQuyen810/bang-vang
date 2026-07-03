@@ -1,0 +1,27 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px 10px;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.overdue {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.warning {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.normal {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.12);
+}

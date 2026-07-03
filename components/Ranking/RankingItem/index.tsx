@@ -41,11 +41,8 @@ export const RankingItem: React.FC<RankingItemProps> = ({
 
   const pct =
     tab === "prod"
-      ? Math.min(100, ratio ?? 0)
-      : Math.min(
-          100,
-          Math.round(((bugCount ?? 0) / (subtaskCount || 1)) * 100),
-        );
+      ? ratio
+      : Math.round(((bugCount ?? 0) / (subtaskCount || 1)) * 100);
   const isTop3 = rank <= 3;
 
   const getMedal = (rank: number) => {
@@ -95,9 +92,7 @@ export const RankingItem: React.FC<RankingItemProps> = ({
         <div className={styles.avatar}>{avatar}</div>
         <div className={styles.userInfo}>
           <div className={styles.userName}>{fullName}</div>
-          <div className={styles.userMeta}>
-            {userId}
-          </div>
+          <div className={styles.userMeta}>{userId}</div>
         </div>
       </div>
 
@@ -106,7 +101,9 @@ export const RankingItem: React.FC<RankingItemProps> = ({
           <span>{tab === "prod" ? `Sản lượng` : `Bug Percent`}</span>
 
           <span className={styles.progressValue}>
-            {tab === "prod" ? `${output}/${capacity}` : `${pct}/100`}
+            {tab === "prod"
+              ? `${output}/${capacity}`
+              : `${bugCount}/${subtaskCount}`}
           </span>
         </div>
         <div className={styles.progressBar}>
@@ -118,7 +115,7 @@ export const RankingItem: React.FC<RankingItemProps> = ({
       </div>
 
       <div className={`${styles.scoreColumn} ${medal ? medal.textColor : ""}`}>
-        {tab === "prod" ? `${ratio}` : `${bugCount}`}
+        {tab === "prod" ? `${ratio}%` : `${pct}%`}
       </div>
     </motion.div>
   );
