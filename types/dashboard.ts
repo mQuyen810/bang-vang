@@ -1,7 +1,4 @@
-export interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-}
+// import { ApiResponse } from "./api";
 
 export interface DashboardFilter {
   period: string | null;
