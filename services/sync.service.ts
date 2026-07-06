@@ -10,6 +10,6 @@ export const issuesService = {
   async syncFullIssues() {
     const res = await syncFullIssuesApi();
 
-    return res;
+    return res.data;
   },
 };
