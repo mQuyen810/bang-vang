@@ -57,14 +57,14 @@ export function Ranking({ title, type }: RankingProps) {
         variant={isBug ? "bug" : "default"}
       />
 
-      {tableData.length > 0 && (
+      {/* {tableData.length > 0 && (
         <RankingTable
           ranking={tableData}
           startRank={4}
           metricLabel={isBug ? "Bug Percent" : "Sản lượng"}
           variant={isBug ? "bug" : "default"}
         />
-      )}
+      )} */}
     </section>
   );
 }
