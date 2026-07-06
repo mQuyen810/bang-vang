@@ -1,3 +1,4 @@
+import { LeaderboardFilter, USBudgetResponseType } from "./../types/dashboard";
 import axiosClient from "./axios";
 
 import {
@@ -10,6 +11,11 @@ import {
   LeaderboardBugResponse,
   MySlsxResponse,
   LeaderboardSlsxResponse,
+  OverdueFilter,
+  OverdueResponseType,
+  OverdueLogWorkFilter,
+  OverdueLogWorkResponseType,
+  USBudget,
 } from "@/types";
 
 export const getOverviewApi = (filter: DashboardFilter) =>
@@ -49,6 +55,30 @@ export const getMySlsxRatioApi = (filter: DashboardFilter) =>
 export const getLeaderboardSlsxRatioApi = (filter: LeaderboardFilter) =>
   axiosClient.get<ApiResponse<LeaderboardSlsxResponse>>(
     "/issues/dashboard/leaderboard/slsx_ulnl_ratio",
+    {
+      params: filter,
+    },
+  );
+
+export const getOverdueApi = (filter: OverdueFilter) =>
+  axiosClient.get<ApiResponse<OverdueResponseType>>(
+    "/issues/dashboard/overdue/issue",
+    {
+      params: filter,
+    },
+  );
+
+export const getOverdueLogWorkApi = (filter: OverdueLogWorkFilter) =>
+  axiosClient.get<ApiResponse<OverdueLogWorkResponseType>>(
+    "/issues/dashboard/overdue/logwork",
+    {
+      params: filter,
+    },
+  );
+
+export const getUSBudgetApi = (filter: LeaderboardFilter) =>
+  axiosClient.get<ApiResponse<USBudgetResponseType>>(
+    "/issues/dashboard/usbudget",
     {
       params: filter,
     },

@@ -1,5 +1,10 @@
 import * as dashboardApi from "@/api/dashboard.api";
-import { DashboardFilter, LeaderboardFilter } from "@/types/dashboard";
+import {
+  DashboardFilter,
+  LeaderboardFilter,
+  OverdueFilter,
+  OverdueLogWorkFilter,
+} from "@/types/dashboard";
 
 export const dashboardService = {
   async getOverview(filter: DashboardFilter) {
@@ -34,6 +39,21 @@ export const dashboardService = {
 
   async getLeaderboardSlsxRatio(filter: LeaderboardFilter) {
     const res = await dashboardApi.getLeaderboardSlsxRatioApi(filter);
+
+    return res.data.data;
+  },
+  async getOverdue(filter: OverdueFilter) {
+    const res = await dashboardApi.getOverdueApi(filter);
+
+    return res.data.data;
+  },
+  async getOverdueLogWork(filter: OverdueLogWorkFilter) {
+    const res = await dashboardApi.getOverdueLogWorkApi(filter);
+
+    return res.data.data;
+  },
+  async getUSBudget(filter: LeaderboardFilter) {
+    const res = await dashboardApi.getUSBudgetApi(filter);
 
     return res.data.data;
   },

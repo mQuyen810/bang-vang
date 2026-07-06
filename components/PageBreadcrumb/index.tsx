@@ -24,7 +24,7 @@ export default function PageBreadcrumb() {
   const crumbs = breadcrumbMap[pathname] ?? [
     {
       title: "Trang chủ",
-      href: "/dashboard",
+      href: "/",
     },
   ];
 

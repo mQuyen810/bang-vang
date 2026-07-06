@@ -1,6 +1,7 @@
 "use client";
 import Personal from "@/components/Personal";
-import MainLayout from "@/layouts/MainLayout";
+import MainLayout from "@/components/MainLayout";
+
 import { useAuthStore } from "@/stores/auth.store";
 
 export default function PersonalPage() {

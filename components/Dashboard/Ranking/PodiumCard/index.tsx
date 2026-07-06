@@ -46,7 +46,6 @@ export function PodiumCard({
   const pct =
     variant === "bug" ? metricVal : Math.min(100, (current / capacity) * 100);
 
-  const baseRole = ROLE_MAP[emp.department] ?? `${emp.department} Member`;
   const match = emp.name.match(/^(.*?)\s*\((.*?)\)$/);
   const fullName = match?.[1] ?? emp.name;
 
@@ -238,7 +237,7 @@ export function PodiumCard({
 
           {/* Name + role */}
           <h3 className={styles.podiumName}>{fullName}</h3>
-          <span className={styles.podiumRole}>{baseRole}</span>
+          {/* <span className={styles.podiumRole}>{baseRole}</span> */}
 
           {/* Divider */}
           <div

@@ -14,6 +14,18 @@ export interface LeaderboardFilter extends DashboardFilter {
   per_page?: number;
 }
 
+export interface OverdueFilter extends LeaderboardFilter {
+  issuetype: string | null;
+  status: "Overdue" | "Warning" | null;
+  table_id: number;
+}
+
+export interface OverdueLogWorkFilter extends LeaderboardFilter {
+  issuetype: string | null;
+  statusLogWork: "Overdue" | "Warning" | "Missing" | null;
+  table_id: number;
+}
+
 export interface Overview {
   total_users: number;
   total_subtask: number;
@@ -119,6 +131,68 @@ export interface SlsxRatio {
 
   updated_at: string;
 }
+export interface OverdueIssue {
+  id: number;
+  key: string;
+  summary: string;
+  issuetype: string;
+  assignee: string;
+  status: string;
+  statusText: string;
+  enddate: string;
+}
+
+export interface OverdueLogWorkIssue {
+  id: number;
+
+  key: string;
+
+  summary: string;
+
+  issuetype: string;
+
+  assignee: string;
+
+  status: "Overdue" | "Warning" | "Missing";
+
+  statusText: string;
+
+  enddate: string;
+}
+
+export interface OverdueResponse<OverdueIssue> {
+  user: string | null;
+  project_names: string[];
+  period: string;
+  issues: {
+    details: {
+      list: OverdueIssue[];
+      meta: Pagination;
+    };
+  };
+}
+export interface OverdueLogWorkResponse<OverdueLogWorkIssue> {
+  user: string | null;
+  project_names: string[];
+  period: string;
+  issues: {
+    details: {
+      list: OverdueLogWorkIssue[];
+      meta: Pagination;
+    };
+  };
+}
+
+export interface USBudget {
+  id: number;
+  key: string;
+  summary: string;
+  issuetype: string;
+  assignee: string;
+  slsx: number;
+  sumSLSXSubTask: number;
+  ratioSLSX: number;
+}
 
 /* ===========================
       Generic Responses
@@ -158,6 +232,18 @@ export interface LeaderboardResponse<TItem> {
   };
 }
 
+export interface USBudgetResponse<USBudget> {
+  user: string | null;
+  project_names: string[];
+  period: string;
+  issues: {
+    details: {
+      list: USBudget[];
+      meta: Pagination;
+    };
+  };
+}
+
 /* ===========================
       Export Response Types
 =========================== */
@@ -169,3 +255,9 @@ export type LeaderboardBugResponse = LeaderboardResponse<BugRatio>;
 export type MySlsxResponse = RatioResponse<SlsxRatio>;
 
 export type LeaderboardSlsxResponse = LeaderboardResponse<SlsxRatio>;
+
+export type OverdueResponseType = OverdueResponse<OverdueIssue>;
+
+export type OverdueLogWorkResponseType = OverdueLogWorkResponse<OverdueIssue>;
+
+export type USBudgetResponseType = USBudgetResponse<OverdueIssue>;

@@ -4,6 +4,7 @@ import {
   Bug,
   Trophy,
   ClipboardCheck,
+  TriangleAlert,
 } from "lucide-react";
 
 export const SIDEBAR_MENU = [
@@ -37,6 +38,26 @@ export const SIDEBAR_MENU = [
         path: "/ranking?tab=prod",
         activePath: "/ranking",
         icon: ClipboardCheck,
+      },
+    ],
+  },
+  {
+    title: "THỐNG KÊ",
+    items: [
+      {
+        label: "Quá hạn",
+        path: "/overdue",
+        icon: TriangleAlert,
+      },
+      {
+        label: "Quá hạn logwork",
+        path: "/logwork",
+        icon: TriangleAlert,
+      },
+      {
+        label: "Quá budget",
+        path: "/usbudget",
+        icon: TriangleAlert,
       },
     ],
   },

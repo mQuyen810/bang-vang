@@ -8,7 +8,7 @@ export const breadcrumbMap: Record<
   "/dashboard": [
     {
       title: "Trang chủ",
-      href: "/",
+      href: "/dashboard",
     },
     {
       title: "Tổng quan",
@@ -18,7 +18,7 @@ export const breadcrumbMap: Record<
   "/personal": [
     {
       title: "Trang chủ",
-      href: "/",
+      href: "/dashboard",
     },
     {
       title: "Cá nhân",
@@ -26,70 +26,44 @@ export const breadcrumbMap: Record<
     },
   ],
 
-  "/personal/bugs": [
-    {
-      title: "Trang chủ",
-      href: "/",
-    },
-    {
-      title: "Cá nhân",
-      href: "/personal",
-    },
-    {
-      title: "Bug đã xử lý",
-    },
-  ],
-
-  "/personal/tasks": [
-    {
-      title: "Trang chủ",
-      href: "/",
-    },
-    {
-      title: "Cá nhân",
-      href: "/personal",
-    },
-    {
-      title: "Sub-task hoàn thành",
-    },
-  ],
-
-    "/ranking": [
-    {
-      title: "Trang chủ",
-      href: "/",
-    },
-    {
-      title: "Tổng xếp hạng",
-      href: "/ranking",
-    }
-  ],
-
-  "/ranking/bug": [
-    {
-      title: "Trang chủ",
-      href: "/",
-    },
-    {
-      title: "Bảng xếp hạng",
-      href: "/ranking",
-    },
-    {
-      title: "Bug Rate",
-    },
-  ],
-
-  "/ranking/performance": [
+  "/ranking": [
     {
       title: "Trang chủ",
       href: "/dashboard",
     },
     {
-      title: "Bảng xếp hạng",
+      title: "Tổng xếp hạng",
       href: "/ranking",
     },
+  ],
+  "/overdue": [
     {
-      title: "Năng lực sản xuất",
+      title: "Trang chủ",
+      href: "/dashboard",
+    },
+    {
+      title: "Quá hạn",
+      href: "/overdue",
+    },
+  ],
+  "/logwork": [
+    {
+      title: "Trang chủ",
+      href: "/dashboard",
+    },
+    {
+      title: "Quá hạn logwork",
+      href: "/logwork",
+    },
+  ],
+  "/usbudget": [
+    {
+      title: "Trang chủ",
+      href: "/dashboard",
+    },
+    {
+      title: "Quá budget",
+      href: "/usbudget",
     },
   ],
 };

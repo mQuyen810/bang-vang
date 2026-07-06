@@ -32,9 +32,9 @@ const filterRankingItems = <T extends CommonRankingItem>(
     const matchSearch =
       !q ||
       item.username.toLowerCase().includes(q) ||
-      item.id.toLowerCase().includes(q)
+      item.id.toLowerCase().includes(q);
 
-    return matchSearch ;
+    return matchSearch;
   });
 };
 
@@ -44,7 +44,6 @@ const RankingsPage: React.FC = () => {
 
   const tab: TabType = searchParams.get("tab") === "bug" ? "bug" : "prod";
   const [search, setSearch] = useState("");
-  const [dept, setDept] = useState("all");
   const [page, setPage] = useState(1);
   const {
     period,
@@ -87,7 +86,6 @@ const RankingsPage: React.FC = () => {
       ? leaderboardSlsxRatio?.issues.details.meta
       : leaderboardBugRatio?.issues.details.meta;
 
-
   const list = base;
   const totalPages = activeMeta?.last_page ?? 1;
   const currentPage = activeMeta?.current_page ?? page;
@@ -110,8 +108,6 @@ const RankingsPage: React.FC = () => {
 
   const handleReset = () => {
     setSearch("");
-    setDept("all");
-    setPage(1);
 
     if (defaultMonth) {
       setSelectedMonth(dayjs(defaultMonth, "MM-YYYY").format("YYYY-MM"));
@@ -166,7 +162,7 @@ const RankingsPage: React.FC = () => {
 
   useEffect(() => {
     setPage(1);
-  }, [tab, search, dept, selectedMonth]);
+  }, [tab, selectedMonth]);
 
   useEffect(() => {
     if (page > totalPages) {
@@ -220,18 +216,6 @@ const RankingsPage: React.FC = () => {
         onReset={handleReset}
         selectedMonth={selectedMonth}
         onMonthChange={handleMonthChange}
-        // selects={[
-        //   {
-        //     key: "dept",
-        //     label: "Phòng ban",
-        //     value: dept,
-        //     onChange: setDept,
-        //     options: [
-        //       { value: "all", label: "Tất cả" },
-        //       ...departments.map((d) => ({ value: d, label: d })),
-        //     ],
-        //   },
-        // ]}
       />
 
       <motion.div

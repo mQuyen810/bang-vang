@@ -1,0 +1,82 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 4px 12px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  border: 1px solid transparent;
+
+  transition: .2s;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.success {
+  color: #52c41a;
+  background: rgba(82, 196, 26, .12);
+  border-color: rgba(82, 196, 26, .25);
+
+  .dot {
+    background: #52c41a;
+  }
+}
+
+.warning {
+  color: #faad14;
+  background: rgba(250, 173, 20, .12);
+  border-color: rgba(250, 173, 20, .25);
+
+  .dot {
+    background: #faad14;
+  }
+}
+
+.danger {
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, .12);
+  border-color: rgba(255, 77, 79, .25);
+
+  .dot {
+    background: #ff4d4f;
+  }
+}
+
+.processing {
+  color: #1677ff;
+  background: rgba(22, 119, 255, .12);
+  border-color: rgba(22, 119, 255, .25);
+
+  .dot {
+    background: #1677ff;
+  }
+}
+
+.primary {
+  color: var(--primary);
+  background: rgba(139, 92, 246, .12);
+  border-color: rgba(139, 92, 246, .25);
+
+  .dot {
+    background: var(--primary);
+  }
+}
+
+.default {
+  color: #666;
+  background: #f5f5f5;
+  border-color: #ddd;
+
+  .dot {
+    background: #666;
+  }
+}
