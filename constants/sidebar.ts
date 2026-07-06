@@ -1,13 +1,25 @@
 import {
   LayoutDashboard,
   User,
-  Bug,
-  Trophy,
   ClipboardCheck,
   TriangleAlert,
 } from "lucide-react";
 
-export const SIDEBAR_MENU = [
+import { LucideIcon } from "lucide-react";
+
+export interface SidebarItem {
+  label: string;
+  path: string;
+  icon: LucideIcon;
+  activePath?: string;
+}
+
+export interface SidebarGroup {
+  title: string;
+  items: SidebarItem[];
+}
+
+export const SIDEBAR_MENU: SidebarGroup[] = [
   {
     title: "TỔNG QUAN",
     items: [
@@ -19,16 +31,16 @@ export const SIDEBAR_MENU = [
     ],
   },
 
-  {
-    title: "CÁ NHÂN",
-    items: [
-      {
-        label: "Hồ sơ cá nhân",
-        path: "/personal",
-        icon: User,
-      },
-    ],
-  },
+  // {
+  //   title: "CÁ NHÂN",
+  //   items: [
+  //     {
+  //       label: "Hồ sơ cá nhân",
+  //       path: "/personal",
+  //       icon: User,
+  //     },
+  //   ],
+  // },
 
   {
     title: "BẢNG XẾP HẠNG",

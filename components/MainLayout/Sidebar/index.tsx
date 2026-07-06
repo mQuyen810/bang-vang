@@ -58,7 +58,7 @@ export default function Sidebar() {
         {/* Header */}
         <div className={styles.top}>
           <Link
-            href="/"
+            href="/dashboard"
             className={styles.logo}
             onClick={() => setMobileOpen(false)}
           >

@@ -3,7 +3,8 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Sparkles, Star } from "lucide-react";
-import { FilterBar } from "./FilterBar";
+import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
+
 import { RankingItem } from "./RankingItem";
 import { PaginationBar } from "./PaginationBar";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -44,6 +45,8 @@ const RankingsPage: React.FC = () => {
 
   const tab: TabType = searchParams.get("tab") === "bug" ? "bug" : "prod";
   const [search, setSearch] = useState("");
+  const [debouncedUsername, setDebouncedUsername] = useState("");
+
   const [page, setPage] = useState(1);
   const {
     period,
@@ -131,17 +134,30 @@ const RankingsPage: React.FC = () => {
   };
 
   useEffect(() => {
+    const t = window.setTimeout(() => {
+      setDebouncedUsername(search.trim() ? search.trim() : "");
+    }, 500);
+
+    return () => {
+      window.clearTimeout(t);
+    };
+  }, [search]);
+
+  useEffect(() => {
+    const userNameParam = debouncedUsername ? debouncedUsername : null;
+
     if (tab === "prod") {
-      fetchLeaderboardSlsxRatio(null, page, pageSize, rankingPeriod);
+      fetchLeaderboardSlsxRatio(userNameParam, page, pageSize, rankingPeriod);
       return;
     }
 
-    fetchLeaderboardBugRatio(null, page, pageSize, rankingPeriod);
+    fetchLeaderboardBugRatio(userNameParam, page, pageSize, rankingPeriod);
   }, [
     tab,
     page,
     rankingPeriod,
     pageSize,
+    debouncedUsername,
     selectedProjects,
     fetchLeaderboardBugRatio,
     fetchLeaderboardSlsxRatio,
@@ -208,10 +224,10 @@ const RankingsPage: React.FC = () => {
 
       {/* <Podium top3={top3} metric={metric} tab={tab} /> */}
 
-      <FilterBar
-        search={search}
-        onSearch={setSearch}
-        searchPlaceholder="Tìm theo tên, mã NV, phòng ban..."
+      <FilterBarUsernameType
+        username={search}
+        onUsernameChange={setSearch}
+        usernamePlaceholder="Tìm theo username..."
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}

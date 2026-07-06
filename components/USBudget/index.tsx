@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 
 import { SectionHeader } from "@/components/Dashboard/Ranking/SectionHeader";
+import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
 import { FilterBar } from "@/components/Ranking/FilterBar";
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
 import { IssueTable } from "../ui/Issue/IssueTable";
@@ -28,40 +29,33 @@ const columns = [
 
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
-const filterIssues = (items: USBudget[], search: string) => {
-  const q = normalizeSearch(search);
-
-  if (!q) return items;
-
-  return items.filter((item) =>
-    [
-      item.key,
-      item.summary,
-      item.assignee,
-      item.issuetype,
-      item.slsx,
-      item.sumSLSXSubTask,
-      item.ratioSLSX,
-    ]
-      .join(" ")
-      .toLowerCase()
-      .includes(q),
-  );
-};
-
 export default function USBudgetPage() {
   const { usBudget, period, selectedProjects, setPeriod, fetchUSBudget } =
     useDashboardStore();
 
   const [search, setSearch] = useState("");
+  const [debouncedUsername, setDebouncedUsername] = useState("");
+
   const [issueType, setIssueType] = useState("all");
   const [page, setPage] = useState(1);
 
   const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
 
   useEffect(() => {
-    fetchUSBudget(null, page, DEFAULT_PAGE_SIZE);
-  }, [page, period, selectedProjects]);
+    const t = window.setTimeout(() => {
+      setDebouncedUsername(search.trim() ? search.trim() : "");
+    }, 500);
+
+    return () => {
+      window.clearTimeout(t);
+    };
+  }, [search]);
+
+  useEffect(() => {
+    const userNameParam = debouncedUsername ? debouncedUsername : null;
+
+    fetchUSBudget(userNameParam, page, DEFAULT_PAGE_SIZE);
+  }, [page, period, selectedProjects, debouncedUsername]);
 
   useEffect(() => {
     setPage(1);
@@ -75,10 +69,7 @@ export default function USBudgetPage() {
     return list.filter((item) => item.issuetype === issueType);
   }, [usBudget, issueType]);
 
-  const filteredIssues = useMemo(
-    () => filterIssues(issues, search),
-    [issues, search],
-  );
+  const filteredIssues = useMemo(() => issues, [issues]);
 
   const meta = usBudget?.issues.details.meta;
 
@@ -115,10 +106,10 @@ export default function USBudgetPage() {
         />
       </header>
 
-      <FilterBar
-        search={search}
-        onSearch={setSearch}
-        searchPlaceholder="Tìm theo key, summary, assignee..."
+      <FilterBarUsernameType
+        username={search}
+        onUsernameChange={setSearch}
+        usernamePlaceholder="Tìm theo username..."
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}

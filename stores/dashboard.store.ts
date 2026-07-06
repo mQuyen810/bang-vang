@@ -300,12 +300,12 @@ export const useDashboardStore = create<DashboardState>((set, get) => {
         set({ loading: false });
       }
     },
-    fetchUSBudget: async () => {
+    fetchUSBudget: async (userName = null, page = 1, perPage = 10) => {
       set({ loading: true });
 
       try {
         const usBudget = await dashboardService.getUSBudget(
-          getLeaderboardFilter(),
+          getLeaderboardFilter(userName, page, perPage),
         );
 
         set({ usBudget });
