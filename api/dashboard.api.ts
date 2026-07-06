@@ -1,4 +1,3 @@
-import { LeaderboardFilter, USBudgetResponseType } from "./../types/dashboard";
 import axiosClient from "./axios";
 
 import {
@@ -15,7 +14,7 @@ import {
   OverdueResponseType,
   OverdueLogWorkFilter,
   OverdueLogWorkResponseType,
-  USBudget,
+  USBudgetResponseType,
 } from "@/types";
 
 export const getOverviewApi = (filter: DashboardFilter) =>

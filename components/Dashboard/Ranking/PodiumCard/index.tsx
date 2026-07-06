@@ -22,7 +22,6 @@ export function PodiumCard({
   className = "",
   variant = "default",
 }: PodiumCardProps) {
-  console.log("PodiumCard", emp);
   const isFirst = place === 1;
 
   let metricVal = 0;

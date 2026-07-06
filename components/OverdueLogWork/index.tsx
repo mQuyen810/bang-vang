@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 
 import { SectionHeader } from "@/components/Dashboard/Ranking/SectionHeader";
-import { FilterBar } from "@/components/Ranking/FilterBar";
+import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import type { OverdueLogWorkIssue } from "@/types/dashboard";
@@ -35,28 +35,6 @@ const columns = [
   "Actual Date",
 ];
 
-const normalizeSearch = (value: string) => value.trim().toLowerCase();
-
-const filterIssues = (items: OverdueLogWorkIssue[], search: string) => {
-  const q = normalizeSearch(search);
-
-  if (!q) return items;
-
-  return items.filter((item) =>
-    [
-      item.key,
-      item.summary,
-      item.assignee,
-      item.issuetype,
-      item.status,
-      item.statusText,
-    ]
-      .join(" ")
-      .toLowerCase()
-      .includes(q),
-  );
-};
-
 export default function OverdueLogWork() {
   const {
     overdueLogWork,
@@ -69,6 +47,7 @@ export default function OverdueLogWork() {
   const [activeTab, setActiveTab] = useState<OverdueTab>("overdue");
 
   const [search, setSearch] = useState("");
+  const [debouncedUsername, setDebouncedUsername] = useState("");
 
   const [issueType, setIssueType] = useState("all");
 
@@ -102,15 +81,27 @@ export default function OverdueLogWork() {
     },
   ] as const;
   useEffect(() => {
+    const t = window.setTimeout(() => {
+      setDebouncedUsername(search.trim() ? search.trim() : "");
+    }, 500);
+
+    return () => {
+      window.clearTimeout(t);
+    };
+  }, [search]);
+
+  useEffect(() => {
+    const userNameParam = debouncedUsername ? debouncedUsername : null;
+
     fetchOverdueLogWork(
       issueType === "all" ? null : issueType,
       STATUS_MAP[activeTab],
       2,
-      null,
+      userNameParam,
       page,
       DEFAULT_PAGE_SIZE,
     );
-  }, [activeTab, issueType, page, period, selectedProjects]);
+  }, [activeTab, issueType, page, period, selectedProjects, debouncedUsername]);
 
   useEffect(() => {
     setPage(1);
@@ -130,10 +121,7 @@ export default function OverdueLogWork() {
     [overdueLogWork],
   );
 
-  const filteredIssues = useMemo(
-    () => filterIssues(issues, search),
-    [issues, search],
-  );
+  const filteredIssues = useMemo(() => issues, [issues]);
 
   const meta = overdueLogWork?.issues.details.meta;
 
@@ -170,10 +158,10 @@ export default function OverdueLogWork() {
         />
       </header>
 
-      <FilterBar
-        search={search}
-        onSearch={setSearch}
-        searchPlaceholder="Tìm theo key, summary, assignee..."
+      <FilterBarUsernameType
+        username={search}
+        onUsernameChange={setSearch}
+        usernamePlaceholder="Tìm theo username..."
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}

@@ -17,21 +17,21 @@ export default function Dashboard() {
       label: "Tổng Thành Viên",
       value: overview?.total_users ?? 0,
       icon: Users,
-      trend: "+3 quý này",
+      trend: "",
       color: "from-primary/30 to-primary/0",
     },
     {
       label: "Tổng Task Hoàn Thành",
       value: overview?.total_subtask ?? 0,
       icon: CheckCircle2,
-      trend: "+12.4% MoM",
+      trend: "",
       color: "from-accent/30 to-accent/0",
     },
     {
       label: "Tổng Bug Đã Xử Lý",
       value: overview?.total_bug ?? 0,
       icon: Bug,
-      trend: "+8.1% MoM",
+      trend: "",
       color: "from-secondary/30 to-secondary/0",
     },
   ];
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
         <Ranking title="Bug Champions" type="bug" />
 
-        <Activity />
+        {/* <Activity /> */}
       </div>
     </div>
   );

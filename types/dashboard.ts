@@ -258,6 +258,7 @@ export type LeaderboardSlsxResponse = LeaderboardResponse<SlsxRatio>;
 
 export type OverdueResponseType = OverdueResponse<OverdueIssue>;
 
-export type OverdueLogWorkResponseType = OverdueLogWorkResponse<OverdueIssue>;
+export type OverdueLogWorkResponseType =
+  OverdueLogWorkResponse<OverdueLogWorkIssue>;
 
-export type USBudgetResponseType = USBudgetResponse<OverdueIssue>;
+export type USBudgetResponseType = USBudgetResponse<USBudget>;
