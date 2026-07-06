@@ -178,6 +178,7 @@
 .td {
   padding: 0.75rem 1rem;
   vertical-align: middle;
+  white-space: nowrap;
 }
 
 .idCell {
@@ -188,6 +189,9 @@
 }
 
 .summaryCell {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
   color: var(--foreground);
   font-weight: 500;
 }
@@ -196,8 +200,12 @@
   color: var(--muted-foreground);
 }
 
-.otherCell {
-  color: var(--muted-foreground);
+.numberCell {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  font-weight: 500;
+  color: var(--foreground);
 }
 
 .emptyCell {

@@ -24,7 +24,7 @@ export default function PageBreadcrumb() {
   const crumbs = breadcrumbMap[pathname] ?? [
     {
       title: "Trang chủ",
-      href: "/",
+      href: "/dashboard",
     },
   ];
 
@@ -42,27 +42,17 @@ export default function PageBreadcrumb() {
                 ) : (
                   <BreadcrumbLink
                     asChild
-                    className={
-                      index === 0
-                        ? styles.home
-                        : styles.link
-                    }
+                    className={index === 0 ? styles.home : styles.link}
                   >
                     <Link href={item.href ?? "/"}>
-                      {index === 0 ? (
-                        <House size={15} />
-                      ) : (
-                        item.title
-                      )}
+                      {index === 0 ? <House size={15} /> : item.title}
                     </Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
 
               {index < crumbs.length - 1 && (
-                <BreadcrumbSeparator
-                  className={styles.separator}
-                />
+                <BreadcrumbSeparator className={styles.separator} />
               )}
             </React.Fragment>
           ))}

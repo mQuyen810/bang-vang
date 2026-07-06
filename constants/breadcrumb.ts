@@ -26,34 +26,6 @@ export const breadcrumbMap: Record<
     },
   ],
 
-  "/personal/bugs": [
-    {
-      title: "Trang chủ",
-      href: "/dashboard",
-    },
-    {
-      title: "Cá nhân",
-      href: "/personal",
-    },
-    {
-      title: "Bug đã xử lý",
-    },
-  ],
-
-  "/personal/tasks": [
-    {
-      title: "Trang chủ",
-      href: "/dashboard",
-    },
-    {
-      title: "Cá nhân",
-      href: "/personal",
-    },
-    {
-      title: "Sub-task hoàn thành",
-    },
-  ],
-
   "/ranking": [
     {
       title: "Trang chủ",
@@ -74,7 +46,7 @@ export const breadcrumbMap: Record<
       href: "/overdue",
     },
   ],
-  "/overduelogwork": [
+  "/logwork": [
     {
       title: "Trang chủ",
       href: "/dashboard",

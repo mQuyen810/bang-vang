@@ -123,20 +123,6 @@ export default function USBudgetPage() {
         onReset={handleReset}
         selectedMonth={selectedMonth}
         onMonthChange={handleMonthChange}
-        selects={[
-          {
-            key: "issueType",
-            label: "Type",
-            value: issueType,
-            onChange: setIssueType,
-            options: [
-              { value: "all", label: "Tất cả" },
-              { value: "Sub-task", label: "Sub-task" },
-              { value: "Story", label: "Story" },
-              { value: "Milestone", label: "Milestone" },
-            ],
-          },
-        ]}
       />
 
       <USBudgetTable
