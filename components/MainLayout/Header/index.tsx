@@ -41,16 +41,16 @@ export default function Header() {
   };
 
   const userItems: MenuProps["items"] = [
-    {
-      key: "profile",
-      icon: <User size={14} />,
-      label: "Thông tin cá nhân",
-      onClick: () => router.push("/profile"),
-    },
+    // {
+    //   key: "profile",
+    //   icon: <User size={14} />,
+    //   label: "Thông tin cá nhân",
+    //   onClick: () => router.push("/profile"),
+    // },
     {
       key: "settings",
       icon: <Settings size={14} />,
-      label: "Cài đặt",
+      label: "Khôi phục dữ liệu chung",
       onClick: () => router.push("/settings"),
     },
     {
@@ -229,13 +229,13 @@ export default function Header() {
           {dark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 
-        <Dropdown menu={{ items: notificationItems }} trigger={["click"]}>
+        {/* <Dropdown menu={{ items: notificationItems }} trigger={["click"]}>
           <Badge count={3}>
             <button className={styles.iconBtn}>
               <Bell size={18} />
             </button>
           </Badge>
-        </Dropdown>
+        </Dropdown> */}
 
         <div className={styles.divider} />
 

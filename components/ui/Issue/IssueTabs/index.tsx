@@ -35,7 +35,7 @@ export function IssueTabs<T extends string>({
           >
             <Icon size={16} />
             {tab.label}
-            <span className={styles.tabCount}>{tab.count}</span>
+            {/* <span className={styles.tabCount}>{tab.count}</span> */}
           </button>
         );
       })}
