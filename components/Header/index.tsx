@@ -19,10 +19,14 @@ import { useSidebar } from "@/components/Sidebar/SidebarProvider";
 import { useAuthStore } from "@/stores/auth.store";
 import styles from "./styles.module.scss";
 import { useDashboardStore } from "@/stores/dashboard.store";
+import { useIssuesStore } from "@/stores/sync.store";
 
 export default function Header() {
   const { setMobileOpen } = useSidebar();
   const { user, logout } = useAuthStore();
+  const { syncFromLastIssues, syncFullIssues } = useIssuesStore();
+  console.log(syncFromLastIssues());
+
   const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
   const fullName = match?.[1] ?? user?.display_name;
   const router = useRouter();
@@ -109,12 +113,18 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSync = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+  const handleSync = async () => {
+    try {
+      setLoading(true);
+
+      await syncFromLastIssues();
+
       message.success("Đồng bộ dữ liệu thành công!");
-    }, 1500);
+    } catch (error) {
+      message.error("Đồng bộ dữ liệu thất bại!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
