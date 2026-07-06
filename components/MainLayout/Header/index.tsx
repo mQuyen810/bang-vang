@@ -30,6 +30,7 @@ export default function Header() {
   const router = useRouter();
   const [dark, setDark] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [loadingAll, setLoadingAll] = useState(false);
   const { projects, selectedProjects, setSelectedProjects } =
     useDashboardStore();
   const [projectOpen, setProjectOpen] = useState(false);
@@ -49,9 +50,11 @@ export default function Header() {
     // },
     {
       key: "settings",
-      icon: <Settings size={14} />,
-      label: "Khôi phục dữ liệu chung",
-      onClick: () => router.push("/settings"),
+      icon: (
+        <Settings size={14} className={loadingAll ? styles.spinning : ""} />
+      ),
+      label: "Đồng bộ dữ liệu",
+      onClick: () => handleSyncAll(),
     },
     {
       type: "divider",
@@ -62,21 +65,6 @@ export default function Header() {
       danger: true,
       label: "Đăng xuất",
       onClick: handleLogout,
-    },
-  ];
-
-  const notificationItems: MenuProps["items"] = [
-    {
-      key: "1",
-      label: "Nguyễn Văn A vượt KPI tháng này",
-    },
-    {
-      key: "2",
-      label: "Dữ liệu Jira vừa được đồng bộ",
-    },
-    {
-      key: "3",
-      label: "Top Bug Rate đã cập nhật",
     },
   ];
 
@@ -121,6 +109,18 @@ export default function Header() {
       message.error("Đồng bộ thất bại!");
     } finally {
       setLoading(false);
+    }
+  };
+  const handleSyncAll = async () => {
+    try {
+      setLoadingAll(true);
+      const res = await syncFullIssues();
+
+      message.success(res.message);
+    } catch {
+      message.error("Đồng bộ thất bại!");
+    } finally {
+      setLoadingAll(false);
     }
   };
 
