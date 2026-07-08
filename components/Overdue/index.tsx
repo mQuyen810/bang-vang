@@ -6,7 +6,9 @@ import dayjs from "dayjs";
 import { SectionHeader } from "@/components/Dashboard/Ranking/SectionHeader";
 import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
+import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
+
 import type { OverdueIssue } from "@/types/dashboard";
 import { AlertTriangle, Clock3 } from "lucide-react";
 
@@ -32,8 +34,8 @@ const columns = [
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
 export default function Overdue() {
-  const { overdue, period, selectedProjects, setPeriod, fetchOverdue } =
-    useDashboardStore();
+  const { overdue, period, fetchOverdue, setPeriod } = useIssuePeriodStore();
+  const { selectedProjects } = useDashboardStore();
 
   const [activeTab, setActiveTab] = useState<OverdueTab>("overdue");
   const [search, setSearch] = useState("");
@@ -47,6 +49,7 @@ export default function Overdue() {
   const [warningCount, setWarningCount] = useState(0);
 
   const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
+
   const tabs = [
     {
       key: "overdue",
@@ -75,14 +78,14 @@ export default function Overdue() {
   useEffect(() => {
     const userNameParam = debouncedUsername ? debouncedUsername : null;
 
-    fetchOverdue(
-      issueType === "all" ? null : issueType,
-      activeTab === "overdue" ? "Overdue" : "Warning",
-      1,
-      userNameParam,
+    fetchOverdue({
+      issuetype: issueType === "all" ? null : issueType,
+      status: activeTab === "overdue" ? "Overdue" : "Warning",
+      table_id: 1,
+      userName: userNameParam,
       page,
-      DEFAULT_PAGE_SIZE,
-    );
+      perPage: DEFAULT_PAGE_SIZE,
+    });
   }, [activeTab, issueType, period, page, selectedProjects, debouncedUsername]);
 
   useEffect(() => {
