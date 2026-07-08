@@ -1,0 +1,27 @@
+.emptyState {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.iconWrapper {
+  margin: 0 auto;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.message {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.4);
+}
