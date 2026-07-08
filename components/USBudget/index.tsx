@@ -22,9 +22,9 @@ const columns = [
   "Summary",
   "Assignee",
   "Issue Type",
-  "SLSX",
-  "sumSLSXSubTask",
-  "ratioSLSX",
+  "Story Budget",
+  "SubTask Budget",
+  "Over Budget",
 ];
 
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
@@ -101,7 +101,7 @@ export default function USBudgetPage() {
         <SectionHeader
           eyebrow="Hall of Fame"
           title="US Budget"
-          desc="Danh sách các issue vượt ngân sách."
+          desc="Theo dõi các issue vượt ngân sách"
           variant="bug"
         />
       </header>
@@ -109,7 +109,7 @@ export default function USBudgetPage() {
       <FilterBarUsernameType
         username={search}
         onUsernameChange={setSearch}
-        usernamePlaceholder="Tìm theo username..."
+        usernamePlaceholder="Tìm theo tên nhân viên"
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}

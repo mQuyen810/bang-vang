@@ -153,7 +153,7 @@ export default function OverdueLogWork() {
         <SectionHeader
           eyebrow="Hall of Fame"
           title="Overdue Log Work"
-          desc="Tổng hợp các issue Overdue, Warning và Missing Log Work."
+          desc="Theo dõi các log work đã quá hạn và cần được cập nhật"
           variant="bug"
         />
       </header>
@@ -161,7 +161,7 @@ export default function OverdueLogWork() {
       <FilterBarUsernameType
         username={search}
         onUsernameChange={setSearch}
-        usernamePlaceholder="Tìm theo username..."
+        usernamePlaceholder="Tìm theo tên nhân viên"
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}

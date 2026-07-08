@@ -133,7 +133,7 @@ export default function Overdue() {
         <SectionHeader
           eyebrow="Hall of Fame"
           title="Overdue Issues"
-          desc="Tổng hợp các issue quá hạn và cảnh báo theo tháng, project, trạng thái và loại issue."
+          desc="Theo dõi các issue đã quá hạn và cần xử lý"
           variant="bug"
         />
       </header>
@@ -141,7 +141,7 @@ export default function Overdue() {
       <FilterBarUsernameType
         username={search}
         onUsernameChange={setSearch}
-        usernamePlaceholder="Tìm theo username..."
+        usernamePlaceholder="Tìm theo tên nhân viên"
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}

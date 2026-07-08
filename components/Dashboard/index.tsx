@@ -21,14 +21,14 @@ export default function Dashboard() {
       color: "from-primary/30 to-primary/0",
     },
     {
-      label: "Tổng Task Hoàn Thành",
+      label: "Tổng Sub Task Hoàn Thành",
       value: overview?.total_subtask ?? 0,
       icon: CheckCircle2,
       trend: "",
       color: "from-accent/30 to-accent/0",
     },
     {
-      label: "Tổng Bug Đã Xử Lý",
+      label: "Tổng Bug Xử Lý",
       value: overview?.total_bug ?? 0,
       icon: Bug,
       trend: "",
