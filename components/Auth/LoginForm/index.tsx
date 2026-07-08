@@ -12,10 +12,6 @@ import { NeonField } from "./NeonField";
 import { FloatingDecor } from "./FloatingDecor";
 import styles from "./styles.module.scss";
 
-const DEMO_ACCOUNTS = [
-  { email: "admin@example.com", password: "admin123", name: "Admin" },
-];
-
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -215,23 +211,6 @@ export default function LoginForm() {
                   )}
                 </span>
               </motion.button>
-
-              {/* Demo Accounts */}
-              <div className={styles.demoSection}>
-                <p className={styles.demoLabel}>Tài khoản demo</p>
-                <div className={styles.demoButtons}>
-                  {DEMO_ACCOUNTS.map((acc, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => fillDemoAccount(acc.email, acc.password)}
-                      className={styles.demoButton}
-                    >
-                      {acc.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </form>
           </div>
         </motion.div>

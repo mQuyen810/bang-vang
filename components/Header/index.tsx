@@ -24,8 +24,7 @@ import { useIssuesStore } from "@/stores/sync.store";
 export default function Header() {
   const { setMobileOpen } = useSidebar();
   const { user, logout } = useAuthStore();
-  const { syncFromLastIssues, syncFullIssues } = useIssuesStore();
-  console.log(syncFromLastIssues());
+  const { syncFromLastIssues } = useIssuesStore();
 
   const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
   const fullName = match?.[1] ?? user?.display_name;
@@ -36,7 +35,10 @@ export default function Header() {
     useDashboardStore();
   const [projectOpen, setProjectOpen] = useState(false);
 
+  const { cancelSync } = useIssuesStore();
+
   const handleLogout = async () => {
+    cancelSync();
     await logout();
     message.success("Đăng xuất thành công!");
     router.push("/login");
@@ -114,6 +116,7 @@ export default function Header() {
   }, []);
 
   const handleSync = async () => {
+    if (loading) return;
     try {
       setLoading(true);
 
@@ -224,7 +227,11 @@ export default function Header() {
       </div>
 
       <div className={styles.actions}>
-        <button className={styles.iconBtn} onClick={handleSync}>
+        <button
+          className={styles.iconBtn}
+          onClick={handleSync}
+          disabled={loading}
+        >
           <RefreshCw size={18} className={loading ? styles.spinning : ""} />
         </button>
 

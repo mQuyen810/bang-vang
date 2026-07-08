@@ -9,6 +9,8 @@ import { RankingItem } from "./RankingItem";
 import { PaginationBar } from "./PaginationBar";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useDashboardStore } from "@/stores/dashboard.store";
+import { useRankingStore } from "@/stores/ranking.store";
+
 import { mapBugRanking } from "@/utils/rankingBug";
 import { mapProductivityRanking } from "@/utils/rankingProductivity";
 import type { RankingBug, RankingProductivity } from "@/types/rankingItem";
@@ -48,16 +50,17 @@ const RankingsPage: React.FC = () => {
   const [debouncedUsername, setDebouncedUsername] = useState("");
 
   const [page, setPage] = useState(1);
+  const { period, selectedProjects } = useDashboardStore();
+
   const {
-    period,
-    selectedProjects,
     leaderboardBugRatio,
     leaderboardSlsxRatio,
     fetchLeaderboardBugRatio,
     fetchLeaderboardSlsxRatio,
-  } = useDashboardStore();
+  } = useRankingStore();
   const apiPeriod =
     leaderboardSlsxRatio?.period ?? leaderboardBugRatio?.period ?? period;
+
   const [rankingPeriod, setRankingPeriod] = useState(period);
   const [defaultMonth, setDefaultMonth] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");

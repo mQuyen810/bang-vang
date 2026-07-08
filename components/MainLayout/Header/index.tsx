@@ -24,7 +24,7 @@ import { useIssuesStore } from "@/stores/sync.store";
 export default function Header() {
   const { setMobileOpen } = useSidebar();
   const { user, logout } = useAuthStore();
-  const { syncFromLastIssues, syncFullIssues } = useIssuesStore();
+  const { syncFromLastIssues, syncFullIssues, cancelSync } = useIssuesStore();
   const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
   const fullName = match?.[1] ?? user?.display_name;
   const router = useRouter();
@@ -36,25 +36,21 @@ export default function Header() {
   const [projectOpen, setProjectOpen] = useState(false);
 
   const handleLogout = async () => {
+    cancelSync();
     await logout();
     message.success("Đăng xuất thành công!");
     router.push("/login");
   };
 
   const userItems: MenuProps["items"] = [
-    // {
-    //   key: "profile",
-    //   icon: <User size={14} />,
-    //   label: "Thông tin cá nhân",
-    //   onClick: () => router.push("/profile"),
-    // },
     {
       key: "settings",
       icon: (
         <Settings size={14} className={loadingAll ? styles.spinning : ""} />
       ),
-      label: "Đồng bộ dữ liệu",
+      label: loadingAll ? "Đang đồng bộ dữ liệu" : "Đồng bộ dữ liệu",
       onClick: () => handleSyncAll(),
+      disabled: loadingAll,
     },
     {
       type: "divider",
@@ -100,6 +96,7 @@ export default function Header() {
   }, []);
 
   const handleSync = async () => {
+    if (loading) return;
     try {
       setLoading(true);
       const res = await syncFromLastIssues();
@@ -112,6 +109,7 @@ export default function Header() {
     }
   };
   const handleSyncAll = async () => {
+    if (loadingAll) return;
     try {
       setLoadingAll(true);
       const res = await syncFullIssues();
@@ -221,7 +219,11 @@ export default function Header() {
       </div>
 
       <div className={styles.actions}>
-        <button className={styles.iconBtn} onClick={handleSync}>
+        <button
+          className={styles.iconBtn}
+          onClick={handleSync}
+          disabled={loading}
+        >
           <RefreshCw size={18} className={loading ? styles.spinning : ""} />
         </button>
 

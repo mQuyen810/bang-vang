@@ -6,7 +6,9 @@ import dayjs from "dayjs";
 import { SectionHeader } from "@/components/Dashboard/Ranking/SectionHeader";
 import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
+import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
+
 import type { OverdueLogWorkIssue } from "@/types/dashboard";
 import { AlertTriangle, Clock3, CircleAlert } from "lucide-react";
 
@@ -36,13 +38,9 @@ const columns = [
 ];
 
 export default function OverdueLogWork() {
-  const {
-    overdueLogWork,
-    period,
-    setPeriod,
-    selectedProjects,
-    fetchOverdueLogWork,
-  } = useDashboardStore();
+  const { overdueLogWork, period, fetchOverdueLogWork, setPeriod } =
+    useIssuePeriodStore();
+  const { selectedProjects } = useDashboardStore();
 
   const [activeTab, setActiveTab] = useState<OverdueTab>("overdue");
 
@@ -93,14 +91,14 @@ export default function OverdueLogWork() {
   useEffect(() => {
     const userNameParam = debouncedUsername ? debouncedUsername : null;
 
-    fetchOverdueLogWork(
-      issueType === "all" ? null : issueType,
-      STATUS_MAP[activeTab],
-      2,
-      userNameParam,
+    fetchOverdueLogWork({
+      issuetype: issueType === "all" ? null : issueType,
+      status: STATUS_MAP[activeTab],
+      table_id: 2,
+      userName: userNameParam,
       page,
-      DEFAULT_PAGE_SIZE,
-    );
+      perPage: DEFAULT_PAGE_SIZE,
+    });
   }, [activeTab, issueType, page, period, selectedProjects, debouncedUsername]);
 
   useEffect(() => {
