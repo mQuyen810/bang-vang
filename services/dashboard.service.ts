@@ -1,10 +1,13 @@
 import * as dashboardApi from "@/api/dashboard.api";
+import * as milestonesApi from "@/api/milestones.api";
 import {
   DashboardFilter,
   LeaderboardFilter,
   OverdueFilter,
   OverdueLogWorkFilter,
+
 } from "@/types/dashboard";
+
 
 export const dashboardService = {
   async getOverview(filter: DashboardFilter) {
@@ -57,4 +60,13 @@ export const dashboardService = {
 
     return res.data.data;
   },
+
+  async getMilestones(filter: any) {
+    const res = await milestonesApi.getMilestonesApi(filter as any);
+
+
+    return res.data.data;
+  },
 };
+
+
