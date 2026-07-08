@@ -201,7 +201,7 @@ const RankingsPage: React.FC = () => {
             <span className="text-gradient"> ✦</span>
           </h1>
           <p className={styles.subtitle}>
-            Tôn vinh những thành viên xuất sắc nhất theo từng tiêu chí.
+            Tôn vinh những thành viên xuất sắc nhất theo từng tiêu chí
           </p>
         </div>
 
@@ -227,7 +227,7 @@ const RankingsPage: React.FC = () => {
       <FilterBarUsernameType
         username={search}
         onUsernameChange={setSearch}
-        usernamePlaceholder="Tìm theo username..."
+        usernamePlaceholder="Tìm theo tên nhân viên"
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}
