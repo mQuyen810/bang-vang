@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   RefreshCw,
@@ -16,6 +16,7 @@ import { message } from "antd";
 
 import { useAuthStore, isSuperAdmin } from "@/stores/auth.store";
 import { useAdminStore } from "@/stores/admin.store";
+import { useAdminActionStore } from "@/stores/admin.action.store";
 
 import { UserTable } from "./UserTable";
 import { ConfirmDialog } from "./CofirmDialog";
@@ -59,24 +60,18 @@ export default function Admin() {
   });
 
   useEffect(() => {
-    // Kiểm tra đã đăng nhập chưa
     if (!isAuthenticated) {
       router.replace("/login");
       return;
     }
-
-    // Kiểm tra có phải super admin không
     const isSuper = isSuperAdmin();
     setIsSuperAdminUser(isSuper);
 
-    // Nếu không phải super admin, chuyển về dashboard
     if (!isSuper) {
       message.warning("Bạn không có quyền truy cập trang này!");
       router.replace("/dashboard");
       return;
     }
-
-    // Load danh sách user
     const load = async () => {
       try {
         await fetchManagerList();
@@ -88,52 +83,35 @@ export default function Admin() {
     load();
   }, [isAuthenticated, fetchManagerList, router]);
 
-  // Debounce search
-  const debouncedSearch = useCallback(
-    (() => {
-      let timeoutId: NodeJS.Timeout | null = null;
-      return (params: any) => {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(() => {
-          fetchManagerList(params);
-          setLoading(false);
-        }, 500);
-      };
-    })(),
-    [fetchManagerList],
-  );
+  const filteredUsers = useMemo(() => {
+    const keyword = filters.q.trim().toLowerCase();
 
-  const handleSearch = () => {
-    setLoading(true);
+    return managerList.filter((u) => {
+      const matchKeyword =
+        !keyword ||
+        u.jira_username?.toLowerCase().includes(keyword) ||
+        u.jira_display_name?.toLowerCase().includes(keyword);
 
-    const params: any = {};
+      const matchUsername =
+        !filters.username ||
+        u.jira_username?.toLowerCase().includes(filters.username.toLowerCase());
 
-    if (filters.q) {
-      params.search = filters.q;
-    }
-    if (filters.username) {
-      params.username = filters.username;
-    }
-    if (filters.fullName) {
-      params.display_name = filters.fullName;
-    }
-    if (filters.email) {
-      params.email = filters.email;
-    }
-    if (filters.role !== "all") {
-      params.is_admin = filters.role === "admin" ? 1 : 0;
-    }
+      const matchFullName =
+        !filters.fullName ||
+        u.jira_display_name
+          ?.toLowerCase()
+          .includes(filters.fullName.toLowerCase());
 
-    debouncedSearch(params);
-  };
+      const matchRole =
+        filters.role === "all" ||
+        (filters.role === "admin" && u.is_admin) ||
+        (filters.role === "operator" && !u.is_admin);
 
+      return matchKeyword && matchUsername && matchFullName && matchRole;
+    });
+  }, [managerList, filters]);
   const resetFilters = () => {
     setFilters(EMPTY_FILTERS);
-    setLoading(true);
-    fetchManagerList();
-    setTimeout(() => setLoading(false), 400);
   };
 
   const handleLogout = async () => {
@@ -148,42 +126,6 @@ export default function Admin() {
     setTimeout(() => setLoading(false), 500);
   };
 
-  const exportCsv = () => {
-    if (!managerList?.length) {
-      message.warning("Không có dữ liệu để export");
-      return;
-    }
-
-    const rows = [
-      ["ID", "Jira Username", "Jira Display Name", "Jira Email", "Is Admin"],
-      ...managerList.map((u) => [
-        u.id,
-        u.jira_username,
-        u.jira_display_name,
-        u.jira_email,
-        u.is_admin ? "Admin" : "Member",
-      ]),
-    ];
-
-    const csv = rows
-      .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))
-      .join("\n");
-
-    const blob = new Blob(["\uFEFF" + csv], {
-      type: "text/csv;charset=utf-8",
-    });
-
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `managers_${new Date().toISOString().split("T")[0]}.csv`;
-    a.click();
-
-    URL.revokeObjectURL(url);
-    message.success("Export thành công!");
-  };
-
   const handleToggleAdmin = (id: number, isAdmin: boolean) => {
     const selectedUser = managerList?.find((u) => u.id === id);
     if (!selectedUser) return;
@@ -192,13 +134,24 @@ export default function Admin() {
       isOpen: true,
       userId: id,
       isAdmin,
-      userName: selectedUser.jira_display_name || selectedUser.jira_username,
+      userName: selectedUser.jira_username,
     });
   };
 
+  const { loadingAction, toggleAdmin } = useAdminActionStore();
+
   const handleConfirmToggleAdmin = async () => {
     try {
-      // TODO: call API toggle admin
+      if (!confirmDialog.userName) {
+        message.error("Thiếu user_name để cập nhật quyền");
+        return;
+      }
+
+      await toggleAdmin({
+        user_name: confirmDialog.userName,
+        is_admin: confirmDialog.isAdmin ? 0 : 1,
+      });
+
       message.success("Cập nhật quyền thành công!");
       await fetchManagerList();
     } catch (error) {
@@ -217,7 +170,6 @@ export default function Admin() {
     });
   };
 
-  // Hiển thị loading khi đang kiểm tra quyền
   if (!isSuperAdminUser && isAuthenticated) {
     return (
       <div className={styles.loadingContainer}>
@@ -231,14 +183,6 @@ export default function Admin() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div>
-          <div className={styles.breadcrumb}>
-            <Home className={styles.breadcrumbIcon} />
-            <span>Dashboard</span>
-            <ChevronRight className={styles.breadcrumbSeparator} />
-            <span>Administration</span>
-            <ChevronRight className={styles.breadcrumbSeparator} />
-            <span className={styles.breadcrumbActive}>Admin</span>
-          </div>
           <h1 className={styles.title}>Admin</h1>
           <p className={styles.subtitle}>
             Danh sách người dùng quản trị hệ thống
@@ -251,11 +195,6 @@ export default function Admin() {
               className={`${styles.icon} ${loading ? styles.spin : ""}`}
             />
             Refresh
-          </button>
-
-          <button onClick={exportCsv} className={styles.btnGhost}>
-            <Download className={styles.icon} />
-            Export
           </button>
 
           <button onClick={handleLogout} className={styles.btnGhost}>
@@ -274,7 +213,6 @@ export default function Admin() {
 
       {errorManager && <div className={styles.error}>{errorManager}</div>}
 
-      {/* Filters */}
       <div className={styles.filterCard}>
         <div className={styles.filterHeader}>
           <div className={styles.filterTitle}>
@@ -306,58 +244,12 @@ export default function Admin() {
                   }
                   placeholder="Tìm kiếm theo username, tên hoặc email..."
                   className={styles.inputField}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
               </div>
             </div>
           </div>
 
           <div className={styles.filterGrid}>
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Username</label>
-              <div className={styles.filterInput}>
-                <input
-                  value={filters.username}
-                  onChange={(e) =>
-                    setFilters({ ...filters, username: e.target.value })
-                  }
-                  placeholder="Nhập username"
-                  className={styles.inputField}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                />
-              </div>
-            </div>
-
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Họ và tên</label>
-              <div className={styles.filterInput}>
-                <input
-                  value={filters.fullName}
-                  onChange={(e) =>
-                    setFilters({ ...filters, fullName: e.target.value })
-                  }
-                  placeholder="Nhập họ và tên"
-                  className={styles.inputField}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                />
-              </div>
-            </div>
-
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Email</label>
-              <div className={styles.filterInput}>
-                <input
-                  value={filters.email}
-                  onChange={(e) =>
-                    setFilters({ ...filters, email: e.target.value })
-                  }
-                  placeholder="Nhập email"
-                  className={styles.inputField}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                />
-              </div>
-            </div>
-
             <div className={styles.filterGroup}>
               <label className={styles.filterLabel}>Vai trò</label>
               <div className={styles.filterInput}>
@@ -378,24 +270,13 @@ export default function Admin() {
               </div>
             </div>
           </div>
-
-          <div className={styles.filterActions}>
-            <button onClick={handleSearch} className={styles.btnPrimary}>
-              <Search className={styles.icon} />
-              Tìm kiếm
-            </button>
-            <button onClick={resetFilters} className={styles.btnGhost}>
-              <X className={styles.icon} />
-              Đặt lại
-            </button>
-          </div>
         </div>
       </div>
 
       <div className={styles.tableWrapper}>
         <UserTable
-          users={managerList}
-          loading={loadingManager || loading}
+          users={filteredUsers}
+          loading={loadingManager}
           onToggleAdmin={handleToggleAdmin}
         />
       </div>

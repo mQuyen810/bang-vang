@@ -12,7 +12,8 @@ interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
 
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<AuthUser>;
+
   logout: () => void;
 }
 
@@ -29,17 +30,14 @@ export const useAuthStore = create<AuthState>((set) => ({
       const res = await loginService(username, password);
       console.log("Login response:", res);
 
-      // Lưu token
       localStorage.setItem("accessToken", res.token);
 
-      // Lưu user info
       const userData = {
         display_name: res.display_name,
         super_admin: res.super_admin || 0,
       };
       localStorage.setItem("user", JSON.stringify(userData));
 
-      // Set cookie cho middleware
       document.cookie = `token=${res.token}; path=/; max-age=604800`;
 
       set({
@@ -49,7 +47,6 @@ export const useAuthStore = create<AuthState>((set) => ({
         loading: false,
       });
 
-      // Trả về user để component xử lý điều hướng
       return userData;
     } catch (error) {
       console.error("Login error:", error);

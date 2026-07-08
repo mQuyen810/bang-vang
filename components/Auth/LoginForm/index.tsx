@@ -74,11 +74,15 @@ export default function LoginForm() {
     setError("");
 
     try {
-      await login(username, password);
+      const userData = await login(username, password);
 
       message.success("Đăng nhập thành công!");
 
-      router.push("/dashboard");
+      if (userData?.super_admin === 1) {
+        router.push("/admin");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || "Sai tài khoản hoặc mật khẩu");
     }

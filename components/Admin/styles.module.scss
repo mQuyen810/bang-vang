@@ -13,7 +13,7 @@ $bg-card: rgba(255, 255, 255, 0.04);
 $bg-input: rgba(255, 255, 255, 0.06);
 
 .container {
-  max-width: 1400px;
+  height: 100vh;
   margin: 0 auto;
   padding: 2rem 1.5rem;
   animation: fadeInUp 0.4s ease;
@@ -229,16 +229,7 @@ $bg-input: rgba(255, 255, 255, 0.06);
 }
 
 .filterGrid {
-  display: grid;
-  gap: 1rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
+  width: 100%;
 }
 
 .filterGroup {
@@ -304,19 +295,28 @@ $bg-input: rgba(255, 255, 255, 0.06);
 
 .selectField {
   width: 100%;
-  padding: 0.625rem 0.75rem;
-  padding-right: 2rem;
+  height: 42px;
+  padding: 0 2.5rem 0 0.75rem;
   background: transparent;
   border: none;
   outline: none;
-  font-size: 0.875rem;
-  color: $text-primary;
   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   cursor: pointer;
 
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $text-primary;
+
   option {
-    background: rgba(0, 0, 0, 0.95);
-    color: $text-primary;
+    background: #1f2937;
+    color: #fff;
+    padding: 10px;
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 
