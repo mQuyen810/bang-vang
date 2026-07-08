@@ -10,6 +10,7 @@ interface IssuesStore {
   loading: boolean;
   syncFromLastIssues: () => Promise<SyncResponse>;
   syncFullIssues: () => Promise<SyncResponse>;
+  cancelSync: () => void;
 }
 
 export const useIssuesStore = create<IssuesStore>((set) => ({
@@ -33,5 +34,9 @@ export const useIssuesStore = create<IssuesStore>((set) => ({
     } finally {
       set({ loading: false });
     }
+  },
+  cancelSync: () => {
+    issuesService.cancelSync();
+    set({ loading: false });
   },
 }));

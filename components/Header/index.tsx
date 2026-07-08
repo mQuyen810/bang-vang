@@ -114,6 +114,7 @@ export default function Header() {
   }, []);
 
   const handleSync = async () => {
+    if (loading) return;
     try {
       setLoading(true);
 
@@ -224,7 +225,11 @@ export default function Header() {
       </div>
 
       <div className={styles.actions}>
-        <button className={styles.iconBtn} onClick={handleSync}>
+        <button
+          className={styles.iconBtn}
+          onClick={handleSync}
+          disabled={loading}
+        >
           <RefreshCw size={18} className={loading ? styles.spinning : ""} />
         </button>
 

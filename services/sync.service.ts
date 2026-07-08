@@ -1,4 +1,8 @@
-import { syncFromLastIssuesApi, syncFullIssuesApi } from "@/api/sync.api";
+import {
+  syncFromLastIssuesApi,
+  syncFullIssuesApi,
+  cancelSyncApi,
+} from "@/api/sync.api";
 
 export const issuesService = {
   async syncFromLastIssues() {
@@ -11,5 +15,8 @@ export const issuesService = {
     const res = await syncFullIssuesApi();
 
     return res.data;
+  },
+  cancelSync() {
+    cancelSyncApi();
   },
 };

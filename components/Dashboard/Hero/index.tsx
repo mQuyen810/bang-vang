@@ -1,61 +1,93 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
-import styles from "./styles.module.scss";
+import { Plane, Sparkles } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
+import styles from "./styles.module.scss";
 
 const fadeUp = {
-    hidden: { opacity: 0, y: 16 },
-    show: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: [0.22, 1, 0.36, 1] as const,
-        },
+  hidden: {
+    opacity: 0,
+    y: 24,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 1.2,
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1] as const,
     },
+  },
 };
 
 export function Hero() {
-    const { user } = useAuthStore();
+  const { user } = useAuthStore();
 
-    const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
-    const fullName = match?.[1] ?? user?.display_name;
+  const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
+  const fullName = match?.[1] ?? user?.display_name;
 
-    // Lấy tháng và năm hiện tại
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
 
-    return (
-        <motion.section
-            initial="hidden"
-            animate="show"
-            variants={fadeUp}
-            className={styles.hero}
+  return (
+    <section className={styles.heroWrapper}>
+      {/* Máy bay */}
+      <motion.div
+        className={styles.flyBanner}
+        initial={{ x: "-140vw" }}
+        animate={{ x: "120vw" }}
+        transition={{
+          duration: 5,
+          ease: "linear",
+        }}
+      >
+        <Plane className={styles.plane} />
+
+        <motion.div
+          className={styles.banner}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{
+            delay: 0.2,
+            duration: 0.5,
+          }}
         >
-            <div className={styles.auroraBg} />
-            <div className={styles.overlay} />
+          🏆 Bảng vàng tháng {month}/{year}
+        </motion.div>
+      </motion.div>
 
-            <div className={styles.content}>
-                <div className={styles.badge}>
-                    <Sparkles className={styles.badgeIcon} />
-                    <span>
-            Bảng xếp hạng · Tháng {month}/{year}
-          </span>
-                </div>
+      {/* Hero */}
+      <motion.section
+        className={styles.hero}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+      >
+        <div className={styles.auroraBg} />
+        <div className={styles.overlay} />
 
-                <h1 className={styles.title}>
-                    Chào mừng, <span className={styles.gradientText}>{fullName}</span>
-                </h1>
+        <div className={styles.content}>
+          <div className={styles.badge}>
+            <Sparkles className={styles.badgeIcon} />
 
-                <p className={styles.description}>
-                    Hôm nay là một ngày tuyệt vời để ghi danh vào bảng vàng. Theo dõi
-                    thành tích, năng lực và hiệu suất xử lý bug của toàn đội ngũ trong một
-                    không gian được thiết kế dành riêng cho những điều xuất sắc.
-                </p>
-            </div>
-        </motion.section>
-    );
+            <span>
+              Bảng xếp hạng · Tháng {month}/{year}
+            </span>
+          </div>
+
+          <h1 className={styles.title}>
+            Chào mừng, <span className={styles.gradientText}>{fullName}</span>
+          </h1>
+
+          <p className={styles.description}>
+            Hôm nay là một ngày tuyệt vời để ghi danh vào bảng vàng. Theo dõi
+            thành tích, năng lực và hiệu suất xử lý bug của toàn đội ngũ trong
+            một không gian được thiết kế dành riêng cho những điều xuất sắc.
+          </p>
+        </div>
+      </motion.section>
+    </section>
+  );
 }
