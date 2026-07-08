@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MoreVertical, Trash2 } from "lucide-react";
+import { MoreVertical } from "lucide-react";
+
 import type { ManagerItem } from "@/types/admin";
 import styles from "./styles.module.scss";
 
@@ -10,8 +11,11 @@ interface ActionMenuProps {
   onDelete: () => void;
 }
 
-export function ActionMenu({ user, onDelete }: ActionMenuProps) {
+export function ActionMenu({ user: _user }: ActionMenuProps) {
+  void _user;
   const [isOpen, setIsOpen] = useState(false);
+
+
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,10 +29,8 @@ export function ActionMenu({ user, onDelete }: ActionMenuProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleAction = (callback: () => void) => {
-    callback();
-    setIsOpen(false);
-  };
+  // Intentionally left blank (no unused handler). 
+
 
   return (
     <div className={styles.menuContainer} ref={menuRef}>

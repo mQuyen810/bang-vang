@@ -16,27 +16,27 @@ interface MetricCardsProps {
 export const MetricCards: React.FC<MetricCardsProps> = ({ user }) => {
   const metrics = [
     { 
-      label: 'Production Output', 
+      label: 'Sản lượng đầu ra', 
       value: user.output, 
       icon: TrendingUp,
       color: 'var(--primary)'
     },
     { 
-      label: 'Estimated Capacity', 
+      label: 'Năng lực dự kiến',
       value: user.capacity, 
       suffix: '%', 
       icon: Award,
       color: 'var(--accent)'
     },
     { 
-      label: 'Completion Rate', 
+      label: 'Tỷ lệ hoàn thành',
       value: user.completionRate, 
       suffix: '%', 
       icon: CheckCircle2,
       color: '#22c55e'
     },
     { 
-      label: 'Bugs Resolved', 
+      label: 'Lỗi đã xử lý',
       value: user.bugsResolved, 
       icon: Bug,
       color: '#ef4444'

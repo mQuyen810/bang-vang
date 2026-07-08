@@ -1,21 +1,16 @@
-// components/personal/index.tsx
 'use client';
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Award, Bug, CheckCircle2, Crown, TrendingUp, Zap,
-  ListTodo, BugOff, Calendar
+import {
+  ListTodo,
+  BugOff,
 } from 'lucide-react';
+
 import { ProfileHero } from './ProfileHero';
 import { MetricCards } from './MetricCard';
 import { DataTable } from './DataTable';
-import { 
-  bugHistory, 
-  completedSubtasks, 
-  currentUser, 
-  productivityRanking,
-} from '@/lib/mock-data';
+import { bugHistory, completedSubtasks, currentUser, productivityRanking } from '@/lib/mock-data';
 import styles from './styles.module.scss';
 
 type TabType = 'tasks' | 'bugs';
@@ -26,7 +21,7 @@ const Personal: React.FC = () => {
 
   return (
     <div className={styles.container}>
-       {/* Profile Hero */}
+      {/* Profile Hero */}
       <ProfileHero user={currentUser} rank={rank} />
 
       {/* Metric Cards */}
@@ -40,7 +35,7 @@ const Personal: React.FC = () => {
             className={`${styles.tabButton} ${activeTab === 'tasks' ? styles.tabActive : ''}`}
           >
             <ListTodo size={16} />
-            Completed Subtasks
+            Hoàn thành hạng mục phụ
             <span className={styles.tabCount}>{completedSubtasks.length}</span>
           </button>
           <button
@@ -48,7 +43,7 @@ const Personal: React.FC = () => {
             className={`${styles.tabButton} ${activeTab === 'bugs' ? styles.tabActive : ''}`}
           >
             <BugOff size={16} />
-            Bug History
+            Lịch sử lỗi
             <span className={styles.tabCount}>{bugHistory.length}</span>
           </button>
         </div>
@@ -62,27 +57,27 @@ const Personal: React.FC = () => {
         >
           {activeTab === 'tasks' && (
             <DataTable
-              title="Completed Subtasks"
-              columns={['Task ID', 'Summary', 'Project', 'Date', 'Status']}
+              title="Hoàn thành hạng mục phụ"
+              columns={['Mã hạng mục', 'Nội dung', 'Dự án', 'Ngày', 'Trạng thái']}
               rows={completedSubtasks.slice(0, 8).map((t) => [
-                t.id, 
-                t.summary, 
-                t.project, 
-                t.date, 
-                t.status
+                t.id,
+                t.summary,
+                t.project,
+                t.date,
+                t.status,
               ])}
             />
           )}
           {activeTab === 'bugs' && (
             <DataTable
-              title="Bug History"
-              columns={['Bug ID', 'Summary', 'Priority', 'Date', 'Status']}
+              title="Lịch sử lỗi"
+              columns={['Mã lỗi', 'Nội dung', 'Mức độ ưu tiên', 'Ngày', 'Trạng thái']}
               rows={bugHistory.slice(0, 8).map((b) => [
-                b.id, 
-                b.summary, 
-                b.priority, 
-                b.date, 
-                b.status
+                b.id,
+                b.summary,
+                b.priority,
+                b.date,
+                b.status,
               ])}
               priorityIdx={2}
             />
@@ -94,3 +89,4 @@ const Personal: React.FC = () => {
 };
 
 export default Personal;
+

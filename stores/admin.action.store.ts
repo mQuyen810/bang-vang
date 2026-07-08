@@ -24,7 +24,8 @@ export const useAdminActionStore = create<AdminActionState>((set) => ({
       await adminActionService.toggleAdmin(data);
     } catch (err) {
       if (isAxiosLikeError(err)) {
-        const message = err.response?.data?.message;
+        const axiosErr = err as { response?: { data?: { message?: string } } };
+        const message = axiosErr.response?.data?.message;
         set({ errorAction: message ?? "Failed to update admin" });
       } else {
         set({ errorAction: "Failed to update admin" });

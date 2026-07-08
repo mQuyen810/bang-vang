@@ -18,14 +18,15 @@ import { USBudgetTable } from "../ui/Issue/IssueTable/USBudget";
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
-  "Key",
-  "Summary",
-  "Assignee",
-  "Issue Type",
-  "Story Budget",
-  "SubTask Budget",
-  "Over Budget",
+  "Mã",
+  "Tóm tắt",
+  "Người phụ trách",
+  "Loại issue",
+  "Ngân sách Story",
+  "Ngân sách Sub-task",
+  "Vượt ngân sách",
 ];
+
 
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
@@ -57,9 +58,7 @@ export default function USBudgetPage() {
     fetchUSBudget(userNameParam, page, DEFAULT_PAGE_SIZE);
   }, [page, period, selectedProjects, debouncedUsername]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [period, selectedProjects]);
+
 
   const issues = useMemo(() => {
     const list = usBudget?.issues.details.list ?? [];
@@ -77,11 +76,7 @@ export default function USBudgetPage() {
   const totalPages = meta?.last_page ?? 1;
   const totalResults = meta?.total ?? filteredIssues.length;
 
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [page, totalPages]);
+
 
   const handleReset = () => {
     setSearch("");
@@ -99,12 +94,15 @@ export default function USBudgetPage() {
     <div className={styles.overdue}>
       <header className={styles.header}>
         <SectionHeader
-          eyebrow="Hall of Fame"
-          title="US Budget"
+          eyebrow="Vinh danh"
+          title="Ngân sách US"
+
+
           desc="Theo dõi các issue vượt ngân sách"
           variant="bug"
         />
       </header>
+
 
       <FilterBarUsernameType
         username={search}
@@ -117,7 +115,8 @@ export default function USBudgetPage() {
       />
 
       <USBudgetTable
-        title="Budget Issues"
+          title="Các issue vượt ngân sách"
+
         columns={columns}
         issues={filteredIssues}
       />

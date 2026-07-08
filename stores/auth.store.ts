@@ -14,8 +14,15 @@ interface AuthState {
 
   login: (username: string, password: string) => Promise<AuthUser>;
 
+  /**
+   * Refresh token (tối thiểu để phù hợp axios interceptor).
+   * Hiện tại backend chưa có refresh token riêng, nên thực hiện noop.
+   */
+  refreshToken: () => Promise<void>;
+
   logout: () => void;
 }
+
 
 export const useAuthStore = create<AuthState>((set) => ({
   loading: false,
@@ -23,8 +30,16 @@ export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   isAuthenticated: false,
 
+  refreshToken: async () => {
+    // Backend hiện chưa hỗ trợ refreshToken riêng.
+    // Hàm này chỉ tồn tại để thỏa mãn type cho axios interceptor.
+    // Khi có refresh token thực tế, thay logic tại đây.
+    return;
+  },
+
   login: async (username, password) => {
     set({ loading: true });
+
 
     try {
       const res = await loginService(username, password);

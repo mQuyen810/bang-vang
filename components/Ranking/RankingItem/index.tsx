@@ -98,7 +98,8 @@ export const RankingItem: React.FC<RankingItemProps> = ({
 
       <div className={styles.progressColumn}>
         <div className={styles.progressHeader}>
-          <span>{tab === "prod" ? `Sản lượng` : `Bug Percent`}</span>
+          <span>{tab === "prod" ? "Sản lượng" : "Tỷ lệ lỗi"}</span>
+
 
           <span className={styles.progressValue}>
             {tab === "prod"

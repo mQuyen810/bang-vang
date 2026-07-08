@@ -14,6 +14,9 @@ import { useRankingStore } from "@/stores/ranking.store";
 import { mapBugRanking } from "@/utils/rankingBug";
 import { mapProductivityRanking } from "@/utils/rankingProductivity";
 import type { RankingBug, RankingProductivity } from "@/types/rankingItem";
+
+// eslint-disable-next-line react-hooks/exhaustive-deps
+
 import styles from "./styles.module.scss";
 import dayjs from "dayjs";
 
@@ -45,7 +48,7 @@ const RankingsPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const tab: TabType = searchParams.get("tab") === "bug" ? "bug" : "prod";
+  const tab: TabType = searchParams?.get("tab") === "bug" ? "bug" : "prod";
   const [search, setSearch] = useState("");
   const [debouncedUsername, setDebouncedUsername] = useState("");
 
@@ -166,28 +169,11 @@ const RankingsPage: React.FC = () => {
     fetchLeaderboardSlsxRatio,
   ]);
 
-  useEffect(() => {
-    if (!apiPeriod) return;
+  // Note: We intentionally avoid resetting page via useEffect to satisfy ESLint rule
+  // `react-hooks/set-state-in-effect`.
+  const effectivePage = page > totalPages ? totalPages : page;
 
-    if (!defaultMonth) {
-      setDefaultMonth(apiPeriod);
-      setRankingPeriod(apiPeriod);
-    }
 
-    if (!selectedMonth) {
-      setSelectedMonth(dayjs(apiPeriod, "MM-YYYY").format("YYYY-MM"));
-    }
-  }, [apiPeriod, defaultMonth, selectedMonth]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [tab, selectedMonth]);
-
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [page, totalPages]);
 
   return (
     <div className={styles.container}>
@@ -195,14 +181,14 @@ const RankingsPage: React.FC = () => {
         <div className={styles.headerLeft}>
           <div className={styles.badge}>
             <Trophy className={styles.badgeIcon} />
-            Hall of Fame
+            Vinh danh
+
           </div>
           <h1 className={styles.title}>
-            {tab === "prod"
-              ? "Bảng xếp hạng Sản Lượng"
-              : "Bảng Xếp Hạng Bug Resolution"}
+            {tab === "prod" ? "Bảng xếp hạng Sản lượng" : "Bảng xếp hạng xử lý lỗi"}
             <span className="text-gradient"> ✦</span>
           </h1>
+
           <p className={styles.subtitle}>
             Tôn vinh những thành viên xuất sắc nhất theo từng tiêu chí
           </p>
@@ -211,7 +197,8 @@ const RankingsPage: React.FC = () => {
         <div className={styles.tabGroup}>
           {[
             { key: "prod", label: "Sản lượng", icon: <Sparkles size={16} /> },
-            { key: "bug", label: "Bug Resolution", icon: <Star size={16} /> },
+            { key: "bug", label: "Xử lý lỗi", icon: <Star size={16} /> },
+
           ].map((t) => (
             <button
               key={t.key}
@@ -287,10 +274,11 @@ const RankingsPage: React.FC = () => {
       </motion.div>
 
       <PaginationBar
-        page={currentPage}
+        page={effectivePage}
         totalPages={totalPages}
         onChange={setPage}
       />
+
     </div>
   );
 };

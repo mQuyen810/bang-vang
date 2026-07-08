@@ -29,7 +29,7 @@ export const ProfileHero: React.FC<ProfileHeroProps> = ({ user, rank }) => {
         </div>
         
         <div className={styles.userInfo}>
-          <div className={styles.badge}>Profile</div>
+          <div className={styles.badge}>Hồ sơ</div>
           <h1 className={styles.name}>{user.name}</h1>
           <p className={styles.meta}>
             {user.department} · {user.id}
@@ -49,7 +49,7 @@ export const ProfileHero: React.FC<ProfileHeroProps> = ({ user, rank }) => {
             <Crown className={styles.rankIcon} />
             Hạng #{rank}
           </div>
-          <span className={styles.rankLabel}>Productivity ranking</span>
+          <span className={styles.rankLabel}>Bảng xếp hạng năng suất</span>
         </div>
       </div>
     </motion.section>

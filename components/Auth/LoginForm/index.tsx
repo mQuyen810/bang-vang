@@ -79,15 +79,16 @@ export default function LoginForm() {
       } else {
         router.push("/dashboard");
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Sai tài khoản hoặc mật khẩu");
+    } catch (err) {
+      const e = err as unknown as {
+        response?: { data?: { message?: string } };
+      };
+      setError(e.response?.data?.message || "Sai tài khoản hoặc mật khẩu");
     }
+
   };
 
-  const fillDemoAccount = (email: string, password: string) => {
-    setUsername(email);
-    setPassword(password);
-  };
+
 
   return (
     <div className={styles.container}>
@@ -104,12 +105,13 @@ export default function LoginForm() {
         >
           <div className={styles.logoBadge}>
             <Trophy className={styles.logoIcon} />
-            <span className={styles.logoLabel}>Hall of Fame</span>
+            <span className={styles.logoLabel}>Vinh danh</span>
             <Trophy className={styles.logoIcon} />
           </div>
           <h1 className={styles.logoTitle}>BẢNG VÀNG</h1>
-          <p className={styles.logoSubtitle}>EMPLOYEE RANKING SYSTEM</p>
+          <p className={styles.logoSubtitle}>HỆ THỐNG XẾP HẠNG NHÂN VIÊN</p>
         </motion.div>
+
 
         {/* Mascot */}
         <div className={styles.mascotWrapper}>
@@ -219,7 +221,8 @@ export default function LoginForm() {
           </div>
         </motion.div>
 
-        <p className={styles.poweredBy}>Powered by Bảng Vàng • v1.0</p>
+        <p className={styles.poweredBy}>Phát triển bởi Bảng Vàng • v1.0</p>
+
       </div>
     </div>
   );

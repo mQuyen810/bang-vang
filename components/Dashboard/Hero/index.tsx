@@ -72,7 +72,7 @@ export function Hero() {
           ease: "linear",
         }}
       >
-        // <Plane className={styles.plane} />
+        {/* <Plane className={styles.plane} /> */}
         <motion.div
           className={styles.banner}
           initial={{ scaleX: 0 }}
