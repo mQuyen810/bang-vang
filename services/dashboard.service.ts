@@ -1,4 +1,5 @@
 import * as dashboardApi from "@/api/dashboard.api";
+import * as milestonesApi from "@/api/milestones.api";
 import {
   DashboardFilter,
   LeaderboardFilter,

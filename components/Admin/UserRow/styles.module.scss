@@ -1,0 +1,101 @@
+.row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background-color 200ms ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+.cell {
+  padding: 0.875rem 1.5rem;
+  vertical-align: middle;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.875rem;
+}
+
+.actionsCell {
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.actionWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.grantAdmin {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+
+  &:hover {
+    background: rgba(99, 102, 241, 0.25);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  }
+}
+
+.removeAdmin {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.25);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  }
+}
+
+.btnIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+.id {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8125rem;
+}
+
+.username {
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.displayName {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.email {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8125rem;
+}
