@@ -1,7 +1,5 @@
-# syntax=docker/dockerfile:1
-
 # -------- deps --------
-FROM node:20-alpine AS deps
+FROM dockerhub.viettelsoftware.com/bu01-reg/node-23-alpine AS deps
 WORKDIR /app
 
 # Install dependencies based on lockfile
@@ -9,7 +7,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 # -------- builder --------
-FROM node:20-alpine AS builder
+FROM dockerhub.viettelsoftware.com/bu01-reg/node-23-alpine AS builder
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
@@ -18,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # -------- runner --------
-FROM node:20-alpine AS runner
+FROM dockerhub.viettelsoftware.com/bu01-reg/node-23-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 

@@ -180,6 +180,43 @@ export interface OverdueLogWorkResponse<OverdueLogWorkIssue> {
   };
 }
 
+/* ===========================
+      Milestone (Missing/Exception)
+=========================== */
+
+export interface MilestoneIssue {
+  id: number;
+  key: string;
+  summary: string;
+  issuetype: string;
+  assignee: string;
+  status: string;
+  enddate: string;
+  actual_date?: string;
+}
+
+export interface MilestonesResponseType {
+  user: string | null;
+  project_names: string[];
+  period: string;
+  issues: {
+    details: {
+      list: MilestoneIssue[];
+      meta: Pagination;
+    };
+  };
+}
+
+export type MilestonesReportType = "MISSING" | "EXCEPTION";
+
+export interface MilestonesFilter extends DashboardFilter {
+  report_type: MilestonesReportType;
+  issuetype: string | null;
+  user_name: string | null;
+  page?: number;
+  per_page?: number;
+}
+
 export interface USBudget {
   id: number;
   key: string;

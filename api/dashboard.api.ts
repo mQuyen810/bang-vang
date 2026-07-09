@@ -5,6 +5,8 @@ import {
   Project,
   DashboardFilter,
   LeaderboardFilter,
+  MilestonesResponseType,
+  MilestonesFilter,
   MyBugRatioResponse,
   LeaderboardBugResponse,
   MySlsxResponse,
@@ -77,6 +79,14 @@ export const getOverdueLogWorkApi = (filter: OverdueLogWorkFilter) =>
 export const getUSBudgetApi = (filter: LeaderboardFilter) =>
   axiosClient.get<ApiResponse<USBudgetResponseType>>(
     "/issues/dashboard/usbudget",
+    {
+      params: filter,
+    },
+  );
+
+export const getMilestonesApi = (filter: MilestonesFilter) =>
+  axiosClient.get<ApiResponse<MilestonesResponseType>>(
+    "/issues/dashboard/milestones",
     {
       params: filter,
     },
