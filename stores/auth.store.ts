@@ -4,6 +4,7 @@ import { loginService } from "@/services/auth.service";
 interface AuthUser {
   display_name: string;
   super_admin: number;
+  is_admin: number;
 }
 
 interface AuthState {
@@ -63,6 +64,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const userData: AuthUser = {
         display_name: String(parsed.display_name),
         super_admin: Number(parsed.super_admin ?? 0),
+        is_admin: Number(parsed.is_admin ?? 0),
       };
 
       set({
@@ -98,6 +100,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const userData = {
         display_name: res.display_name,
         super_admin: res.super_admin || 0,
+        is_admin: res.is_admin || 0,
       };
       localStorage.setItem("user", JSON.stringify(userData));
 

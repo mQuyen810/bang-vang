@@ -7,4 +7,5 @@ export interface LoginResponse {
   token: string;
   display_name: string;
   super_admin: number;
+  is_admin: number;
 }
