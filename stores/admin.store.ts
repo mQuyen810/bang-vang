@@ -9,7 +9,8 @@ interface AdminState {
   managerList: ManagerItem[];
   errorManager: string | null;
 
-  fetchManagerList: (params?: Record<string, any>) => Promise<void>;
+  fetchManagerList: (params?: Record<string, unknown>) => Promise<void>;
+
 }
 
 export const useAdminStore = create<AdminState>((set) => ({

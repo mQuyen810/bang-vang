@@ -36,7 +36,7 @@ interface IssuePeriodState {
 
   fetchOverdueLogWork: (args: {
     issuetype?: string | null;
-    status?: "Overdue" | "Warning" | "Missing" | null;
+    statusLogWork?: "Overdue" | "Warning" | "Missing" | null;
     table_id?: number;
     userName?: string | null;
     page?: number;
@@ -90,9 +90,8 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
 
     overdue: null,
     overdueLogWork: null,
-    usBudget: null,
-
     milestones: null,
+    usBudget: null,
 
     setPeriod: (period) => set({ period }),
 
@@ -116,7 +115,10 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           status,
         };
 
-        const overdue = await dashboardService.getOverdue(filter as any);
+        const overdue = await dashboardService.getOverdue(
+          filter as import("@/types/dashboard").OverdueFilter,
+        );
+
         set({ overdue });
       } catch (error) {
         console.error("Overdue API:", error);
@@ -127,7 +129,7 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
 
     fetchOverdueLogWork: async ({
       issuetype = null,
-      status = null,
+      statusLogWork = null,
       table_id = 2,
       userName = null,
       page = 1,
@@ -142,12 +144,13 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           per_page: perPage,
           table_id,
           issuetype,
-          status,
+          statusLogWork,
         };
 
         const overdueLogWork = await dashboardService.getOverdueLogWork(
-          filter as any,
+          filter as import("@/types/dashboard").OverdueLogWorkFilter,
         );
+
         set({ overdueLogWork });
       } catch (error) {
         console.error("Overdue LogWork API:", error);
@@ -174,7 +177,9 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           issuetype,
         };
 
-        const milestones = await dashboardService.getMilestones(filter as any);
+        const milestones = await dashboardService.getMilestones(
+          filter as import("@/types/dashboard").MilestonesFilter,
+        );
         set({ milestones });
       } catch (error) {
         console.error("Milestones API:", error);
@@ -193,7 +198,9 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           per_page: perPage,
         };
 
-        const usBudget = await dashboardService.getUSBudget(filter as any);
+        const usBudget = await dashboardService.getUSBudget(
+          filter as import("@/types/dashboard").LeaderboardFilter,
+        );
         set({ usBudget });
       } catch (error) {
         console.error("USBudget API:", error);

@@ -14,6 +14,7 @@ export type { ToggleAdminRequest };
 
 export const isAxiosLikeError = (
   err: unknown,
-): err is { response?: { status?: number; data?: any } } => {
+): err is { response?: { status?: number; data?: unknown } } => {
   return axios.isAxiosError(err);
 };
+

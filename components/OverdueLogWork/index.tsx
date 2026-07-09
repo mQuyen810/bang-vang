@@ -28,13 +28,13 @@ const STATUS_MAP = {
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
-  "Key",
-  "Summary",
-  "Assignee",
-  "Issue Type",
-  "End Date",
-  "Status",
-  "Actual Date",
+  "Mã",
+  "Tóm tắt",
+  "Người phụ trách",
+  "Loại issue",
+  "Ngày kết thúc",
+  "Trạng thái",
+  "Ngày thực tế",
 ];
 
 export default function OverdueLogWork() {
@@ -51,33 +51,40 @@ export default function OverdueLogWork() {
 
   const [page, setPage] = useState(1);
 
-  const [counts, setCounts] = useState({
-    overdue: 0,
-    warning: 0,
-    missing: 0,
-  });
+  const counts = useMemo(() => {
+    const meta = overdueLogWork?.issues.details.meta;
+    const total = meta?.total ?? 0;
+    // Chỉ dùng để hiển thị số tab; nếu meta chưa sẵn sàng thì giữ 0.
+    // Vì dữ liệu list phụ thuộc activeTab, tổng cũng được lấy từ meta hiện tại.
+    return {
+      overdue: activeTab === "overdue" ? total : 0,
+      warning: activeTab === "warning" ? total : 0,
+      missing: activeTab === "missing" ? total : 0,
+    };
+  }, [overdueLogWork, activeTab]);
 
   const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
   const tabs = [
     {
       key: "overdue",
-      label: "Overdue",
+      label: "Quá hạn",
       count: counts.overdue,
       icon: Clock3,
     },
     {
       key: "warning",
-      label: "Warning",
+      label: "Cần cảnh báo",
       count: counts.warning,
       icon: AlertTriangle,
     },
     {
       key: "missing",
-      label: "Missing",
+      label: "Thiếu cập nhật",
       count: counts.missing,
       icon: CircleAlert,
     },
   ] as const;
+
   useEffect(() => {
     const t = window.setTimeout(() => {
       setDebouncedUsername(search.trim() ? search.trim() : "");
@@ -93,26 +100,13 @@ export default function OverdueLogWork() {
 
     fetchOverdueLogWork({
       issuetype: issueType === "all" ? null : issueType,
-      status: STATUS_MAP[activeTab],
+      statusLogWork: STATUS_MAP[activeTab],
       table_id: 2,
       userName: userNameParam,
       page,
       perPage: DEFAULT_PAGE_SIZE,
     });
   }, [activeTab, issueType, page, period, selectedProjects, debouncedUsername]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [activeTab, issueType, period]);
-
-  useEffect(() => {
-    if (!overdueLogWork) return;
-
-    setCounts((prev) => ({
-      ...prev,
-      [activeTab]: overdueLogWork.issues.details.meta.total,
-    }));
-  }, [overdueLogWork, activeTab]);
 
   const issues = useMemo(
     () => overdueLogWork?.issues.details.list ?? [],
@@ -126,12 +120,6 @@ export default function OverdueLogWork() {
   const currentPage = meta?.current_page ?? page;
   const totalPages = meta?.last_page ?? 1;
   const totalResults = meta?.total ?? filteredIssues.length;
-
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [page, totalPages]);
 
   const handleReset = () => {
     setSearch("");
@@ -149,8 +137,8 @@ export default function OverdueLogWork() {
     <div className={styles.overdue}>
       <header className={styles.header}>
         <SectionHeader
-          eyebrow="Hall of Fame"
-          title="Overdue Log Work"
+          eyebrow="Vinh danh"
+          title="Quá hạn log work"
           desc="Theo dõi các log work đã quá hạn và cần được cập nhật"
           variant="bug"
         />
@@ -169,10 +157,17 @@ export default function OverdueLogWork() {
       <div className={styles.tabsSection}>
         <IssueTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
         <OverdueLogWorkTable
-          title={`${STATUS_MAP[activeTab]} Issues`}
+          title={
+            activeTab === "overdue"
+              ? "Quá hạn"
+              : activeTab === "warning"
+                ? "Cần cảnh báo"
+                : "Thiếu cập nhật"
+          }
           columns={columns}
           issues={filteredIssues}
         />
+
         <PaginationBar
           page={currentPage}
           totalPages={totalPages}

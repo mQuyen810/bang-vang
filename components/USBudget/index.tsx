@@ -7,8 +7,7 @@ import { SectionHeader } from "@/components/Dashboard/Ranking/SectionHeader";
 import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
 import { FilterBar } from "@/components/Ranking/FilterBar";
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
-import { IssueTable } from "../ui/Issue/IssueTable";
-
+import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
 
 import styles from "./styles.module.scss";
@@ -17,20 +16,21 @@ import { USBudgetTable } from "../ui/Issue/IssueTable/USBudget";
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
-  "Key",
-  "Summary",
-  "Assignee",
-  "Issue Type",
-  "Story Budget",
-  "SubTask Budget",
-  "Over Budget",
+  "Mã",
+  "Tóm tắt",
+  "Người phụ trách",
+  "Loại issue",
+  "Trạng thái",
+  "Ngân sách Story",
+  "Ngân sách Sub-task",
+  "Vượt ngân sách",
 ];
 
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
 export default function USBudgetPage() {
-  const { usBudget, period, selectedProjects, setPeriod, fetchUSBudget } =
-    useDashboardStore();
+  const { selectedProjects } = useDashboardStore();
+  const { usBudget, period, fetchUSBudget, setPeriod } = useIssuePeriodStore();
 
   const [search, setSearch] = useState("");
   const [debouncedUsername, setDebouncedUsername] = useState("");
@@ -53,12 +53,12 @@ export default function USBudgetPage() {
   useEffect(() => {
     const userNameParam = debouncedUsername ? debouncedUsername : null;
 
-    fetchUSBudget(userNameParam, page, DEFAULT_PAGE_SIZE);
+    fetchUSBudget({
+      userName: userNameParam,
+      page,
+      perPage: DEFAULT_PAGE_SIZE,
+    });
   }, [page, period, selectedProjects, debouncedUsername]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [period, selectedProjects]);
 
   const issues = useMemo(() => {
     const list = usBudget?.issues.details.list ?? [];
@@ -76,12 +76,6 @@ export default function USBudgetPage() {
   const totalPages = meta?.last_page ?? 1;
   const totalResults = meta?.total ?? filteredIssues.length;
 
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [page, totalPages]);
-
   const handleReset = () => {
     setSearch("");
     setIssueType("all");
@@ -98,8 +92,8 @@ export default function USBudgetPage() {
     <div className={styles.overdue}>
       <header className={styles.header}>
         <SectionHeader
-          eyebrow="Hall of Fame"
-          title="US Budget"
+          eyebrow="Vinh danh"
+          title="Ngân sách US"
           desc="Theo dõi các issue vượt ngân sách"
           variant="bug"
         />
@@ -116,7 +110,7 @@ export default function USBudgetPage() {
       />
 
       <USBudgetTable
-        title="Budget Issues"
+        title="Các issue vượt ngân sách"
         columns={columns}
         issues={filteredIssues}
       />

@@ -12,7 +12,7 @@ import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
 import { AlertTriangle, Clock3 } from "lucide-react";
 
 import { IssueTabs } from "../ui/Issue/IssueTabs";
-import { OverdueTable } from "../ui/Issue/IssueTable/OverdueTable";
+import { MilestonesTable } from "../ui/Issue/IssueTable/MilestonesTable";
 
 import styles from "./styles.module.scss";
 
@@ -20,15 +20,7 @@ type MilestoneTab = "missing" | "exception";
 
 const DEFAULT_PAGE_SIZE = 10;
 
-const columns = [
-  "Key",
-  "Summary",
-  "Assignee",
-  "Issue Type",
-  "End Date",
-  "Status",
-  "Actual Date",
-];
+const columns = ["ID", "Ticket Code", "Milestone", "Report Type"];
 
 export default function Milestone() {
   const { milestones, period, fetchMilestones, setPeriod } =
@@ -44,22 +36,27 @@ export default function Milestone() {
   const [issueType, setIssueType] = useState("all");
   const [page, setPage] = useState(1);
 
-  const [missingCount, setMissingCount] = useState(0);
-  const [exceptionCount, setExceptionCount] = useState(0);
+  const [countsByReportType, setCountsByReportType] = useState<{
+    MISSING: number;
+    EXCEPTION: number;
+  }>({
+    MISSING: 0,
+    EXCEPTION: 0,
+  });
 
   const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
 
   const tabs = [
     {
       key: "missing" as const,
-      label: "Missing",
-      count: missingCount,
+      label: "Thiếu cập nhật",
+      count: countsByReportType.MISSING,
       icon: Clock3,
     },
     {
       key: "exception" as const,
-      label: "Exception",
-      count: exceptionCount,
+      label: "Ngoại lệ",
+      count: countsByReportType.EXCEPTION,
       icon: AlertTriangle,
     },
   ];
@@ -72,6 +69,8 @@ export default function Milestone() {
     return () => window.clearTimeout(t);
   }, [search]);
 
+  const pageToFetch = 1;
+
   useEffect(() => {
     const userNameParam = debouncedUsername ? debouncedUsername : null;
 
@@ -79,31 +78,29 @@ export default function Milestone() {
       report_type: activeTab === "missing" ? "MISSING" : "EXCEPTION",
       issuetype: issueType === "all" ? null : issueType,
       userName: userNameParam,
-      page,
+      page: pageToFetch,
       perPage: DEFAULT_PAGE_SIZE,
     });
   }, [
     activeTab,
     issueType,
     period,
-    page,
     selectedProjects,
     debouncedUsername,
     fetchMilestones,
   ]);
 
   useEffect(() => {
-    setPage(1);
-  }, [activeTab, issueType, period]);
+    if (!milestones?.issues?.details?.meta) return;
 
-  useEffect(() => {
-    if (!milestones) return;
+    const total = milestones.issues.details.meta.total;
+    const reportType: "MISSING" | "EXCEPTION" =
+      activeTab === "missing" ? "MISSING" : "EXCEPTION";
 
-    if (activeTab === "missing") {
-      setMissingCount(milestones.issues.details.meta.total);
-    } else {
-      setExceptionCount(milestones.issues.details.meta.total);
-    }
+    setCountsByReportType((prev) => ({
+      ...prev,
+      [reportType]: total,
+    }));
   }, [milestones, activeTab]);
 
   const issues = useMemo(
@@ -117,10 +114,10 @@ export default function Milestone() {
   const totalResults = meta?.total ?? issues.length;
 
   useEffect(() => {
-    if (page > totalPages) setPage(totalPages);
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
   }, [page, totalPages]);
-
-  const filteredIssues = useMemo(() => issues, [issues]);
 
   const handleReset = () => {
     setSearch("");
@@ -157,12 +154,12 @@ export default function Milestone() {
       <div className={styles.tabsSection}>
         <IssueTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
 
-        <OverdueTable
+        <MilestonesTable
           title={
             activeTab === "missing" ? "Missing Issues" : "Exception Issues"
           }
           columns={columns}
-          issues={filteredIssues as any}
+          issues={issues}
         />
 
         {totalResults > 0 && (

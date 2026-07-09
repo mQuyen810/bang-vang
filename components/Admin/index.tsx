@@ -4,14 +4,11 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   RefreshCw,
-  Download,
   LogOut,
   Search,
-  Plus,
-  ChevronRight,
-  Home,
   X,
 } from "lucide-react";
+
 import { message } from "antd";
 
 import { useAuthStore, isSuperAdmin } from "@/stores/auth.store";
@@ -50,7 +47,8 @@ export default function Admin() {
 
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [loading, setLoading] = useState(false);
-  const [isSuperAdminUser, setIsSuperAdminUser] = useState(false);
+  const isSuperAdminUser = isAuthenticated ? isSuperAdmin() : false;
+
 
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
@@ -65,9 +63,9 @@ export default function Admin() {
       return;
     }
     const isSuper = isSuperAdmin();
-    setIsSuperAdminUser(isSuper);
 
     if (!isSuper) {
+
       message.warning("Bạn không có quyền truy cập trang này!");
       router.replace("/dashboard");
       return;

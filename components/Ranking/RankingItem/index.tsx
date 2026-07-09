@@ -19,6 +19,7 @@ interface RankingItemProps {
 
   bugCount?: number;
   subtaskCount?: number;
+  bugMissing?: number;
 
   ratio?: number;
 }
@@ -32,6 +33,7 @@ export const RankingItem: React.FC<RankingItemProps> = ({
   capacity,
   bugCount,
   subtaskCount,
+  bugMissing,
   ratio,
   tab,
   index,
@@ -96,9 +98,18 @@ export const RankingItem: React.FC<RankingItemProps> = ({
         </div>
       </div>
 
+      <div className={styles.bugMissingColumn}>
+        <div className={styles.bugMissingHeader}>
+          {tab === "bug" ? "Bug Missing" : ""}
+        </div>
+        <div className={styles.bugMissingValue}>
+          {tab === "bug" ? (bugMissing ?? "—") : ""}
+        </div>
+      </div>
+
       <div className={styles.progressColumn}>
         <div className={styles.progressHeader}>
-          <span>{tab === "prod" ? `Sản lượng` : `Bug Percent`}</span>
+          <span>{tab === "prod" ? "Sản lượng" : "Tỷ lệ lỗi"}</span>
 
           <span className={styles.progressValue}>
             {tab === "prod"

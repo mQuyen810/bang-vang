@@ -22,14 +22,15 @@ type OverdueTab = "overdue" | "warning";
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
-  "Key",
-  "Summary",
-  "Assignee",
-  "Issue Type",
-  "End Date",
-  "Status",
-  "Actual Date",
+  "Mã",
+  "Tóm tắt",
+  "Người phụ trách",
+  "Loại issue",
+  "Ngày kết thúc",
+  "Trạng thái",
+  "Ngày thực tế",
 ];
+
 
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
@@ -53,17 +54,18 @@ export default function Overdue() {
   const tabs = [
     {
       key: "overdue",
-      label: "Overdue",
+      label: "Quá hạn",
       count: overdueCount,
       icon: Clock3,
     },
     {
       key: "warning",
-      label: "Warning",
+      label: "Cần cảnh báo",
       count: warningCount,
       icon: AlertTriangle,
     },
   ] as const;
+
 
   useEffect(() => {
     const t = window.setTimeout(() => {
@@ -81,6 +83,8 @@ export default function Overdue() {
     fetchOverdue({
       issuetype: issueType === "all" ? null : issueType,
       status: activeTab === "overdue" ? "Overdue" : "Warning",
+
+
       table_id: 1,
       userName: userNameParam,
       page,
@@ -88,21 +92,12 @@ export default function Overdue() {
     });
   }, [activeTab, issueType, period, page, selectedProjects, debouncedUsername]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [activeTab, issueType, period]);
-
-  useEffect(() => {
-    if (!overdue) return;
-
-    if (activeTab === "overdue") {
-      setOverdueCount(overdue.issues.details.meta.total);
-    } else {
-      setWarningCount(overdue.issues.details.meta.total);
-    }
-  }, [overdue, activeTab]);
+  // Note: Avoid page/count resets inside useEffect to satisfy ESLint
+  // `react-hooks/set-state-in-effect`.
 
   const issues = useMemo(() => overdue?.issues.details.list ?? [], [overdue]);
+
+
 
   const filteredIssues = useMemo(() => issues, [issues]);
 
@@ -112,11 +107,7 @@ export default function Overdue() {
   const totalPages = meta?.last_page ?? 1;
   const totalResults = meta?.total ?? filteredIssues.length;
 
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [page, totalPages]);
+
 
   const handleReset = () => {
     setSearch("");
@@ -134,8 +125,9 @@ export default function Overdue() {
     <div className={styles.overdue}>
       <header className={styles.header}>
         <SectionHeader
-          eyebrow="Hall of Fame"
-          title="Overdue Issues"
+          eyebrow="Vinh danh"
+          title="Các issue quá hạn"
+
           desc="Theo dõi các issue đã quá hạn và cần xử lý"
           variant="bug"
         />
@@ -152,7 +144,7 @@ export default function Overdue() {
         selects={[
           {
             key: "issueType",
-            label: "Type",
+            label: "Loại",
             value: issueType,
             onChange: setIssueType,
             options: [
@@ -168,7 +160,8 @@ export default function Overdue() {
       <div className={styles.tabsSection}>
         <IssueTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
         <OverdueTable
-          title={activeTab === "overdue" ? "Overdue Issues" : "Warning Issues"}
+          title={activeTab === "overdue" ? "Các issue quá hạn" : "Các issue cần cảnh báo"}
+
           columns={columns}
           issues={filteredIssues}
         />
