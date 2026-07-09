@@ -71,6 +71,11 @@ export const SIDEBAR_MENU: SidebarGroup[] = [
         path: "/usbudget",
         icon: TriangleAlert,
       },
+      {
+        label: "Thiếu milestone",
+        path: "/milestone",
+        icon: TriangleAlert,
+      },
     ],
   },
 ];

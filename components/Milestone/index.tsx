@@ -138,7 +138,7 @@ export default function Milestone() {
       <header className={styles.header}>
         <SectionHeader
           eyebrow="Hall of Fame"
-          title="Missing Issues"
+          title="Thiếu milestone"
           desc="Theo dõi các issue đã quá hạn và cần xử lý"
           variant="bug"
         />
@@ -152,20 +152,6 @@ export default function Milestone() {
         onReset={handleReset}
         selectedMonth={selectedMonth}
         onMonthChange={handleMonthChange}
-        selects={[
-          {
-            key: "issueType",
-            label: "Type",
-            value: issueType,
-            onChange: setIssueType,
-            options: [
-              { value: "all", label: "Tất cả" },
-              { value: "Sub-task", label: "Sub-task" },
-              { value: "Story", label: "Story" },
-              { value: "Milestone", label: "Milestone" },
-            ],
-          },
-        ]}
       />
 
       <div className={styles.tabsSection}>

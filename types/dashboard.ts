@@ -223,6 +223,7 @@ export interface USBudget {
   summary: string;
   issuetype: string;
   assignee: string;
+  status: string;
   slsx: number;
   sumSLSXSubTask: number;
   ratioSLSX: number;
