@@ -35,7 +35,8 @@ const columns = [
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
 export default function Overdue() {
-  const { overdue, period, fetchOverdue, setPeriod } = useIssuePeriodStore();
+  const { overdue, overduePeriod, fetchOverdue, setOverduePeriod } =
+    useIssuePeriodStore();
   const { selectedProjects } = useDashboardStore();
 
   const [activeTab, setActiveTab] = useState<OverdueTab>("overdue");
@@ -49,7 +50,7 @@ export default function Overdue() {
   const [overdueCount, setOverdueCount] = useState(0);
   const [warningCount, setWarningCount] = useState(0);
 
-  const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
+  const selectedMonth = dayjs(overduePeriod, "MM-YYYY").format("YYYY-MM");
 
   const tabs = [
     {
@@ -90,7 +91,14 @@ export default function Overdue() {
       page,
       perPage: DEFAULT_PAGE_SIZE,
     });
-  }, [activeTab, issueType, period, page, selectedProjects, debouncedUsername]);
+  }, [
+    activeTab,
+    issueType,
+    overduePeriod,
+    page,
+    selectedProjects,
+    debouncedUsername,
+  ]);
 
   // Note: Avoid page/count resets inside useEffect to satisfy ESLint
   // `react-hooks/set-state-in-effect`.
@@ -118,7 +126,7 @@ export default function Overdue() {
   const handleMonthChange = (month: string) => {
     if (!month) return;
 
-    setPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
+    setOverduePeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
   };
 
   return (

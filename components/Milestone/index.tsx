@@ -23,7 +23,7 @@ const DEFAULT_PAGE_SIZE = 10;
 const columns = ["ID", "Ticket Code", "Milestone", "Report Type"];
 
 export default function Milestone() {
-  const { milestones, period, fetchMilestones, setPeriod } =
+  const { milestones, milestonesPeriod, fetchMilestones, setMilestonesPeriod } =
     useIssuePeriodStore();
 
   // giữ để refetch khi thay đổi project filter
@@ -36,27 +36,23 @@ export default function Milestone() {
   const [issueType, setIssueType] = useState("all");
   const [page, setPage] = useState(1);
 
-  const [countsByReportType, setCountsByReportType] = useState<{
-    MISSING: number;
-    EXCEPTION: number;
-  }>({
-    MISSING: 0,
-    EXCEPTION: 0,
-  });
-
-  const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
+  const selectedMonth = dayjs(milestonesPeriod, "MM-YYYY").format("YYYY-MM");
 
   const tabs = [
     {
       key: "missing" as const,
       label: "Thiếu cập nhật",
-      count: countsByReportType.MISSING,
+      count:
+        activeTab === "missing" ? (milestones?.issues.details.meta?.total ?? 0) : 0,
       icon: Clock3,
     },
     {
       key: "exception" as const,
       label: "Ngoại lệ",
-      count: countsByReportType.EXCEPTION,
+      count:
+        activeTab === "exception"
+          ? (milestones?.issues.details.meta?.total ?? 0)
+          : 0,
       icon: AlertTriangle,
     },
   ];
@@ -69,8 +65,6 @@ export default function Milestone() {
     return () => window.clearTimeout(t);
   }, [search]);
 
-  const pageToFetch = 1;
-
   useEffect(() => {
     const userNameParam = debouncedUsername ? debouncedUsername : null;
 
@@ -78,30 +72,18 @@ export default function Milestone() {
       report_type: activeTab === "missing" ? "MISSING" : "EXCEPTION",
       issuetype: issueType === "all" ? null : issueType,
       userName: userNameParam,
-      page: pageToFetch,
+      page,
       perPage: DEFAULT_PAGE_SIZE,
     });
   }, [
     activeTab,
     issueType,
-    period,
+    page,
+    milestonesPeriod,
     selectedProjects,
     debouncedUsername,
     fetchMilestones,
   ]);
-
-  useEffect(() => {
-    if (!milestones?.issues?.details?.meta) return;
-
-    const total = milestones.issues.details.meta.total;
-    const reportType: "MISSING" | "EXCEPTION" =
-      activeTab === "missing" ? "MISSING" : "EXCEPTION";
-
-    setCountsByReportType((prev) => ({
-      ...prev,
-      [reportType]: total,
-    }));
-  }, [milestones, activeTab]);
 
   const issues = useMemo(
     () => milestones?.issues.details.list ?? [],
@@ -113,11 +95,20 @@ export default function Milestone() {
   const totalPages = meta?.last_page ?? 1;
   const totalResults = meta?.total ?? issues.length;
 
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [page, totalPages]);
+  const handleTabChange = (nextTab: string) => {
+    setActiveTab(nextTab as MilestoneTab);
+    setPage(1);
+  };
+
+  const handleIssueTypeChange = (value: string) => {
+    setIssueType(value);
+    setPage(1);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
 
   const handleReset = () => {
     setSearch("");
@@ -127,7 +118,8 @@ export default function Milestone() {
 
   const handleMonthChange = (month: string) => {
     if (!month) return;
-    setPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
+    setPage(1);
+    setMilestonesPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
   };
 
   return (
@@ -143,16 +135,30 @@ export default function Milestone() {
 
       <FilterBarUsernameType
         username={search}
-        onUsernameChange={setSearch}
+        onUsernameChange={handleSearchChange}
         usernamePlaceholder="Tìm theo tên nhân viên"
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}
         onMonthChange={handleMonthChange}
+        selects={[
+          {
+            key: "issueType",
+            label: "Loại",
+            value: issueType,
+            onChange: handleIssueTypeChange,
+            options: [
+              { value: "all", label: "Tất cả" },
+              { value: "Sub-task", label: "Sub-task" },
+              { value: "Story", label: "Story" },
+              { value: "Milestone", label: "Milestone" },
+            ],
+          },
+        ]}
       />
 
       <div className={styles.tabsSection}>
-        <IssueTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
+        <IssueTabs activeTab={activeTab} tabs={tabs} onChange={handleTabChange} />
 
         <MilestonesTable
           title={

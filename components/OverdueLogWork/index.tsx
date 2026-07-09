@@ -38,8 +38,12 @@ const columns = [
 ];
 
 export default function OverdueLogWork() {
-  const { overdueLogWork, period, fetchOverdueLogWork, setPeriod } =
-    useIssuePeriodStore();
+  const {
+    overdueLogWork,
+    overdueLogWorkPeriod,
+    fetchOverdueLogWork,
+    setOverdueLogWorkPeriod,
+  } = useIssuePeriodStore();
   const { selectedProjects } = useDashboardStore();
 
   const [activeTab, setActiveTab] = useState<OverdueTab>("overdue");
@@ -63,7 +67,9 @@ export default function OverdueLogWork() {
     };
   }, [overdueLogWork, activeTab]);
 
-  const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
+  const selectedMonth = dayjs(overdueLogWorkPeriod, "MM-YYYY").format(
+    "YYYY-MM",
+  );
   const tabs = [
     {
       key: "overdue",
@@ -106,7 +112,14 @@ export default function OverdueLogWork() {
       page,
       perPage: DEFAULT_PAGE_SIZE,
     });
-  }, [activeTab, issueType, page, period, selectedProjects, debouncedUsername]);
+  }, [
+    activeTab,
+    issueType,
+    page,
+    overdueLogWorkPeriod,
+    selectedProjects,
+    debouncedUsername,
+  ]);
 
   const issues = useMemo(
     () => overdueLogWork?.issues.details.list ?? [],
@@ -130,7 +143,7 @@ export default function OverdueLogWork() {
   const handleMonthChange = (month: string) => {
     if (!month) return;
 
-    setPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
+    setOverdueLogWorkPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
   };
 
   return (

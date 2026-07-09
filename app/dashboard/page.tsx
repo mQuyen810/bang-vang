@@ -24,6 +24,7 @@ export default function DashboardPage() {
       fetchLeaderboardSlsxRatio();
     }
   }, [
+    user,
     fetchOverview,
     fetchProjects,
     fetchLeaderboardBugRatio,

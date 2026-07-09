@@ -30,7 +30,8 @@ const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
 export default function USBudgetPage() {
   const { selectedProjects } = useDashboardStore();
-  const { usBudget, period, fetchUSBudget, setPeriod } = useIssuePeriodStore();
+  const { usBudget, usBudgetPeriod, fetchUSBudget, setUsBudgetPeriod } =
+    useIssuePeriodStore();
 
   const [search, setSearch] = useState("");
   const [debouncedUsername, setDebouncedUsername] = useState("");
@@ -38,7 +39,7 @@ export default function USBudgetPage() {
   const [issueType, setIssueType] = useState("all");
   const [page, setPage] = useState(1);
 
-  const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
+  const selectedMonth = dayjs(usBudgetPeriod, "MM-YYYY").format("YYYY-MM");
 
   useEffect(() => {
     const t = window.setTimeout(() => {
@@ -58,7 +59,7 @@ export default function USBudgetPage() {
       page,
       perPage: DEFAULT_PAGE_SIZE,
     });
-  }, [page, period, selectedProjects, debouncedUsername]);
+  }, [page, usBudgetPeriod, selectedProjects, debouncedUsername]);
 
   const issues = useMemo(() => {
     const list = usBudget?.issues.details.list ?? [];
@@ -85,7 +86,7 @@ export default function USBudgetPage() {
   const handleMonthChange = (month: string) => {
     if (!month) return;
 
-    setPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
+    setUsBudgetPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
   };
 
   return (
