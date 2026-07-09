@@ -43,18 +43,25 @@ export default function Header() {
   };
 
   const userItems: MenuProps["items"] = [
-    {
-      key: "settings",
-      icon: (
-        <Settings size={14} className={loadingAll ? styles.spinning : ""} />
-      ),
-      label: loadingAll ? "Đang đồng bộ dữ liệu" : "Đồng bộ dữ liệu",
-      onClick: () => handleSyncAll(),
-      disabled: loadingAll,
-    },
-    {
-      type: "divider",
-    },
+    ...((user?.is_admin === 1 || user?.super_admin === 1)
+      ? [
+          {
+            key: "settings",
+            icon: (
+              <Settings
+                size={14}
+                className={loadingAll ? styles.spinning : ""}
+              />
+            ),
+            label: loadingAll ? "Đang đồng bộ dữ liệu" : "Đồng bộ dữ liệu",
+            onClick: () => handleSyncAll(),
+            disabled: loadingAll,
+          },
+          {
+            type: "divider" as const,
+          },
+        ]
+      : []),
     {
       key: "logout",
       icon: <LogOut size={14} />,
@@ -225,13 +232,15 @@ export default function Header() {
       </div>
 
       <div className={styles.actions}>
-        <button
-          className={styles.iconBtn}
-          onClick={handleSync}
-          disabled={loading}
-        >
-          <RefreshCw size={18} className={loading ? styles.spinning : ""} />
-        </button>
+        {(user?.is_admin === 1 || user?.super_admin === 1) && (
+          <button
+            className={styles.iconBtn}
+            onClick={handleSync}
+            disabled={loading}
+          >
+            <RefreshCw size={18} className={loading ? styles.spinning : ""} />
+          </button>
+        )}
 
         <button className={styles.iconBtn} onClick={() => setDark(!dark)}>
           {dark ? <Sun size={18} /> : <Moon size={18} />}
