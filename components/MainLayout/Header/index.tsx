@@ -31,7 +31,7 @@ export default function Header() {
   const [dark, setDark] = useState(true);
   const [loading, setLoading] = useState(false);
   const [loadingAll, setLoadingAll] = useState(false);
-  const { projects, selectedProjects, setSelectedProjects } =
+  const { projects, selectedProjects, setSelectedProjects, fetchProjects } =
     useDashboardStore();
   const [projectOpen, setProjectOpen] = useState(false);
 
@@ -94,6 +94,12 @@ export default function Header() {
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!user || projects.length > 0) return;
+
+    fetchProjects();
+  }, [user, projects.length, fetchProjects]);
 
   const handleSync = async () => {
     if (loading) return;

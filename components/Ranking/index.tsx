@@ -10,18 +10,26 @@ import { PaginationBar } from "./PaginationBar";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import { useRankingStore } from "@/stores/ranking.store";
+import { getCurrentPeriod } from "@/utils/date";
 
 import { mapBugRanking } from "@/utils/rankingBug";
 import { mapProductivityRanking } from "@/utils/rankingProductivity";
 import type { RankingBug, RankingProductivity } from "@/types/rankingItem";
-
-// eslint-disable-next-line react-hooks/exhaustive-deps
 
 import styles from "./styles.module.scss";
 import dayjs from "dayjs";
 
 type TabType = "prod" | "bug";
 const DEFAULT_PAGE_SIZE = 10;
+
+const rankingTabs: ReadonlyArray<{
+  key: TabType;
+  label: string;
+  icon: React.ReactNode;
+}> = [
+  { key: "prod", label: "Sản lượng", icon: <Sparkles size={16} /> },
+  { key: "bug", label: "Xử lý lỗi", icon: <Star size={16} /> },
+];
 
 type CommonRankingItem = Pick<
   RankingProductivity,
@@ -53,7 +61,7 @@ const RankingsPage: React.FC = () => {
   const [debouncedUsername, setDebouncedUsername] = useState("");
 
   const [page, setPage] = useState(1);
-  const { period, selectedProjects } = useDashboardStore();
+  const { selectedProjects } = useDashboardStore();
 
   const {
     leaderboardBugRatio,
@@ -61,12 +69,15 @@ const RankingsPage: React.FC = () => {
     fetchLeaderboardBugRatio,
     fetchLeaderboardSlsxRatio,
   } = useRankingStore();
-  const apiPeriod =
-    leaderboardSlsxRatio?.period ?? leaderboardBugRatio?.period ?? period;
+  const [rankingPeriod, setRankingPeriod] = useState(getCurrentPeriod());
+  const selectedMonth = dayjs(rankingPeriod, "MM-YYYY").format("YYYY-MM");
 
-  const [rankingPeriod, setRankingPeriod] = useState(period);
-  const [defaultMonth, setDefaultMonth] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState("");
+  const handleTabChange = (nextTab: TabType) => {
+    if (nextTab === tab) return;
+
+    setPage(1);
+    router.replace(`/ranking?tab=${nextTab}`);
+  };
 
   const productivityData = useMemo(
     () =>
@@ -97,7 +108,6 @@ const RankingsPage: React.FC = () => {
 
   const list = base;
   const totalPages = activeMeta?.last_page ?? 1;
-  const currentPage = activeMeta?.current_page ?? page;
   const rankStart = activeMeta?.from ?? 1;
   const pageSize = activeMeta?.per_page ?? DEFAULT_PAGE_SIZE;
   const totalResults = activeMeta?.total ?? list.length;
@@ -117,25 +127,11 @@ const RankingsPage: React.FC = () => {
 
   const handleReset = () => {
     setSearch("");
-
-    if (defaultMonth) {
-      setSelectedMonth(dayjs(defaultMonth, "MM-YYYY").format("YYYY-MM"));
-      setRankingPeriod(defaultMonth);
-    }
   };
 
   const handleMonthChange = (month: string) => {
-    if (!month) {
-      if (defaultMonth) {
-        setPage(1);
-        setSelectedMonth(dayjs(defaultMonth, "MM-YYYY").format("YYYY-MM"));
-        setRankingPeriod(defaultMonth);
-      }
+    if (!month) return;
 
-      return;
-    }
-
-    setSelectedMonth(month);
     setRankingPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
   };
 
@@ -194,13 +190,11 @@ const RankingsPage: React.FC = () => {
         </div>
 
         <div className={styles.tabGroup}>
-          {[
-            { key: "prod", label: "Sản lượng", icon: <Sparkles size={16} /> },
-            { key: "bug", label: "Xử lý lỗi", icon: <Star size={16} /> },
-          ].map((t) => (
+          {rankingTabs.map((t) => (
             <button
+              type="button"
               key={t.key}
-              onClick={() => router.push(`/ranking?tab=${t.key}`)}
+              onClick={() => handleTabChange(t.key)}
               className={`${styles.tabButton} ${tab === t.key ? styles.tabActive : ""}`}
             >
               {t.icon}

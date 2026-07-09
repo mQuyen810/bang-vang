@@ -15,7 +15,10 @@ import type {
 interface IssuePeriodState {
   loading: boolean;
 
-  period: string;
+  overduePeriod: string;
+  overdueLogWorkPeriod: string;
+  milestonesPeriod: string;
+  usBudgetPeriod: string;
 
   overdue: OverdueResponseType | null;
   overdueLogWork: OverdueLogWorkResponseType | null;
@@ -23,7 +26,10 @@ interface IssuePeriodState {
 
   milestones: MilestonesResponseType | null;
 
-  setPeriod: (period: string) => void;
+  setOverduePeriod: (period: string) => void;
+  setOverdueLogWorkPeriod: (period: string) => void;
+  setMilestonesPeriod: (period: string) => void;
+  setUsBudgetPeriod: (period: string) => void;
 
   fetchOverdue: (args: {
     issuetype?: string | null;
@@ -32,6 +38,7 @@ interface IssuePeriodState {
     userName?: string | null;
     page?: number;
     perPage?: number;
+    periodOverride?: string;
   }) => Promise<void>;
 
   fetchOverdueLogWork: (args: {
@@ -41,6 +48,7 @@ interface IssuePeriodState {
     userName?: string | null;
     page?: number;
     perPage?: number;
+    periodOverride?: string;
   }) => Promise<void>;
 
   fetchMilestones: (args: {
@@ -49,12 +57,14 @@ interface IssuePeriodState {
     userName?: string | null;
     page?: number;
     perPage?: number;
+    periodOverride?: string;
   }) => Promise<void>;
 
   fetchUSBudget: (args: {
     userName?: string | null;
     page?: number;
     perPage?: number;
+    periodOverride?: string;
   }) => Promise<void>;
 }
 
@@ -75,25 +85,39 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
     };
   };
 
-  const getCommonParams = (): CommonParams => {
-    const { period } = get();
+  const getCommonParams = (period: string): CommonParams => {
     return {
       period,
       ...getProjectsFilter(),
     };
   };
 
+  const getOverduePeriod = (periodOverride?: string) =>
+    periodOverride ?? get().overduePeriod;
+  const getOverdueLogWorkPeriod = (periodOverride?: string) =>
+    periodOverride ?? get().overdueLogWorkPeriod;
+  const getMilestonesPeriod = (periodOverride?: string) =>
+    periodOverride ?? get().milestonesPeriod;
+  const getUsBudgetPeriod = (periodOverride?: string) =>
+    periodOverride ?? get().usBudgetPeriod;
+
   return {
     loading: false,
 
-    period: getCurrentPeriod(),
+    overduePeriod: getCurrentPeriod(),
+    overdueLogWorkPeriod: getCurrentPeriod(),
+    milestonesPeriod: getCurrentPeriod(),
+    usBudgetPeriod: getCurrentPeriod(),
 
     overdue: null,
     overdueLogWork: null,
     milestones: null,
     usBudget: null,
 
-    setPeriod: (period) => set({ period }),
+    setOverduePeriod: (period) => set({ overduePeriod: period }),
+    setOverdueLogWorkPeriod: (period) => set({ overdueLogWorkPeriod: period }),
+    setMilestonesPeriod: (period) => set({ milestonesPeriod: period }),
+    setUsBudgetPeriod: (period) => set({ usBudgetPeriod: period }),
 
     fetchOverdue: async ({
       issuetype = null,
@@ -102,11 +126,13 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
       userName = null,
       page = 1,
       perPage = 10,
+      periodOverride,
     } = {}) => {
       set({ loading: true });
       try {
+        const period = getOverduePeriod(periodOverride);
         const filter = {
-          ...getCommonParams(),
+          ...getCommonParams(period),
           user_name: userName ?? null,
           page,
           per_page: perPage,
@@ -134,11 +160,13 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
       userName = null,
       page = 1,
       perPage = 10,
+      periodOverride,
     } = {}) => {
       set({ loading: true });
       try {
+        const period = getOverdueLogWorkPeriod(periodOverride);
         const filter = {
-          ...getCommonParams(),
+          ...getCommonParams(period),
           user_name: userName ?? null,
           page,
           per_page: perPage,
@@ -165,11 +193,13 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
       userName = null,
       page = 1,
       perPage = 10,
+      periodOverride,
     }) => {
       set({ loading: true });
       try {
+        const period = getMilestonesPeriod(periodOverride);
         const filter = {
-          ...getCommonParams(),
+          ...getCommonParams(period),
           report_type,
           user_name: userName ?? null,
           page,
@@ -188,11 +218,17 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
       }
     },
 
-    fetchUSBudget: async ({ userName = null, page = 1, perPage = 10 } = {}) => {
+    fetchUSBudget: async ({
+      userName = null,
+      page = 1,
+      perPage = 10,
+      periodOverride,
+    } = {}) => {
       set({ loading: true });
       try {
+        const period = getUsBudgetPeriod(periodOverride);
         const filter = {
-          ...getCommonParams(),
+          ...getCommonParams(period),
           user_name: userName ?? null,
           page,
           per_page: perPage,
