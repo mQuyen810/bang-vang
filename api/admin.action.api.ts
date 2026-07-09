@@ -12,7 +12,6 @@ export const toggleAdminApi = async (data: ToggleAdminRequest) => {
     "/admin/manager/user",
     data,
   );
-  console.log("hi", res.data);
 
   return res.data;
 };

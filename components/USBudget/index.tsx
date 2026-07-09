@@ -7,7 +7,7 @@ import { SectionHeader } from "@/components/Dashboard/Ranking/SectionHeader";
 import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
 import { FilterBar } from "@/components/Ranking/FilterBar";
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
-
+import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
 
 import styles from "./styles.module.scss";
@@ -29,8 +29,8 @@ const columns = [
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
 export default function USBudgetPage() {
-  const { usBudget, period, selectedProjects, setPeriod, fetchUSBudget } =
-    useDashboardStore();
+  const { selectedProjects } = useDashboardStore();
+  const { usBudget, period, fetchUSBudget, setPeriod } = useIssuePeriodStore();
 
   const [search, setSearch] = useState("");
   const [debouncedUsername, setDebouncedUsername] = useState("");
@@ -53,7 +53,11 @@ export default function USBudgetPage() {
   useEffect(() => {
     const userNameParam = debouncedUsername ? debouncedUsername : null;
 
-    fetchUSBudget(userNameParam, page, DEFAULT_PAGE_SIZE);
+    fetchUSBudget({
+      userName: userNameParam,
+      page,
+      perPage: DEFAULT_PAGE_SIZE,
+    });
   }, [page, period, selectedProjects, debouncedUsername]);
 
   const issues = useMemo(() => {
