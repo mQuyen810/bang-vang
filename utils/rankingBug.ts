@@ -17,6 +17,8 @@ export const mapBugRanking = (list: BugRatio[]): RankingBug[] =>
 
       bugPercent: Number(item.bug_percent),
 
+      bugCountMissing: item.bug_count_missing,
+
       bugCount: item.bug_count,
 
       subtaskCount: item.subtask_count,

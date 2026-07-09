@@ -1,5 +1,4 @@
-import type { OverdueLogWorkIssue as MilestoneIssue } from "@/types/dashboard";
-
+import type { MilestoneIssue } from "@/types/dashboard";
 
 import { AlertBadge } from "../IssueTypeBadge";
 import { PriorityBadge } from "../PriorityBadge";
@@ -26,25 +25,16 @@ export function MilestonesTable({ title, columns, issues }: Props) {
         issues.map((item) => (
           <tr key={item.id} className={styles.tr}>
             <td className={styles.td}>
-              <span className={styles.idCell}>{item.key}</span>
+              <span className={styles.idCell}>{item.id}</span>
             </td>
             <td className={styles.td}>
-              <span className={styles.summaryCell}>{item.summary}</span>
+              <span className={styles.idCell}>{item.ticket_code}</span>
             </td>
             <td className={styles.td}>
-              <span className={styles.otherCell}>{item.assignee}</span>
+              <span className={styles.summaryCell}>{item.milestone_name}</span>
             </td>
             <td className={styles.td}>
-              <PriorityBadge priority={item.issuetype} />
-            </td>
-            <td className={styles.td}>
-              <span className={styles.otherCell}>{item.enddate}</span>
-            </td>
-            <td className={styles.td}>
-              <StatusBadge status={item.status} />
-            </td>
-            <td className={styles.td}>
-              <AlertBadge text={item.statusText} />
+              <PriorityBadge priority={item.report_type} />
             </td>
           </tr>
         ))
@@ -52,4 +42,3 @@ export function MilestonesTable({ title, columns, issues }: Props) {
     </TableWrapper>
   );
 }
-

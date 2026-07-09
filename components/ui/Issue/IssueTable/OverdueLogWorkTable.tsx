@@ -43,7 +43,7 @@ export function OverdueLogWorkTable({ title, columns, issues }: Props) {
               <StatusBadge status={item.status} />
             </td>
             <td className={styles.td}>
-              <AlertBadge text={item.statusText} />
+              <AlertBadge text={(item as any).statusText ?? ""} />
             </td>
           </tr>
         ))

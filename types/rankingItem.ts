@@ -8,7 +8,7 @@ export interface RankingBug {
   avatar: string;
 
   bugPercent: number;
-
+  bugCountMissing: number;
   bugCount: number;
 
   subtaskCount: number;

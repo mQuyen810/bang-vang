@@ -141,20 +141,13 @@ export interface OverdueIssue {
 
 export interface OverdueLogWorkIssue {
   id: number;
-
   key: string;
-
   summary: string;
-
   issuetype: string;
-
   assignee: string;
-
-  status: "Overdue" | "Warning" | "Missing";
-
-  statusText: string;
-
+  status: string;
   enddate: string;
+  actual_date?: string;
 }
 
 export interface OverdueResponse<OverdueIssue> {
@@ -186,13 +179,12 @@ export interface OverdueLogWorkResponse<OverdueLogWorkIssue> {
 
 export interface MilestoneIssue {
   id: number;
-  key: string;
-  summary: string;
-  issuetype: string;
-  assignee: string;
-  status: string;
-  enddate: string;
-  actual_date?: string;
+
+  ticket_code: string;
+
+  report_type: string;
+
+  milestone_name: string;
 }
 
 export interface MilestonesResponseType {

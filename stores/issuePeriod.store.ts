@@ -36,7 +36,7 @@ interface IssuePeriodState {
 
   fetchOverdueLogWork: (args: {
     issuetype?: string | null;
-    status?: "Overdue" | "Warning" | "Missing" | null;
+    statusLogWork?: "Overdue" | "Warning" | "Missing" | null;
     table_id?: number;
     userName?: string | null;
     page?: number;
@@ -93,8 +93,6 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
     milestones: null,
     usBudget: null,
 
-    milestones: null,
-
     setPeriod: (period) => set({ period }),
 
     fetchOverdue: async ({
@@ -131,7 +129,7 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
 
     fetchOverdueLogWork: async ({
       issuetype = null,
-      status = null,
+      statusLogWork = null,
       table_id = 2,
       userName = null,
       page = 1,
@@ -146,11 +144,11 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           per_page: perPage,
           table_id,
           issuetype,
-          status,
+          statusLogWork,
         };
 
         const overdueLogWork = await dashboardService.getOverdueLogWork(
-          filter as unknown as import("@/types/dashboard").OverdueLogWorkFilter,
+          filter as import("@/types/dashboard").OverdueLogWorkFilter,
         );
 
         set({ overdueLogWork });
@@ -179,7 +177,9 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           issuetype,
         };
 
-        const milestones = await dashboardService.getMilestones(filter as any);
+        const milestones = await dashboardService.getMilestones(
+          filter as import("@/types/dashboard").MilestonesFilter,
+        );
         set({ milestones });
       } catch (error) {
         console.error("Milestones API:", error);
@@ -198,8 +198,9 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           per_page: perPage,
         };
 
-        const usBudget = await dashboardService.getUSBudget(filter as any);
-
+        const usBudget = await dashboardService.getUSBudget(
+          filter as import("@/types/dashboard").LeaderboardFilter,
+        );
         set({ usBudget });
       } catch (error) {
         console.error("USBudget API:", error);

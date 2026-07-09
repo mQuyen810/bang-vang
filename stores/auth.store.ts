@@ -15,6 +15,11 @@ interface AuthState {
   login: (username: string, password: string) => Promise<AuthUser>;
 
   /**
+   * Hydrate user/token từ localStorage khi app vừa load (client-side).
+   */
+  hydrateFromStorage: () => void;
+
+  /**
    * Refresh token (tối thiểu để phù hợp axios interceptor).
    * Hiện tại backend chưa có refresh token riêng, nên thực hiện noop.
    */
@@ -23,12 +28,56 @@ interface AuthState {
   logout: () => void;
 }
 
-
 export const useAuthStore = create<AuthState>((set) => ({
   loading: false,
   user: null,
   token: null,
   isAuthenticated: false,
+
+  hydrateFromStorage: () => {
+    if (typeof window === "undefined") return;
+
+    try {
+      const token = localStorage.getItem("accessToken");
+      const userStr = localStorage.getItem("user");
+
+      if (!token || !userStr) {
+        set({
+          user: null,
+          token: null,
+          isAuthenticated: false,
+        });
+        return;
+      }
+
+      const parsed = JSON.parse(userStr) as Partial<AuthUser>;
+      if (!parsed?.display_name) {
+        set({
+          user: null,
+          token: null,
+          isAuthenticated: false,
+        });
+        return;
+      }
+
+      const userData: AuthUser = {
+        display_name: String(parsed.display_name),
+        super_admin: Number(parsed.super_admin ?? 0),
+      };
+
+      set({
+        user: userData,
+        token,
+        isAuthenticated: true,
+      });
+    } catch {
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+      });
+    }
+  },
 
   refreshToken: async () => {
     // Backend hiện chưa hỗ trợ refreshToken riêng.
@@ -39,7 +88,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   login: async (username, password) => {
     set({ loading: true });
-
 
     try {
       const res = await loginService(username, password);
@@ -85,6 +133,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     });
   },
 }));
+
+// Tự hydrate ngay khi module load (chỉ chạy ở client)
+if (typeof window !== "undefined") {
+  useAuthStore.getState().hydrateFromStorage();
+}
 
 // Helper để kiểm tra super admin
 export const isSuperAdmin = () => {

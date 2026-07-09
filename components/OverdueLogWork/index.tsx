@@ -19,13 +19,11 @@ import { OverdueLogWorkTable } from "../ui/Issue/IssueTable/OverdueLogWorkTable"
 
 type OverdueTab = "overdue" | "warning" | "missing";
 
-  const STATUS_MAP = {
-    overdue: "Overdue",
-    warning: "Warning",
-    missing: "Missing",
-  } as const;
-
-
+const STATUS_MAP = {
+  overdue: "Overdue",
+  warning: "Warning",
+  missing: "Missing",
+} as const;
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -38,7 +36,6 @@ const columns = [
   "Trạng thái",
   "Ngày thực tế",
 ];
-
 
 export default function OverdueLogWork() {
   const { overdueLogWork, period, fetchOverdueLogWork, setPeriod } =
@@ -66,10 +63,8 @@ export default function OverdueLogWork() {
     };
   }, [overdueLogWork, activeTab]);
 
-
   const selectedMonth = dayjs(period, "MM-YYYY").format("YYYY-MM");
   const tabs = [
-
     {
       key: "overdue",
       label: "Quá hạn",
@@ -105,15 +100,13 @@ export default function OverdueLogWork() {
 
     fetchOverdueLogWork({
       issuetype: issueType === "all" ? null : issueType,
-          status: STATUS_MAP[activeTab],
-      	  table_id: 2,
+      statusLogWork: STATUS_MAP[activeTab],
+      table_id: 2,
       userName: userNameParam,
       page,
       perPage: DEFAULT_PAGE_SIZE,
     });
   }, [activeTab, issueType, page, period, selectedProjects, debouncedUsername]);
-
-
 
   const issues = useMemo(
     () => overdueLogWork?.issues.details.list ?? [],
@@ -127,8 +120,6 @@ export default function OverdueLogWork() {
   const currentPage = meta?.current_page ?? page;
   const totalPages = meta?.last_page ?? 1;
   const totalResults = meta?.total ?? filteredIssues.length;
-
-
 
   const handleReset = () => {
     setSearch("");
@@ -153,7 +144,6 @@ export default function OverdueLogWork() {
         />
       </header>
 
-
       <FilterBarUsernameType
         username={search}
         onUsernameChange={setSearch}
@@ -167,8 +157,13 @@ export default function OverdueLogWork() {
       <div className={styles.tabsSection}>
         <IssueTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
         <OverdueLogWorkTable
-          title={activeTab === "overdue" ? "Quá hạn" : activeTab === "warning" ? "Cần cảnh báo" : "Thiếu cập nhật"}
-
+          title={
+            activeTab === "overdue"
+              ? "Quá hạn"
+              : activeTab === "warning"
+                ? "Cần cảnh báo"
+                : "Thiếu cập nhật"
+          }
           columns={columns}
           issues={filteredIssues}
         />

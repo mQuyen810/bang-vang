@@ -173,8 +173,6 @@ const RankingsPage: React.FC = () => {
   // `react-hooks/set-state-in-effect`.
   const effectivePage = page > totalPages ? totalPages : page;
 
-
-
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -182,10 +180,11 @@ const RankingsPage: React.FC = () => {
           <div className={styles.badge}>
             <Trophy className={styles.badgeIcon} />
             Vinh danh
-
           </div>
           <h1 className={styles.title}>
-            {tab === "prod" ? "Bảng xếp hạng Sản lượng" : "Bảng xếp hạng xử lý lỗi"}
+            {tab === "prod"
+              ? "Bảng xếp hạng Sản lượng"
+              : "Bảng xếp hạng xử lý lỗi"}
             <span className="text-gradient"> ✦</span>
           </h1>
 
@@ -198,7 +197,6 @@ const RankingsPage: React.FC = () => {
           {[
             { key: "prod", label: "Sản lượng", icon: <Sparkles size={16} /> },
             { key: "bug", label: "Xử lý lỗi", icon: <Star size={16} /> },
-
           ].map((t) => (
             <button
               key={t.key}
@@ -266,6 +264,7 @@ const RankingsPage: React.FC = () => {
                   avatar={emp.avatar}
                   tab={tab}
                   index={i}
+                  bugMissing={emp.bugCountMissing}
                   bugCount={emp.bugCount}
                   subtaskCount={emp.subtaskCount}
                 />
@@ -278,7 +277,6 @@ const RankingsPage: React.FC = () => {
         totalPages={totalPages}
         onChange={setPage}
       />
-
     </div>
   );
 };

@@ -7,7 +7,6 @@ import { SectionHeader } from "@/components/Dashboard/Ranking/SectionHeader";
 import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
 import { FilterBar } from "@/components/Ranking/FilterBar";
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
-import { IssueTable } from "../ui/Issue/IssueTable";
 
 import { useDashboardStore } from "@/stores/dashboard.store";
 
@@ -21,11 +20,11 @@ const columns = [
   "Tóm tắt",
   "Người phụ trách",
   "Loại issue",
+  "Trạng thái",
   "Ngân sách Story",
   "Ngân sách Sub-task",
   "Vượt ngân sách",
 ];
-
 
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
@@ -57,8 +56,6 @@ export default function USBudgetPage() {
     fetchUSBudget(userNameParam, page, DEFAULT_PAGE_SIZE);
   }, [page, period, selectedProjects, debouncedUsername]);
 
-
-
   const issues = useMemo(() => {
     const list = usBudget?.issues.details.list ?? [];
 
@@ -74,8 +71,6 @@ export default function USBudgetPage() {
   const currentPage = meta?.current_page ?? page;
   const totalPages = meta?.last_page ?? 1;
   const totalResults = meta?.total ?? filteredIssues.length;
-
-
 
   const handleReset = () => {
     setSearch("");
@@ -95,13 +90,10 @@ export default function USBudgetPage() {
         <SectionHeader
           eyebrow="Vinh danh"
           title="Ngân sách US"
-
-
           desc="Theo dõi các issue vượt ngân sách"
           variant="bug"
         />
       </header>
-
 
       <FilterBarUsernameType
         username={search}
@@ -114,8 +106,7 @@ export default function USBudgetPage() {
       />
 
       <USBudgetTable
-          title="Các issue vượt ngân sách"
-
+        title="Các issue vượt ngân sách"
         columns={columns}
         issues={filteredIssues}
       />
