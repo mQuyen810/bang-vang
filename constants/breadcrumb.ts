@@ -66,4 +66,14 @@ export const breadcrumbMap: Record<
       href: "/usbudget",
     },
   ],
+  "/milestone": [
+    {
+      title: "Trang chủ",
+      href: "/dashboard",
+    },
+    {
+      title: "Thiếu milestone",
+      href: "/milestone",
+    },
+  ],
 };

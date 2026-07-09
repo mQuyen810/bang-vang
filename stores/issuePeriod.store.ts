@@ -3,7 +3,10 @@ import { create } from "zustand";
 import { dashboardService } from "@/services/dashboard.service";
 import { getCurrentPeriod } from "@/utils/date";
 
+import { useDashboardStore } from "@/stores/dashboard.store";
+
 import type {
+  MilestonesResponseType,
   OverdueResponseType,
   OverdueLogWorkResponseType,
   USBudgetResponseType,
@@ -17,6 +20,8 @@ interface IssuePeriodState {
   overdue: OverdueResponseType | null;
   overdueLogWork: OverdueLogWorkResponseType | null;
   usBudget: USBudgetResponseType | null;
+
+  milestones: MilestonesResponseType | null;
 
   setPeriod: (period: string) => void;
 
@@ -38,6 +43,14 @@ interface IssuePeriodState {
     perPage?: number;
   }) => Promise<void>;
 
+  fetchMilestones: (args: {
+    report_type: "MISSING" | "EXCEPTION";
+    issuetype?: string | null;
+    userName?: string | null;
+    page?: number;
+    perPage?: number;
+  }) => Promise<void>;
+
   fetchUSBudget: (args: {
     userName?: string | null;
     page?: number;
@@ -45,16 +58,24 @@ interface IssuePeriodState {
   }) => Promise<void>;
 }
 
+type ProjectsFilter = {
+  project_names: string[] | null;
+};
+
+type CommonParams = ProjectsFilter & {
+  period: string;
+};
+
 export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
-  const getProjectsFilter = () => {
-    const { selectedProjects } =
-      require("@/stores/dashboard.store").useDashboardStore.getState();
+  const getProjectsFilter = (): ProjectsFilter => {
+    const { selectedProjects } = useDashboardStore.getState();
+
     return {
       project_names: selectedProjects.length ? selectedProjects : null,
     };
   };
 
-  const getCommonParams = () => {
+  const getCommonParams = (): CommonParams => {
     const { period } = get();
     return {
       period,
@@ -70,6 +91,8 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
     overdue: null,
     overdueLogWork: null,
     usBudget: null,
+
+    milestones: null,
 
     setPeriod: (period) => set({ period }),
 
@@ -128,6 +151,33 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
         set({ overdueLogWork });
       } catch (error) {
         console.error("Overdue LogWork API:", error);
+      } finally {
+        set({ loading: false });
+      }
+    },
+
+    fetchMilestones: async ({
+      report_type,
+      issuetype = null,
+      userName = null,
+      page = 1,
+      perPage = 10,
+    }) => {
+      set({ loading: true });
+      try {
+        const filter = {
+          ...getCommonParams(),
+          report_type,
+          user_name: userName ?? null,
+          page,
+          per_page: perPage,
+          issuetype,
+        };
+
+        const milestones = await dashboardService.getMilestones(filter as any);
+        set({ milestones });
+      } catch (error) {
+        console.error("Milestones API:", error);
       } finally {
         set({ loading: false });
       }

@@ -1,5 +1,6 @@
 import { PriorityBadge } from "../PriorityBadge";
 import { TableWrapper } from "./TableWrapper";
+import { StatusBadge } from "../StatusBadge";
 
 import type { USBudget } from "@/types/dashboard";
 
@@ -34,6 +35,9 @@ export function USBudgetTable({ title, columns, issues }: Props) {
             </td>
             <td className={styles.td}>
               <PriorityBadge priority={item.issuetype} />
+            </td>
+            <td className={styles.td}>
+              <StatusBadge status={item.status} />
             </td>
             <td className={styles.td}>
               <span className={styles.numberCell}>{item.slsx}</span>
