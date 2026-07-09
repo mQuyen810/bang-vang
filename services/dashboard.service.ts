@@ -1,9 +1,11 @@
 import * as dashboardApi from "@/api/dashboard.api";
+import * as milestonesApi from "@/api/milestones.api";
 import {
   DashboardFilter,
   LeaderboardFilter,
   OverdueFilter,
   OverdueLogWorkFilter,
+  MilestonesFilter,
 } from "@/types/dashboard";
 
 export const dashboardService = {
@@ -55,6 +57,11 @@ export const dashboardService = {
   async getUSBudget(filter: LeaderboardFilter) {
     const res = await dashboardApi.getUSBudgetApi(filter);
 
+    return res.data.data;
+  },
+
+  async getMilestones(filter: MilestonesFilter) {
+    const res = await dashboardApi.getMilestonesApi(filter);
     return res.data.data;
   },
 };

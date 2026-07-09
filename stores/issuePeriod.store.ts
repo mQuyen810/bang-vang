@@ -3,7 +3,10 @@ import { create } from "zustand";
 import { dashboardService } from "@/services/dashboard.service";
 import { getCurrentPeriod } from "@/utils/date";
 
+import { useDashboardStore } from "@/stores/dashboard.store";
+
 import type {
+  MilestonesResponseType,
   OverdueResponseType,
   OverdueLogWorkResponseType,
   USBudgetResponseType,
@@ -17,6 +20,8 @@ interface IssuePeriodState {
   overdue: OverdueResponseType | null;
   overdueLogWork: OverdueLogWorkResponseType | null;
   usBudget: USBudgetResponseType | null;
+
+  milestones: MilestonesResponseType | null;
 
   setPeriod: (period: string) => void;
 
@@ -38,12 +43,9 @@ interface IssuePeriodState {
     perPage?: number;
   }) => Promise<void>;
 
-  milestones: any;
-
   fetchMilestones: (args: {
+    report_type: "MISSING" | "EXCEPTION";
     issuetype?: string | null;
-    status?: "Missing" | "Exception" | null;
-    table_id?: number;
     userName?: string | null;
     page?: number;
     perPage?: number;
@@ -56,22 +58,24 @@ interface IssuePeriodState {
   }) => Promise<void>;
 }
 
+type ProjectsFilter = {
+  project_names: string[] | null;
+};
 
+type CommonParams = ProjectsFilter & {
+  period: string;
+};
 
 export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
-  const getProjectsFilter = () => {
-    // selectedProjects nằm ở zustand dashboardStore; this store không định nghĩa field này.
-    // Chỉ an toàn để tránh typecheck lỗi, vì filter sẽ được dashboardStore cung cấp ở runtime.
-    const selectedProjects = (get() as unknown as { selectedProjects?: string[] }).selectedProjects ?? [];
+  const getProjectsFilter = (): ProjectsFilter => {
+    const { selectedProjects } = useDashboardStore.getState();
 
     return {
       project_names: selectedProjects.length ? selectedProjects : null,
     };
   };
 
-
-
-  const getCommonParams = () => {
+  const getCommonParams = (): CommonParams => {
     const { period } = get();
     return {
       period,
@@ -89,6 +93,7 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
     milestones: null,
     usBudget: null,
 
+    milestones: null,
 
     setPeriod: (period) => set({ period }),
 
@@ -112,7 +117,9 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           status,
         };
 
-        const overdue = await dashboardService.getOverdue(filter as import("@/types/dashboard").OverdueFilter);
+        const overdue = await dashboardService.getOverdue(
+          filter as import("@/types/dashboard").OverdueFilter,
+        );
 
         set({ overdue });
       } catch (error) {
@@ -155,28 +162,24 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
     },
 
     fetchMilestones: async ({
+      report_type,
       issuetype = null,
-      status = null,
-      table_id = 3,
       userName = null,
       page = 1,
       perPage = 10,
-    } = {}) => {
+    }) => {
       set({ loading: true });
       try {
         const filter = {
           ...getCommonParams(),
+          report_type,
           user_name: userName ?? null,
           page,
           per_page: perPage,
-          table_id,
           issuetype,
-          status,
         };
 
         const milestones = await dashboardService.getMilestones(filter as any);
-
-
         set({ milestones });
       } catch (error) {
         console.error("Milestones API:", error);
@@ -186,7 +189,6 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
     },
 
     fetchUSBudget: async ({ userName = null, page = 1, perPage = 10 } = {}) => {
-
       set({ loading: true });
       try {
         const filter = {

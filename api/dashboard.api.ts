@@ -5,6 +5,8 @@ import {
   Project,
   DashboardFilter,
   LeaderboardFilter,
+  MilestonesResponseType,
+  MilestonesFilter,
   MyBugRatioResponse,
   LeaderboardBugResponse,
   MySlsxResponse,
@@ -82,3 +84,10 @@ export const getUSBudgetApi = (filter: LeaderboardFilter) =>
     },
   );
 
+export const getMilestonesApi = (filter: MilestonesFilter) =>
+  axiosClient.get<ApiResponse<MilestonesResponseType>>(
+    "/issues/dashboard/milestones",
+    {
+      params: filter,
+    },
+  );

@@ -10,7 +10,6 @@ import { PaginationBar } from "@/components/Ranking/PaginationBar";
 import { IssueTable } from "../ui/Issue/IssueTable";
 
 import { useDashboardStore } from "@/stores/dashboard.store";
-import type { USBudget } from "@/types/dashboard";
 
 import styles from "./styles.module.scss";
 import { USBudgetTable } from "../ui/Issue/IssueTable/USBudget";
