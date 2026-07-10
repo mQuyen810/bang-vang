@@ -29,7 +29,14 @@ export function OverdueLogWorkTable({ title, columns, issues, startIndex = 0 }: 
               <div className={styles.rankNumber}>{startIndex + index + 1}</div>
             </td>
             <td className={styles.td}>
-              <span className={styles.idCell}>{item.key}</span>
+              <a 
+                href={`https://jira.viettelsoftware.com/browse/${item.key}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.idCell}
+              >
+                {item.key}
+              </a>
             </td>
             <td className={styles.td}>
               <span className={styles.summaryCell}>{item.summary}</span>
