@@ -241,7 +241,7 @@ export default function Admin() {
                   { value: "0", label: "Member" },
                 ]}
                 className={styles.filterSelect}
-                classNames={{ popup: styles.filterSelectPopup }}
+                popupClassName={styles.filterSelectPopup}
                 size="middle"
               />
             </div>

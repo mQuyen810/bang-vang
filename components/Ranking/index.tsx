@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trophy, Sparkles, Star } from "lucide-react";
+import { Trophy, Sparkles, Star, Download } from "lucide-react";
 import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUsernameType";
+import { App } from "antd";
+import { useAuthStore } from "@/stores/auth.store";
+import { importLeaderboardApi } from "@/api/dashboard.api";
 
 import { RankingItem } from "./RankingItem";
 import { PaginationBar } from "./PaginationBar";
@@ -28,7 +31,7 @@ const rankingTabs: ReadonlyArray<{
   icon: React.ReactNode;
 }> = [
   { key: "prod", label: "Sản lượng", icon: <Sparkles size={16} /> },
-  { key: "bug", label: "Xử lý lỗi", icon: <Star size={16} /> },
+  { key: "bug", label: "Bug", icon: <Star size={16} /> },
 ];
 
 type CommonRankingItem = Pick<
@@ -55,10 +58,15 @@ const filterRankingItems = <T extends CommonRankingItem>(
 const RankingsPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { message } = App.useApp();
+  const { user } = useAuthStore();
+  const isAdmin = user?.is_admin === 1 || user?.super_admin === 1;
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const tab: TabType = searchParams?.get("tab") === "bug" ? "bug" : "prod";
   const [search, setSearch] = useState("");
   const [debouncedUsername, setDebouncedUsername] = useState("");
+  const [isImporting, setIsImporting] = useState(false);
 
   const [page, setPage] = useState(1);
   const { selectedProjects } = useDashboardStore();
@@ -165,6 +173,36 @@ const RankingsPage: React.FC = () => {
     fetchLeaderboardSlsxRatio,
   ]);
 
+  const handleImport = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset value to allow selecting the same file again
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsImporting(true);
+      message.loading({ content: "Đang import dữ liệu...", key: "import-leaderboard" });
+      const res = await importLeaderboardApi(file);
+      message.success({ content: res.data?.message || "Import dữ liệu thành công!", key: "import-leaderboard" });
+      
+      // Refresh list
+      if (tab === "prod") {
+        fetchLeaderboardSlsxRatio(debouncedUsername || null, page, pageSize, rankingPeriod);
+      } else {
+        fetchLeaderboardBugRatio(debouncedUsername || null, page, pageSize, rankingPeriod);
+      }
+    } catch (error) {
+      message.error({ content: "Import thất bại!", key: "import-leaderboard" });
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   // Note: We intentionally avoid resetting page via useEffect to satisfy ESLint rule
   // `react-hooks/set-state-in-effect`.
   const effectivePage = page > totalPages ? totalPages : page;
@@ -189,18 +227,39 @@ const RankingsPage: React.FC = () => {
           </p>
         </div>
 
-        <div className={styles.tabGroup}>
-          {rankingTabs.map((t) => (
-            <button
-              type="button"
-              key={t.key}
-              onClick={() => handleTabChange(t.key)}
-              className={`${styles.tabButton} ${tab === t.key ? styles.tabActive : ""}`}
-            >
-              {t.icon}
-              {t.label}
-            </button>
-          ))}
+        <div className={styles.headerActions}>
+          {isAdmin && tab === "prod" && (
+            <>
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleFileChange} 
+                style={{ display: "none" }} 
+                accept=".xlsx, .xls, .csv" 
+              />
+              <button
+                className={styles.importBtn}
+                onClick={handleImport}
+                disabled={isImporting}
+              >
+                <Download size={16} />
+                Import
+              </button>
+            </>
+          )}
+          <div className={styles.tabGroup}>
+            {rankingTabs.map((t) => (
+              <button
+                type="button"
+                key={t.key}
+                onClick={() => handleTabChange(t.key)}
+                className={`${styles.tabButton} ${tab === t.key ? styles.tabActive : ""}`}
+              >
+                {t.icon}
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 

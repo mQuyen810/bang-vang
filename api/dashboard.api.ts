@@ -91,3 +91,14 @@ export const getMilestonesApi = (filter: MilestonesFilter) =>
       params: filter,
     },
   );
+
+export const importLeaderboardApi = (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return axiosClient.post<ApiResponse<any>>("/import", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

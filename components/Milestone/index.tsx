@@ -41,7 +41,7 @@ export default function Milestone() {
   const tabs = [
     {
       key: "missing" as const,
-      label: "Thiếu cập nhật",
+      label: "Thiếu Milestone",
       count:
         activeTab === "missing" ? (milestones?.issues.details.meta?.total ?? 0) : 0,
       icon: Clock3,

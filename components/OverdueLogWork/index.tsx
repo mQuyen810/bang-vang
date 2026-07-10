@@ -47,7 +47,7 @@ export default function OverdueLogWork() {
   } = useIssuePeriodStore();
   const { selectedProjects } = useDashboardStore();
 
-  const [activeTab, setActiveTab] = useState<OverdueTab>("overdue");
+  const [activeTab, setActiveTab] = useState<OverdueTab>("missing");
 
   const [search, setSearch] = useState("");
   const [debouncedUsername, setDebouncedUsername] = useState("");
@@ -73,10 +73,10 @@ export default function OverdueLogWork() {
   );
   const tabs = [
     {
-      key: "overdue",
-      label: "Quá hạn",
-      count: counts.overdue,
-      icon: Clock3,
+      key: "missing",
+      label: "Thiếu Log Work",
+      count: counts.missing,
+      icon: CircleAlert,
     },
     {
       key: "warning",
@@ -84,12 +84,12 @@ export default function OverdueLogWork() {
       count: counts.warning,
       icon: AlertTriangle,
     },
-    {
-      key: "missing",
-      label: "Thiếu cập nhật",
-      count: counts.missing,
-      icon: CircleAlert,
-    },
+    // {
+    //   key: "overdue",
+    //   label: "Quá hạn",
+    //   count: counts.overdue,
+    //   icon: Clock3,
+    // },
   ] as const;
 
   useEffect(() => {
@@ -176,7 +176,7 @@ export default function OverdueLogWork() {
               ? "Quá hạn"
               : activeTab === "warning"
                 ? "Cảnh báo"
-                : "Thiếu cập nhật"
+                : "Thiếu Log Work"
           }
           columns={columns}
           issues={filteredIssues}
