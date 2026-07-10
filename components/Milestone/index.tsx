@@ -20,7 +20,7 @@ type MilestoneTab = "missing" | "exception";
 
 const DEFAULT_PAGE_SIZE = 10;
 
-const columns = ["ID", "Ticket Code", "Milestone", "Report Type"];
+const columns = ["STT", "Mã Phiếu", "Milestone", "Loại Issue"];
 
 export default function Milestone() {
   const { milestones, milestonesPeriod, fetchMilestones, setMilestonesPeriod } =
@@ -71,7 +71,7 @@ export default function Milestone() {
     fetchMilestones({
       report_type: activeTab === "missing" ? "MISSING" : "EXCEPTION",
       issuetype: issueType === "all" ? null : issueType,
-      userName: userNameParam,
+      ticketCode: userNameParam,
       page,
       perPage: DEFAULT_PAGE_SIZE,
     });
@@ -126,9 +126,9 @@ export default function Milestone() {
     <div className={styles.overdue}>
       <header className={styles.header}>
         <SectionHeader
-          eyebrow="Hall of Fame"
-          title="Thiếu milestone"
-          desc="Theo dõi các issue đã quá hạn và cần xử lý"
+          eyebrow="Thống kê"
+          title="Milestone Missing"
+          desc="Theo dõi các Milestone đang thiếu trong tháng"
           variant="bug"
         />
       </header>
@@ -136,25 +136,11 @@ export default function Milestone() {
       <FilterBarUsernameType
         username={search}
         onUsernameChange={handleSearchChange}
-        usernamePlaceholder="Tìm theo tên nhân viên"
+        usernamePlaceholder="Tìm theo mã phiếu"
         resultCount={totalResults}
         onReset={handleReset}
         selectedMonth={selectedMonth}
         onMonthChange={handleMonthChange}
-        selects={[
-          {
-            key: "issueType",
-            label: "Loại",
-            value: issueType,
-            onChange: handleIssueTypeChange,
-            options: [
-              { value: "all", label: "Tất cả" },
-              { value: "Sub-task", label: "Sub-task" },
-              { value: "Story", label: "Story" },
-              { value: "Milestone", label: "Milestone" },
-            ],
-          },
-        ]}
       />
 
       <div className={styles.tabsSection}>
@@ -166,6 +152,7 @@ export default function Milestone() {
           }
           columns={columns}
           issues={issues}
+          startIndex={(currentPage - 1) * DEFAULT_PAGE_SIZE}
         />
 
         {totalResults > 0 && (

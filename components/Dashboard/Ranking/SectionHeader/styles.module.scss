@@ -33,7 +33,7 @@
   font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: var(--muted-foreground);
+  color: #94a3b8;
 }
 
 .eyebrowIcon {
@@ -70,7 +70,7 @@
 .description {
   margin-top: 0.25rem;
   font-size: 0.875rem;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   max-width: 36rem;
 }
 
@@ -82,7 +82,7 @@
   padding: 0.5rem 1rem;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 9999px;
@@ -91,7 +91,7 @@
   white-space: nowrap;
   
   &:hover {
-    color: var(--foreground);
+    color: white;
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.12);
     transform: translateX(2px);

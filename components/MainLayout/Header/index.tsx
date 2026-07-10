@@ -1,5 +1,6 @@
 "use client";
 
+import { issuesService } from "@/services/sync.service";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -14,23 +15,47 @@ import {
   Settings,
   Check,
 } from "lucide-react";
-import { Avatar, Badge, Dropdown, MenuProps, message } from "antd";
+import { Avatar, Badge, Dropdown, MenuProps, App } from "antd";
 import { useSidebar } from "@/components/MainLayout/Sidebar/SidebarProvider";
 import { useAuthStore } from "@/stores/auth.store";
 import styles from "./styles.module.scss";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import { useIssuesStore } from "@/stores/sync.store";
 
+const pollSync = async (mode: "last" | "full") => {
+  return new Promise<void>((resolve, reject) => {
+    const interval = setInterval(async () => {
+      try {
+        const res = await issuesService.getSyncStatus(mode);
+        if (res.status !== "running") {
+          clearInterval(interval);
+          resolve();
+        }
+      } catch (error) {
+        clearInterval(interval);
+        reject(error);
+      }
+    }, 3000);
+  });
+};
+
 export default function Header() {
+  const { message } = App.useApp();
   const { setMobileOpen } = useSidebar();
   const { user, logout } = useAuthStore();
-  const { syncFromLastIssues, syncFullIssues, cancelSync } = useIssuesStore();
+  const { 
+    syncFromLastIssues, 
+    syncFullIssues, 
+    cancelSync,
+    loadingLast,
+    loadingFull,
+    setLoadingLast,
+    setLoadingFull
+  } = useIssuesStore();
   const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
   const fullName = match?.[1] ?? user?.display_name;
   const router = useRouter();
   const [dark, setDark] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [loadingAll, setLoadingAll] = useState(false);
   const { projects, selectedProjects, setSelectedProjects, fetchProjects } =
     useDashboardStore();
   const [projectOpen, setProjectOpen] = useState(false);
@@ -50,12 +75,12 @@ export default function Header() {
             icon: (
               <Settings
                 size={14}
-                className={loadingAll ? styles.spinning : ""}
+                className={loadingFull ? styles.spinning : ""}
               />
             ),
-            label: loadingAll ? "Đang đồng bộ dữ liệu" : "Đồng bộ dữ liệu",
+            label: loadingFull ? "Đang đồng bộ dữ liệu" : "Đồng bộ dữ liệu",
             onClick: () => handleSyncAll(),
-            disabled: loadingAll,
+            disabled: loadingLast || loadingFull,
           },
           {
             type: "divider" as const,
@@ -108,30 +133,64 @@ export default function Header() {
     fetchProjects();
   }, [user, projects.length, fetchProjects]);
 
+  useEffect(() => {
+    const checkActiveSync = async () => {
+      try {
+        const [lastRes, fullRes] = await Promise.all([
+          issuesService.getSyncStatus("last"),
+          issuesService.getSyncStatus("full"),
+        ]);
+
+        if (lastRes.status === "running") {
+          setLoadingLast(true);
+          await pollSync("last");
+          message.success("Đã đồng bộ xong dữ liệu mới nhất!");
+          setLoadingLast(false);
+        } else if (fullRes.status === "running") {
+          setLoadingFull(true);
+          await pollSync("full");
+          message.success("Đã đồng bộ xong toàn bộ dữ liệu!");
+          setLoadingFull(false);
+        }
+      } catch (e) {
+        // Ignore error if check fails
+      }
+    };
+
+    if (user?.is_admin === 1 || user?.super_admin === 1) {
+      checkActiveSync();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSync = async () => {
-    if (loading) return;
+    if (loadingLast || loadingFull) return;
     try {
-      setLoading(true);
+      setLoadingLast(true);
       const res = await syncFromLastIssues();
 
-      message.success(res.message);
+      message.info(res.message || "Đã nhận yêu cầu đồng bộ, đang xử lý nền...");
+      await pollSync("last");
+      message.success("Đã đồng bộ xong dữ liệu mới nhất!");
     } catch {
-      message.error("Đồng bộ thất bại!");
+      message.error("Có lỗi xảy ra khi đồng bộ!");
     } finally {
-      setLoading(false);
+      setLoadingLast(false);
     }
   };
   const handleSyncAll = async () => {
-    if (loadingAll) return;
+    if (loadingLast || loadingFull) return;
     try {
-      setLoadingAll(true);
+      setLoadingFull(true);
       const res = await syncFullIssues();
 
-      message.success(res.message);
+      message.info(res.message || "Đã nhận yêu cầu đồng bộ, đang xử lý nền...");
+      await pollSync("full");
+      message.success("Đã đồng bộ xong toàn bộ dữ liệu!");
     } catch {
-      message.error("Đồng bộ thất bại!");
+      message.error("Có lỗi xảy ra khi đồng bộ!");
     } finally {
-      setLoadingAll(false);
+      setLoadingFull(false);
     }
   };
 
@@ -236,9 +295,9 @@ export default function Header() {
           <button
             className={styles.iconBtn}
             onClick={handleSync}
-            disabled={loading}
+            disabled={loadingLast || loadingFull}
           >
-            <RefreshCw size={18} className={loading ? styles.spinning : ""} />
+            <RefreshCw size={18} className={loadingLast ? styles.spinning : ""} />
           </button>
         )}
 

@@ -2,14 +2,19 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { App, Select } from "antd";
 import {
   RefreshCw,
   LogOut,
   Search,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+import { PaginationBar } from "@/components/Ranking/PaginationBar";
 
-import { message } from "antd";
+// import { message } from "antd"; // Removed
+
 
 import { useAuthStore, isSuperAdmin } from "@/stores/auth.store";
 import { useAdminStore } from "@/stores/admin.store";
@@ -24,30 +29,43 @@ type Role = "admin" | "operator";
 
 interface Filters {
   q: string;
-  username: string;
-  fullName: string;
-  email: string;
-  role: "all" | Role;
+  role: "all" | "1" | "0";
 }
 
 const EMPTY_FILTERS: Filters = {
   q: "",
-  username: "",
-  fullName: "",
-  email: "",
   role: "all",
 };
 
 export default function Admin() {
+  const { message } = App.useApp();
   const { user, isAuthenticated, logout } = useAuthStore();
   const router = useRouter();
 
-  const { loadingManager, managerList, errorManager, fetchManagerList } =
+  const { loadingManager, managerList, errorManager, fetchManagerList, pagination } =
     useAdminStore();
 
-  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
-  const [loading, setLoading] = useState(false);
   const isSuperAdminUser = isAuthenticated ? isSuperAdmin() : false;
+
+  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const [debouncedUsername, setDebouncedUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  // Thêm useEffect để debounce search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedUsername(filters.q);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [filters.q]);
+
+  // Load lại khi search hoặc role thay đổi
+  useEffect(() => {
+    // Luôn gửi cả role và username hiện tại khi call API
+    // Kiểm tra và xử lý role = 'all' -> truyền undefined
+    const roleParam = filters.role === 'all' ? undefined : filters.role;
+    fetchManagerList(1, 10, roleParam, debouncedUsername);
+  }, [filters.role, debouncedUsername, fetchManagerList]);
 
 
   const [confirmDialog, setConfirmDialog] = useState({
@@ -72,42 +90,19 @@ export default function Admin() {
     }
     const load = async () => {
       try {
-        await fetchManagerList();
+        await fetchManagerList(1, 10, filters.role);
       } catch (error) {
         console.error("Failed to load manager list:", error);
       }
     };
 
     load();
-  }, [isAuthenticated, fetchManagerList, router]);
+  }, [isAuthenticated, fetchManagerList, router, filters.role]);
 
   const filteredUsers = useMemo(() => {
-    const keyword = filters.q.trim().toLowerCase();
+    return managerList;
+  }, [managerList]);
 
-    return managerList.filter((u) => {
-      const matchKeyword =
-        !keyword ||
-        u.jira_username?.toLowerCase().includes(keyword) ||
-        u.jira_display_name?.toLowerCase().includes(keyword);
-
-      const matchUsername =
-        !filters.username ||
-        u.jira_username?.toLowerCase().includes(filters.username.toLowerCase());
-
-      const matchFullName =
-        !filters.fullName ||
-        u.jira_display_name
-          ?.toLowerCase()
-          .includes(filters.fullName.toLowerCase());
-
-      const matchRole =
-        filters.role === "all" ||
-        (filters.role === "admin" && u.is_admin) ||
-        (filters.role === "operator" && !u.is_admin);
-
-      return matchKeyword && matchUsername && matchFullName && matchRole;
-    });
-  }, [managerList, filters]);
   const resetFilters = () => {
     setFilters(EMPTY_FILTERS);
   };
@@ -120,8 +115,7 @@ export default function Admin() {
 
   const refresh = () => {
     setLoading(true);
-    fetchManagerList();
-    setTimeout(() => setLoading(false), 500);
+    fetchManagerList(pagination.current, pagination.pageSize, filters.role).finally(() => setLoading(false));
   };
 
   const handleToggleAdmin = (id: number, isAdmin: boolean) => {
@@ -151,13 +145,14 @@ export default function Admin() {
       });
 
       message.success("Cập nhật quyền thành công!");
-      await fetchManagerList();
+      await fetchManagerList(pagination.current, pagination.pageSize, filters.role, debouncedUsername);
     } catch (error) {
       message.error("Cập nhật quyền thất bại!");
     } finally {
       handleCloseDialog();
     }
   };
+
 
   const handleCloseDialog = () => {
     setConfirmDialog({
@@ -178,61 +173,45 @@ export default function Admin() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Admin</h1>
-          <p className={styles.subtitle}>
-            Danh sách người dùng quản trị hệ thống
-          </p>
-        </div>
-
-        <div className={styles.headerActions}>
-          <button onClick={refresh} className={styles.btnGhost}>
-            <RefreshCw
-              className={`${styles.icon} ${loading ? styles.spin : ""}`}
-            />
-            Refresh
-          </button>
-
-          <button onClick={handleLogout} className={styles.btnGhost}>
-            <LogOut className={styles.icon} />
-            Đăng xuất
-          </button>
-        </div>
-      </div>
-
-      <div className={styles.welcome}>
-        <strong>Xin chào:</strong> {user?.display_name || "User"}
-        {isSuperAdminUser && (
-          <span className={styles.superAdminBadge}>Super Admin</span>
-        )}
-      </div>
-
-      {errorManager && <div className={styles.error}>{errorManager}</div>}
-
-      <div className={styles.filterCard}>
-        <div className={styles.filterHeader}>
-          <div className={styles.filterTitle}>
-            <Search className={styles.filterIcon} />
-            <span>Tìm kiếm người dùng</span>
+    <App>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <div>
+            <h1 className={styles.title}>Admin</h1>
+            <p className={styles.subtitle}>
+              Danh sách người dùng quản trị hệ thống
+            </p>
           </div>
-          {(filters.q ||
-            filters.username ||
-            filters.fullName ||
-            filters.email ||
-            filters.role !== "all") && (
-            <button onClick={resetFilters} className={styles.clearFilters}>
-              <X className={styles.icon} />
-              Xóa bộ lọc
+
+          <div className={styles.headerActions}>
+            <button onClick={refresh} className={styles.btnGhost}>
+              <RefreshCw
+                className={`${styles.icon} ${loading ? styles.spin : ""}`}
+              />
+              Refresh
             </button>
+
+            <button onClick={handleLogout} className={styles.btnGhost}>
+              <LogOut className={styles.icon} />
+              Đăng xuất
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.welcome}>
+          <strong>Xin chào:</strong> {user?.display_name || "User"}
+          {isSuperAdminUser && (
+            <span className={styles.superAdminBadge}>Super Admin</span>
           )}
         </div>
 
+        {errorManager && <div className={styles.error}>{errorManager}</div>}
+
+        <div className={styles.filterCard}>
         <div className={styles.filterBody}>
           <div className={styles.filterRow}>
             <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Tìm kiếm</label>
+              <label className={styles.filterLabel}>TÌM KIẾM</label>
               <div className={styles.filterInput}>
                 <Search className={styles.inputIcon} />
                 <input
@@ -240,60 +219,79 @@ export default function Admin() {
                   onChange={(e) =>
                     setFilters({ ...filters, q: e.target.value })
                   }
-                  placeholder="Tìm kiếm theo username, tên hoặc email..."
+                  placeholder="Tìm theo tên nhân viên"
                   className={styles.inputField}
                 />
               </div>
             </div>
-          </div>
 
-          <div className={styles.filterGrid}>
-            <div className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Vai trò</label>
-              <div className={styles.filterInput}>
-                <select
-                  value={filters.role}
-                  onChange={(e) =>
-                    setFilters({
-                      ...filters,
-                      role: e.target.value as Filters["role"],
-                    })
-                  }
-                  className={styles.selectField}
-                >
-                  <option value="all">Tất cả</option>
-                  <option value="admin">Admin</option>
-                  <option value="operator">Member</option>
-                </select>
-              </div>
+            <div className={styles.filterGroupRole}>
+              <label className={styles.filterLabel}>VAI TRÒ</label>
+              <Select
+                value={filters.role}
+                onChange={(val) =>
+                  setFilters({
+                    ...filters,
+                    role: val,
+                  })
+                }
+                options={[
+                  { value: "all", label: "Tất cả" },
+                  { value: "1", label: "Admin" },
+                  { value: "0", label: "Member" },
+                ]}
+                className={styles.filterSelect}
+                classNames={{ popup: styles.filterSelectPopup }}
+                size="middle"
+              />
             </div>
+            
+            <div className={styles.resultCount}>
+               {pagination.total} kết quả
+            </div>
+
+            {(filters.q || filters.role !== "all") && (
+              <button onClick={resetFilters} className={styles.clearFilters}>
+                <X className={styles.icon} />
+                Xóa bộ lọc
+              </button>
+            )}
           </div>
         </div>
-      </div>
+        </div>
+
 
       <div className={styles.tableWrapper}>
         <UserTable
-          users={filteredUsers}
+          users={managerList}
           loading={loadingManager}
           onToggleAdmin={handleToggleAdmin}
+          startIndex={(pagination.current - 1) * pagination.pageSize}
+        />
+        <PaginationBar
+            page={pagination.current}
+            totalPages={Math.ceil(pagination.total / pagination.pageSize)}
+            onChange={(page) => fetchManagerList(page, pagination.pageSize, filters.role, debouncedUsername)}
         />
       </div>
 
-      <ConfirmDialog
-        isOpen={confirmDialog.isOpen}
-        title={
-          confirmDialog.isAdmin ? "Loại bỏ quyền Admin" : "Cấp quyền Admin"
-        }
-        message={
-          confirmDialog.isAdmin
-            ? `Bạn có chắc chắn muốn loại bỏ quyền Admin của "${confirmDialog.userName}"?`
-            : `Bạn có chắc chắn muốn cấp quyền Admin cho "${confirmDialog.userName}"?`
-        }
-        confirmLabel={confirmDialog.isAdmin ? "Loại bỏ" : "Cấp quyền"}
-        isDanger={confirmDialog.isAdmin}
-        onConfirm={handleConfirmToggleAdmin}
-        onCancel={handleCloseDialog}
-      />
-    </div>
+
+        <ConfirmDialog
+          isOpen={confirmDialog.isOpen}
+          title={
+            confirmDialog.isAdmin ? "Loại bỏ quyền Admin" : "Cấp quyền Admin"
+          }
+          message={
+            confirmDialog.isAdmin
+              ? `Bạn có chắc chắn muốn loại bỏ quyền Admin của "${confirmDialog.userName}"?`
+              : `Bạn có chắc chắn muốn cấp quyền Admin cho "${confirmDialog.userName}"?`
+          }
+          confirmLabel={confirmDialog.isAdmin ? "Loại bỏ" : "Cấp quyền"}
+          isDanger={confirmDialog.isAdmin}
+          onConfirm={handleConfirmToggleAdmin}
+          onCancel={handleCloseDialog}
+        />
+      </div>
+    </App>
   );
 }

@@ -31,7 +31,7 @@
   transform: translateY(-50%);
   width: 16px;
   height: 16px;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   pointer-events: none;
 }
 
@@ -42,7 +42,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
-  color: var(--foreground);
+  color: white;
   font-size: 0.875rem;
   transition: all 0.3s ease;
   
@@ -53,7 +53,7 @@
   }
   
   &::placeholder {
-    color: var(--muted-foreground);
+    color: #94a3b8;
   }
 }
 
@@ -69,12 +69,12 @@
   border: none;
   background: transparent;
   border-radius: 0.5rem;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   cursor: pointer;
   transition: all 0.3s ease;
   
   &:hover {
-    color: var(--foreground);
+    color: white;
     background: var(--card);
   }
   
@@ -109,7 +109,7 @@
   font-size: 0.688rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -120,7 +120,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
-  color: var(--foreground);
+  color: white;
   font-size: 0.875rem;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
@@ -143,7 +143,7 @@
   
   option {
     background: var(--card);
-    color: var(--foreground);
+    color: white;
   }
 }
 
@@ -157,7 +157,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 0.75rem;
-    color: var(--foreground);
+    color: white;
     font-size: 0.875rem;
     transition: all 0.3s ease;
     min-width: 140px;
@@ -178,31 +178,31 @@
     }
     
     input {
-      color: var(--foreground);
+      color: white;
       
       &::placeholder {
-        color: var(--muted-foreground);
+        color: #94a3b8;
       }
     }
     
     .ant-picker-suffix {
-      color: var(--muted-foreground);
+      color: #94a3b8;
       margin-left: 0;
     }
     
     .ant-picker-clear {
       background: var(--surface);
-      color: var(--muted-foreground);
+      color: #94a3b8;
       
       &:hover {
-        color: var(--foreground);
+        color: white;
       }
     }
   }
 }
 
 .calendarIcon {
-  color: var(--muted-foreground);
+  color: #94a3b8;
 }
 
 // Month Picker Popup Styles
@@ -218,15 +218,15 @@
       border-bottom: 1px solid var(--border);
       
       .ant-picker-header-view {
-        color: var(--foreground);
+        color: white;
         font-weight: 600;
       }
       
       button {
-        color: var(--muted-foreground);
+        color: #94a3b8;
         
         &:hover {
-          color: var(--foreground);
+          color: white;
         }
       }
     }
@@ -237,7 +237,7 @@
       .ant-picker-month-panel {
         .ant-picker-cell {
           .ant-picker-cell-inner {
-            color: var(--foreground);
+            color: white;
             border-radius: 0.5rem;
             
             &:hover {
@@ -247,7 +247,7 @@
           
           &-in-view {
             .ant-picker-cell-inner {
-              color: var(--foreground);
+              color: white;
             }
           }
           
@@ -272,7 +272,7 @@
           
           &-disabled {
             .ant-picker-cell-inner {
-              color: var(--muted-foreground);
+              color: #94a3b8;
             }
           }
         }
@@ -290,7 +290,7 @@
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   font-size: 0.75rem;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -306,13 +306,13 @@
   border-radius: 0.75rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
   
   &:hover {
-    color: var(--foreground);
+    color: white;
     border-color: var(--border);
     background: var(--card);
   }

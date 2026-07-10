@@ -55,6 +55,7 @@ interface IssuePeriodState {
     report_type: "MISSING" | "EXCEPTION";
     issuetype?: string | null;
     userName?: string | null;
+    ticketCode?: string | null;
     page?: number;
     perPage?: number;
     periodOverride?: string;
@@ -191,6 +192,7 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
       report_type,
       issuetype = null,
       userName = null,
+      ticketCode = null,
       page = 1,
       perPage = 10,
       periodOverride,
@@ -202,6 +204,7 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
           ...getCommonParams(period),
           report_type,
           user_name: userName ?? null,
+          ticket_code: ticketCode ?? null,
           page,
           per_page: perPage,
           issuetype,

@@ -28,3 +28,7 @@ export const syncFullIssuesApi = () => {
     signal: c.signal,
   });
 };
+
+export const getSyncStatusApi = (mode: "last" | "full") => {
+  return axiosClient.get<{ status: string }>(`/issues/sync/status/${mode}`);
+};

@@ -3,7 +3,7 @@ import { useAuthStore } from "@/stores/auth.store";
 
 const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://172.16.103.65:2003/api",
-  timeout: 10000,
+  timeout: 60000,
   headers: {
     "Content-Type": "application/json",
   },

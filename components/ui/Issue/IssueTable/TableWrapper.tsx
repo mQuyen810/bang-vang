@@ -22,10 +22,7 @@ export function TableWrapper({
       className={styles.tabContent}
     >
       <div className={`${styles.dataTable} glass-card`}>
-        <div className={styles.tableHeader}>
-          <h3 className={styles.tableTitle}>{title}</h3>
-          <span className={styles.tableCount}>{count} mục</span>
-        </div>
+
 
         <div className={styles.tableWrapper}>
           <table className={styles.table}>

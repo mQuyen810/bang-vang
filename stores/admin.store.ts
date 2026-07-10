@@ -7,28 +7,43 @@ import { ManagerItem } from "@/types/admin";
 interface AdminState {
   loadingManager: boolean;
   managerList: ManagerItem[];
+  pagination: {
+    current: number;
+    pageSize: number;
+    total: number;
+  };
   errorManager: string | null;
 
-  fetchManagerList: (params?: Record<string, unknown>) => Promise<void>;
+  fetchManagerList: (page?: number, pageSize?: number, role?: string, userName?: string) => Promise<void>;
 
 }
 
 export const useAdminStore = create<AdminState>((set) => ({
   loadingManager: false,
   managerList: [],
+  pagination: {
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  },
   errorManager: null,
 
-  fetchManagerList: async () => {
+  fetchManagerList: async (page = 1, pageSize = 10, role = "all", userName = "") => {
     set({
       loadingManager: true,
       errorManager: null,
     });
 
     try {
-      const managerList = await adminService.getManager();
-
+      const data = await adminService.getManager(page, pageSize, role, userName);
+      
       set({
-        managerList,
+        managerList: data.details.list,
+        pagination: {
+            current: data.details.meta.current_page,
+            pageSize: data.details.meta.per_page,
+            total: data.details.meta.total,
+        }
       });
     } catch (error) {
       if (axios.isAxiosError(error)) {

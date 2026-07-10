@@ -2,6 +2,7 @@ import {
   syncFromLastIssuesApi,
   syncFullIssuesApi,
   cancelSyncApi,
+  getSyncStatusApi,
 } from "@/api/sync.api";
 
 export const issuesService = {
@@ -18,5 +19,9 @@ export const issuesService = {
   },
   cancelSync() {
     cancelSyncApi();
+  },
+  async getSyncStatus(mode: "last" | "full") {
+    const res = await getSyncStatusApi(mode);
+    return res.data;
   },
 };

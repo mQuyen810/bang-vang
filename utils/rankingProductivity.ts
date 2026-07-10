@@ -5,7 +5,6 @@ export const mapProductivityRanking = (
   list: SlsxRatio[],
 ): RankingProductivity[] =>
   [...list]
-    .sort((a, b) => Number(b.slsx_vs_ulnl_ratio) - Number(a.slsx_vs_ulnl_ratio))
     .map((item) => ({
       id: String(item.id),
 

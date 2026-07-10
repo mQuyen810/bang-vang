@@ -22,6 +22,7 @@ type OverdueTab = "overdue" | "warning";
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
+  "STT",
   "Mã",
   "Tóm tắt",
   "Người phụ trách",
@@ -61,7 +62,7 @@ export default function Overdue() {
     },
     {
       key: "warning",
-      label: "Cần cảnh báo",
+      label: "Cảnh báo",
       count: warningCount,
       icon: AlertTriangle,
     },
@@ -133,10 +134,10 @@ export default function Overdue() {
     <div className={styles.overdue}>
       <header className={styles.header}>
         <SectionHeader
-          eyebrow="Vinh danh"
-          title="Các issue quá hạn"
+          eyebrow="Thống kê"
+          title="Issue quá hạn"
 
-          desc="Theo dõi các issue đã quá hạn và cần xử lý"
+          desc="Theo dõi các Sub Task, Story, Milestone đã quá hạn và cảnh báo"
           variant="bug"
         />
       </header>
@@ -172,6 +173,7 @@ export default function Overdue() {
 
           columns={columns}
           issues={filteredIssues}
+          startIndex={(currentPage - 1) * DEFAULT_PAGE_SIZE}
         />
         {totalResults > 0 && (
           <PaginationBar

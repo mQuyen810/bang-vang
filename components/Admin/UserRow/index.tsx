@@ -36,7 +36,7 @@ export function UserRow({
   return (
     <tr className={styles.row}>
       <td className={styles.cell}>
-        <span className={styles.id}>{index}</span>
+        <div className={styles.rankNumber}>{index}</div>
       </td>
       <td className={styles.cell}>
         <span className={styles.username}>{user.jira_username}</span>

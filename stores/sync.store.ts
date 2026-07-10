@@ -7,7 +7,10 @@ interface SyncResponse {
 }
 
 interface IssuesStore {
-  loading: boolean;
+  loadingLast: boolean;
+  loadingFull: boolean;
+  setLoadingLast: (loading: boolean) => void;
+  setLoadingFull: (loading: boolean) => void;
   syncFromLastIssues: () => Promise<SyncResponse>;
   syncFullIssues: () => Promise<SyncResponse>;
   cancelSync: () => void;
@@ -30,25 +33,23 @@ const isAbortError = (err: unknown) => {
 };
 
 export const useIssuesStore = create<IssuesStore>((set) => ({
-  loading: false,
+  loadingLast: false,
+  loadingFull: false,
+  setLoadingLast: (loading) => set({ loadingLast: loading }),
+  setLoadingFull: (loading) => set({ loadingFull: loading }),
 
   syncFromLastIssues: async () => {
-    set({ loading: true });
     try {
       return await issuesService.syncFromLastIssues();
     } catch (err) {
-      // Khi user đăng xuất/cancel thì chỉ cần dừng silent
       if (isAbortError(err)) {
         throw err;
       }
       throw err;
-    } finally {
-      set({ loading: false });
     }
   },
 
   syncFullIssues: async () => {
-    set({ loading: true });
     try {
       return await issuesService.syncFullIssues();
     } catch (err) {
@@ -56,13 +57,11 @@ export const useIssuesStore = create<IssuesStore>((set) => ({
         throw err;
       }
       throw err;
-    } finally {
-      set({ loading: false });
     }
   },
 
   cancelSync: () => {
     issuesService.cancelSync();
-    set({ loading: false });
+    set({ loadingLast: false, loadingFull: false });
   },
 }));

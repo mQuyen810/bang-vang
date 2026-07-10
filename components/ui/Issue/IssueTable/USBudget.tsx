@@ -10,9 +10,10 @@ interface Props {
   title: string;
   columns: string[];
   issues: USBudget[];
+  startIndex?: number;
 }
 
-export function USBudgetTable({ title, columns, issues }: Props) {
+export function USBudgetTable({ title, columns, issues, startIndex = 0 }: Props) {
   return (
     <TableWrapper title={title} columns={columns} count={issues.length}>
       {issues.length === 0 ? (
@@ -22,8 +23,11 @@ export function USBudgetTable({ title, columns, issues }: Props) {
           </td>
         </tr>
       ) : (
-        issues.map((item) => (
+        issues.map((item, index) => (
           <tr key={item.id} className={styles.tr}>
+            <td className={styles.td}>
+              <div className={styles.rankNumber}>{startIndex + index + 1}</div>
+            </td>
             <td className={styles.td}>
               <span className={styles.idCell}>{item.key}</span>
             </td>

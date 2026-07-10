@@ -2,7 +2,10 @@ import {
   LayoutDashboard,
   User,
   ClipboardCheck,
-  TriangleAlert,
+  CalendarX,
+  History,
+  Wallet,
+  Flag,
 } from "lucide-react";
 
 import { LucideIcon } from "lucide-react";
@@ -59,22 +62,22 @@ export const SIDEBAR_MENU: SidebarGroup[] = [
       {
         label: "Quá hạn",
         path: "/overdue",
-        icon: TriangleAlert,
+        icon: CalendarX,
       },
       {
-        label: "Quá hạn logwork",
+        label: "Log Work",
         path: "/logwork",
-        icon: TriangleAlert,
+        icon: History,
       },
       {
-        label: "Quá budget",
+        label: "US Budget",
         path: "/usbudget",
-        icon: TriangleAlert,
+        icon: Wallet,
       },
       {
-        label: "Thiếu milestone",
+        label: "Milestone Missing",
         path: "/milestone",
-        icon: TriangleAlert,
+        icon: Flag,
       },
     ],
   },

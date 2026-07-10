@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { User, Lock, Eye, EyeOff, Trophy, Loader2 } from "lucide-react";
-import { message } from "antd";
+import { App } from "antd";
 import { Background } from "@/components/ui/Background";
+// import { message } from "antd"; // Removed
+
 import { Mascot } from "@/components/ui/Mascot";
 import { useAuthStore } from "@/stores/auth.store";
 import { NeonField } from "./NeonField";
@@ -13,6 +15,7 @@ import { FloatingDecor } from "./FloatingDecor";
 import styles from "./styles.module.scss";
 
 export default function LoginForm() {
+  const { message } = App.useApp();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [focus, setFocus] = useState<"username" | "password" | null>(null);
@@ -91,139 +94,141 @@ export default function LoginForm() {
 
 
   return (
-    <div className={styles.container}>
-      <Background />
-      <FloatingDecor />
+    <App>
+      <div className={styles.container}>
+        <Background />
+        <FloatingDecor />
 
-      <div className={styles.wrapper}>
-        {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className={styles.logoWrapper}
-        >
-          <div className={styles.logoBadge}>
-            <Trophy className={styles.logoIcon} />
-            <span className={styles.logoLabel}>Vinh danh</span>
-            <Trophy className={styles.logoIcon} />
+        <div className={styles.wrapper}>
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className={styles.logoWrapper}
+          >
+            <div className={styles.logoBadge}>
+              <Trophy className={styles.logoIcon} />
+              <span className={styles.logoLabel}>Vinh danh</span>
+              <Trophy className={styles.logoIcon} />
+            </div>
+            <h1 className={styles.logoTitle}>BẢNG VÀNG</h1>
+            <p className={styles.logoSubtitle}>HỆ THỐNG XẾP HẠNG NHÂN VIÊN</p>
+          </motion.div>
+
+
+          {/* Mascot */}
+          <div className={styles.mascotWrapper}>
+            <div ref={mascotRef} className={styles.mascotContainer}>
+              <Mascot mode={mode} eyeTarget={effectiveEye} />
+            </div>
           </div>
-          <h1 className={styles.logoTitle}>BẢNG VÀNG</h1>
-          <p className={styles.logoSubtitle}>HỆ THỐNG XẾP HẠNG NHÂN VIÊN</p>
-        </motion.div>
 
+          {/* Login Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: [0, -4, 0] }}
+            transition={{
+              opacity: { duration: 0.8 },
+              y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+            }}
+            className={styles.cardWrapper}
+          >
+            <div className={styles.cardGlow} />
+            <div className={styles.card}>
+              <div className={styles.cardShine} />
 
-        {/* Mascot */}
-        <div className={styles.mascotWrapper}>
-          <div ref={mascotRef} className={styles.mascotContainer}>
-            <Mascot mode={mode} eyeTarget={effectiveEye} />
-          </div>
-        </div>
+              <form onSubmit={handleSubmit} className={styles.form}>
+                {error && <div className={styles.error}>{error}</div>}
 
-        {/* Login Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: [0, -4, 0] }}
-          transition={{
-            opacity: { duration: 0.8 },
-            y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-          }}
-          className={styles.cardWrapper}
-        >
-          <div className={styles.cardGlow} />
-          <div className={styles.card}>
-            <div className={styles.cardShine} />
+                {/* Username Field */}
+                <NeonField focused={focus === "username"}>
+                  <User className={styles.fieldIcon} />
+                  <input
+                    ref={userInputRef}
+                    type="text"
+                    placeholder="Tên đăng nhập"
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                      updateCursor();
+                    }}
+                    onKeyUp={updateCursor}
+                    onClick={updateCursor}
+                    onFocus={() => setFocus("username")}
+                    onBlur={() => setFocus(null)}
+                    className={styles.fieldInput}
+                    disabled={loading}
+                  />
+                </NeonField>
 
-            <form onSubmit={handleSubmit} className={styles.form}>
-              {error && <div className={styles.error}>{error}</div>}
+                {/* Password Field */}
+                <NeonField focused={focus === "password"}>
+                  <Lock className={styles.fieldIcon} />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Mật khẩu"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onFocus={() => setFocus("password")}
+                    onBlur={() => setFocus(null)}
+                    className={styles.fieldInput}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className={styles.eyeButton}
+                    tabIndex={-1}
+                    aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className={styles.eyeIcon} />
+                    ) : (
+                      <Eye className={styles.eyeIcon} />
+                    )}
+                  </button>
+                </NeonField>
 
-              {/* Username Field */}
-              <NeonField focused={focus === "username"}>
-                <User className={styles.fieldIcon} />
-                <input
-                  ref={userInputRef}
-                  type="text"
-                  placeholder="Tên đăng nhập"
-                  value={username}
-                  onChange={(e) => {
-                    setUsername(e.target.value);
-                    updateCursor();
+                {/* Submit Button */}
+                <motion.button
+                  type="submit"
+                  whileHover={{
+                    y: -2,
+                    boxShadow: "0 0 40px rgba(139,92,246,0.7)",
                   }}
-                  onKeyUp={updateCursor}
-                  onClick={updateCursor}
-                  onFocus={() => setFocus("username")}
-                  onBlur={() => setFocus(null)}
-                  className={styles.fieldInput}
+                  whileTap={{ scale: 0.96 }}
+                  className={styles.submitButton}
                   disabled={loading}
-                />
-              </NeonField>
-
-              {/* Password Field */}
-              <NeonField focused={focus === "password"}>
-                <Lock className={styles.fieldIcon} />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Mật khẩu"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onFocus={() => setFocus("password")}
-                  onBlur={() => setFocus(null)}
-                  className={styles.fieldInput}
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((v) => !v)}
-                  className={styles.eyeButton}
-                  tabIndex={-1}
-                  aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                 >
-                  {showPassword ? (
-                    <EyeOff className={styles.eyeIcon} />
-                  ) : (
-                    <Eye className={styles.eyeIcon} />
-                  )}
-                </button>
-              </NeonField>
+                  <motion.span
+                    className={styles.submitShine}
+                    animate={{ x: ["-100%", "100%"] }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                  <span className={styles.submitText}>
+                    {loading ? (
+                      <>
+                        <Loader2 className={styles.spinner} />
+                        Đang đăng nhập...
+                      </>
+                    ) : (
+                      "Đăng nhập"
+                    )}
+                  </span>
+                </motion.button>
+              </form>
+            </div>
+          </motion.div>
 
-              {/* Submit Button */}
-              <motion.button
-                type="submit"
-                whileHover={{
-                  y: -2,
-                  boxShadow: "0 0 40px rgba(139,92,246,0.7)",
-                }}
-                whileTap={{ scale: 0.96 }}
-                className={styles.submitButton}
-                disabled={loading}
-              >
-                <motion.span
-                  className={styles.submitShine}
-                  animate={{ x: ["-100%", "100%"] }}
-                  transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
-                <span className={styles.submitText}>
-                  {loading ? (
-                    <>
-                      <Loader2 className={styles.spinner} />
-                      Đang đăng nhập...
-                    </>
-                  ) : (
-                    "Đăng nhập"
-                  )}
-                </span>
-              </motion.button>
-            </form>
-          </div>
-        </motion.div>
+          <p className={styles.poweredBy}>Phát triển bởi Bảng Vàng • v1.0</p>
 
-        <p className={styles.poweredBy}>Phát triển bởi Bảng Vàng • v1.0</p>
-
+        </div>
       </div>
-    </div>
+    </App>
   );
 }

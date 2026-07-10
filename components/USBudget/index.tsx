@@ -16,6 +16,7 @@ import { USBudgetTable } from "../ui/Issue/IssueTable/USBudget";
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
+  "STT",
   "Mã",
   "Tóm tắt",
   "Người phụ trách",
@@ -93,9 +94,9 @@ export default function USBudgetPage() {
     <div className={styles.overdue}>
       <header className={styles.header}>
         <SectionHeader
-          eyebrow="Vinh danh"
-          title="Ngân sách US"
-          desc="Theo dõi các issue vượt ngân sách"
+          eyebrow="Thống kê"
+          title="US Budget"
+          desc="Theo dõi các Story vượt ngân sách"
           variant="bug"
         />
       </header>
@@ -114,6 +115,7 @@ export default function USBudgetPage() {
         title="Các issue vượt ngân sách"
         columns={columns}
         issues={filteredIssues}
+        startIndex={(currentPage - 1) * DEFAULT_PAGE_SIZE}
       />
 
       {totalResults > 0 && (

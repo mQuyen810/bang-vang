@@ -180,7 +180,7 @@ const RankingsPage: React.FC = () => {
           <h1 className={styles.title}>
             {tab === "prod"
               ? "Bảng xếp hạng Sản lượng"
-              : "Bảng xếp hạng xử lý lỗi"}
+              : "Bảng xếp hạng Bug"}
             <span className="text-gradient"> ✦</span>
           </h1>
 
@@ -222,6 +222,21 @@ const RankingsPage: React.FC = () => {
         transition={{ duration: 0.4, delay: 0.2 }}
         className={`${styles.rankingList} glass-card`}
       >
+        {list.length > 0 && (
+          <div className={styles.rankingHeader}>
+            <div className={`${styles.headerCol} ${styles.headerCenter}`}>STT</div>
+            <div className={styles.headerCol}>Tên nhân viên</div>
+            <div className={`${styles.headerCol} ${styles.headerCenter} ${styles.headerBugMissing}`}>
+              {tab === "prod" ? "" : "Bug missing"}
+            </div>
+            <div className={`${styles.headerCol} ${styles.headerProgress}`}>
+              {tab === "prod" ? "Tỷ lệ sản lượng" : "Tỷ lệ Bug"}
+            </div>
+            <div className={`${styles.headerCol} ${styles.headerCenter}`}>
+              {tab === "prod" ? "Kết quả" : "Tổng Bug"}
+            </div>
+          </div>
+        )}
         <AnimatePresence>
           {list.length === 0 && (
             <motion.div
