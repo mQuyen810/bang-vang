@@ -80,15 +80,50 @@
   flex-shrink: 0;
 }
 
-.id {
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.8125rem;
+.medal {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.medalGold {
+  background: linear-gradient(180deg, #fbd96b, #c68a1b);
+  color: #1a1410;
+  box-shadow: 0 0 12px rgba(245, 194, 74, 0.3);
+}
+
+.medalSilver {
+  background: linear-gradient(180deg, #e2e8f4, #7e93bd);
+  color: #1a1410;
+  box-shadow: 0 0 12px rgba(155, 176, 214, 0.3);
+}
+
+.medalBronze {
+  background: linear-gradient(180deg, #f1b98a, #a35e33);
+  color: #1a1410;
+  box-shadow: 0 0 12px rgba(232, 160, 117, 0.3);
+}
+
+.rankNumber {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.813rem;
+  font-weight: 600;
+  color: #94a3b8;
 }
 
 .username {
   font-weight: 500;
-  color: #ffffff;
+  color: white;
 }
 
 .displayName {

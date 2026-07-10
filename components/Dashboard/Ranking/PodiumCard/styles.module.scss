@@ -233,7 +233,7 @@
   font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: var(--foreground);
+  color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -247,7 +247,7 @@
 .podiumRole {
   margin-top: 0.125rem;
   font-size: 0.75rem;
-  color: var(--muted-foreground);
+  color: #94a3b8;
 }
 
 .podiumDivider {
@@ -290,7 +290,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: 0.6875rem;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   margin-bottom: 0.375rem;
 }
 

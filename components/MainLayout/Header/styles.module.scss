@@ -20,7 +20,7 @@
 
   backdrop-filter: blur(24px);
 
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   box-shadow:
     0 8px 32px rgba(0,0,0,.25);
@@ -71,8 +71,8 @@
   height: 42px;
   padding: 0 14px;
   border-radius: 14px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
 }
 
@@ -90,7 +90,7 @@
 
   span {
     font-size: 11px;
-    color: #9ca3af;
+    color: #94a3b8;
   }
 
   strong {
@@ -129,16 +129,16 @@
 
   width: 290px;
 
-  background: rgba(15, 23, 42, .92);
+  background: rgba(15, 23, 42, 0.92);
   backdrop-filter: blur(24px);
 
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   border-radius: 18px;
 
   box-shadow:
       0 15px 40px rgba(0,0,0,.45),
-      inset 0 1px rgba(255,255,255,.05);
+      inset 0 1px rgba(255, 255, 255, 0.05);
 
   padding: 8px;
 
@@ -188,7 +188,7 @@
   position:relative;
   overflow:hidden;
   &:hover {
-    background: rgba(255,255,255,.05);
+    background: rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -309,7 +309,7 @@
 .iconBtn:hover {
   color: white;
 
-  background: rgba(255,255,255,.08);
+  background: rgba(255, 255, 255, 0.08);
 
   transform: translateY(-1px);
 }
@@ -322,7 +322,7 @@
     linear-gradient(
       to bottom,
       transparent,
-      rgba(255,255,255,.15),
+      rgba(255, 255, 255, 0.15),
       transparent
     );
 }
@@ -340,13 +340,13 @@
 
   border-radius: 14px;
 
-  background: rgba(255,255,255,.05);
+  background: rgba(255, 255, 255, 0.05);
 
   transition: .25s;
 }
 
 .userBtn:hover {
-  background: rgba(255,255,255,.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .spinning {
@@ -394,7 +394,7 @@
 
     border-radius: 12px;
 
-    background: rgba(255,255,255,.05);
+    background: rgba(255, 255, 255, 0.05);
 
     color: white;
   }
@@ -433,7 +433,7 @@
 }
 
 .breadcrumb :global(.ant-breadcrumb-separator) {
-  color: rgba(255,255,255,.25) !important;
+  color: rgba(255, 255, 255, 0.25) !important;
 }
 
 .breadcrumb :global(li:last-child .ant-breadcrumb-link) {
@@ -444,11 +444,11 @@
 
 :global(.ant-dropdown) {
   .ant-dropdown-menu {
-    background: rgba(17,25,40,.95);
+    background: rgba(17, 25, 40, 0.95);
 
     backdrop-filter: blur(24px);
 
-    border: 1px solid rgba(255,255,255,.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
     border-radius: 16px;
   }
@@ -458,7 +458,7 @@
   }
 
   .ant-dropdown-menu-item:hover {
-    background: rgba(255,255,255,.06);
+    background: rgba(255, 255, 255, 0.06);
   }
 }
 

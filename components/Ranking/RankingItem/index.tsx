@@ -100,7 +100,6 @@ export const RankingItem: React.FC<RankingItemProps> = ({
 
       <div className={styles.bugMissingColumn}>
         <div className={styles.bugMissingHeader}>
-          {tab === "bug" ? "Bug Missing" : ""}
         </div>
         <div className={styles.bugMissingValue}>
           {tab === "bug" ? (bugMissing ?? "—") : ""}
@@ -109,12 +108,14 @@ export const RankingItem: React.FC<RankingItemProps> = ({
 
       <div className={styles.progressColumn}>
         <div className={styles.progressHeader}>
-          <span>{tab === "prod" ? "Sản lượng" : "Tỷ lệ lỗi"}</span>
+          <span className={styles.progressValue}>
+            {tab === "prod" ? "" : `${bugCount}/${subtaskCount}`}
+          </span>
 
           <span className={styles.progressValue}>
             {tab === "prod"
               ? `${output}/${capacity}`
-              : `${bugCount}/${subtaskCount}`}
+              : `${pct}%`}
           </span>
         </div>
         <div className={styles.progressBar}>
@@ -126,7 +127,7 @@ export const RankingItem: React.FC<RankingItemProps> = ({
       </div>
 
       <div className={`${styles.scoreColumn} ${medal ? medal.textColor : ""}`}>
-        {tab === "prod" ? `${ratio}%` : `${pct}%`}
+        {tab === "prod" ? `${ratio}%` : bugCount}
       </div>
     </motion.div>
   );

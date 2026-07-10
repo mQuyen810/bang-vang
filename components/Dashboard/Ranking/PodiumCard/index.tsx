@@ -252,7 +252,7 @@ export function PodiumCard({
               className={styles.podiumMetricLabel}
               style={{ color: `${theme.soft}0.85` }}
             >
-              {variant === "bug" ? "Bug Resolved" : "Productivity"}
+              {variant === "bug" ? "Số Bug" : "Sản lượng"}
             </div>
             <div
               className={styles.podiumMetricValue}
@@ -272,15 +272,13 @@ export function PodiumCard({
           <div className={styles.podiumProgress}>
             <div className={styles.podiumProgressHeader}>
               <span className={styles.podiumProgressLabel}>
-                {variant === "bug" ? "Bug percent" : "Productivity percent"}
+                {variant === "bug" ? `Tỷ lệ Bug: ${current}/${capacity}` : `Tỷ lệ Sản lượng: ${current}/${capacity}`}
               </span>
               <span
                 className={styles.podiumProgressValue}
                 style={{ color: theme.hex }}
               >
-                {variant === "bug"
-                  ? `${metricVal.toFixed(2)}%`
-                  : `${metricVal.toFixed(2)}%`}
+                {metricVal.toFixed(2)}%
               </span>
             </div>
             <div

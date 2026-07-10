@@ -56,7 +56,7 @@
 .subtitle {
   margin-top: 6px;
   font-size: 0.875rem;
-  color: var(--muted-foreground);
+  color: #94a3b8;
 }
 
 .tabGroup {
@@ -82,7 +82,7 @@
   border-radius: 1rem;
   border: none;
   background: transparent;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   font-size: 0.813rem;
   font-weight: 500;
   cursor: pointer;
@@ -96,7 +96,7 @@
   }
   
   &:hover {
-    color: var(--foreground);
+    color: white;
   }
 }
 
@@ -123,5 +123,46 @@
   padding: 64px 0;
   text-align: center;
   font-size: 0.875rem;
-  color: var(--muted-foreground);
+  color: #94a3b8;
+}
+
+.rankingHeader {
+  display: grid;
+  grid-template-columns: 44px 1fr 1fr 1.2fr 80px;
+  gap: 1rem;
+  padding: 0 1rem 12px 1rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 44px 1fr 80px;
+    gap: 0.5rem;
+    .headerBugMissing, .headerProgress {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 36px 1fr 80px;
+    padding: 0 0.5rem 8px 0.5rem;
+    gap: 0.5rem;
+  }
+}
+
+.headerCol {
+  color: #94a3b8;
+  font-size: 0.688rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.headerCenter {
+  text-align: center;
+}
+
+.headerRight {
+  text-align: right;
 }

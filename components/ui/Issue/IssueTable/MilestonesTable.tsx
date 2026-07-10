@@ -10,9 +10,10 @@ interface Props {
   title: string;
   columns: string[];
   issues: MilestoneIssue[];
+  startIndex?: number;
 }
 
-export function MilestonesTable({ title, columns, issues }: Props) {
+export function MilestonesTable({ title, columns, issues, startIndex = 0 }: Props) {
   return (
     <TableWrapper title={title} columns={columns} count={issues.length}>
       {issues.length === 0 ? (
@@ -22,10 +23,10 @@ export function MilestonesTable({ title, columns, issues }: Props) {
           </td>
         </tr>
       ) : (
-        issues.map((item) => (
+        issues.map((item, index) => (
           <tr key={item.id} className={styles.tr}>
             <td className={styles.td}>
-              <span className={styles.idCell}>{item.id}</span>
+              <div className={styles.rankNumber}>{startIndex + index + 1}</div>
             </td>
             <td className={styles.td}>
               <span className={styles.idCell}>{item.ticket_code}</span>
@@ -34,7 +35,7 @@ export function MilestonesTable({ title, columns, issues }: Props) {
               <span className={styles.summaryCell}>{item.milestone_name}</span>
             </td>
             <td className={styles.td}>
-              <PriorityBadge priority={item.report_type} />
+              <PriorityBadge priority="Milestone" />
             </td>
           </tr>
         ))

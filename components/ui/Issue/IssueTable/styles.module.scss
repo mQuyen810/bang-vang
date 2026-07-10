@@ -190,10 +190,12 @@
 }
 
 .summaryCell {
+  display: inline-block;
+  min-width: 250px;
   white-space: normal;
   word-break: break-word;
   overflow-wrap: anywhere;
-  color: var(--foreground);
+  color: white;
   font-weight: 500;
 }
 

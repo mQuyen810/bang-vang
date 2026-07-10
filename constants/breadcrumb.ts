@@ -52,7 +52,7 @@ export const breadcrumbMap: Record<
       href: "/dashboard",
     },
     {
-      title: "Quá hạn logwork",
+      title: "Log Work",
       href: "/logwork",
     },
   ],
@@ -62,7 +62,7 @@ export const breadcrumbMap: Record<
       href: "/dashboard",
     },
     {
-      title: "Quá budget",
+      title: "US Budget",
       href: "/usbudget",
     },
   ],
@@ -72,7 +72,7 @@ export const breadcrumbMap: Record<
       href: "/dashboard",
     },
     {
-      title: "Thiếu milestone",
+      title: "Milestone Missing",
       href: "/milestone",
     },
   ],

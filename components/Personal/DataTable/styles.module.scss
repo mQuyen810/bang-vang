@@ -19,12 +19,12 @@
 .tableTitle {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--foreground);
+  color: white;
 }
 
 .tableCount {
   font-size: 0.75rem;
-  color: var(--muted-foreground);
+  color: #94a3b8;
 }
 
 .tableWrapper {
@@ -58,7 +58,7 @@
   font-size: 0.688rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--muted-foreground);
+  color: #94a3b8;
   font-weight: 600;
   border-bottom: 1px solid var(--border);
 }
@@ -89,10 +89,10 @@
 }
 
 .summaryCell {
-  color: var(--foreground);
+  color: white;
   font-weight: 500;
 }
 
 .otherCell {
-  color: var(--muted-foreground);
+  color: #94a3b8;
 }

@@ -61,7 +61,7 @@
 
   padding: 0 16px;
 
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .logo {
@@ -79,7 +79,7 @@
   justify-content: center;
 
   border-radius: 12px;
-  color: #fff;
+  color: white;
   background: linear-gradient(
     135deg,
     #fbbf24,
@@ -97,7 +97,7 @@
 .logoTitle {
   font-size: 15px;
   font-weight: 600;
-  color: #fff;
+  color: white;
 }
 
 .logoSub {
@@ -161,7 +161,7 @@
 .menuItem:hover {
   color: white;
 
-  background: rgba(255,255,255,.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .active {
@@ -216,13 +216,13 @@
 
   backdrop-filter: blur(16px);
 
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   transition: .25s;
 }
 
 .userCard:hover {
-  background: rgba(255,255,255,.06);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 
@@ -238,13 +238,13 @@
 
   background: rgba(255,255,255,.04);
 
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer {
   padding: 12px;
 
-  border-top: 1px solid rgba(255,255,255,.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .avatarWrapper {
@@ -329,7 +329,7 @@
 
   padding: 0 16px;
 
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .collapseBtn {
@@ -359,7 +359,7 @@
   font-size: 14px;
   font-weight: 600;
 
-  color: #fff;
+  color: white;
 
   white-space: nowrap;
   overflow: hidden;
@@ -429,7 +429,7 @@
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,.08),
+      rgba(255, 255, 255, 0.08),
       transparent
     );
 

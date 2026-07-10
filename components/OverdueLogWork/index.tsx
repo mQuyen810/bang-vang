@@ -28,6 +28,7 @@ const STATUS_MAP = {
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
+  "STT",
   "Mã",
   "Tóm tắt",
   "Người phụ trách",
@@ -79,7 +80,7 @@ export default function OverdueLogWork() {
     },
     {
       key: "warning",
-      label: "Cần cảnh báo",
+      label: "Cảnh báo",
       count: counts.warning,
       icon: AlertTriangle,
     },
@@ -150,9 +151,9 @@ export default function OverdueLogWork() {
     <div className={styles.overdue}>
       <header className={styles.header}>
         <SectionHeader
-          eyebrow="Vinh danh"
-          title="Quá hạn log work"
-          desc="Theo dõi các log work đã quá hạn và cần được cập nhật"
+          eyebrow="Thống kê"
+          title="Log Work"
+          desc="Theo dõi các Log Work đã quá hạn và cần được cập nhật"
           variant="bug"
         />
       </header>
@@ -174,11 +175,12 @@ export default function OverdueLogWork() {
             activeTab === "overdue"
               ? "Quá hạn"
               : activeTab === "warning"
-                ? "Cần cảnh báo"
+                ? "Cảnh báo"
                 : "Thiếu cập nhật"
           }
           columns={columns}
           issues={filteredIssues}
+          startIndex={(currentPage - 1) * DEFAULT_PAGE_SIZE}
         />
 
         <PaginationBar
