@@ -29,7 +29,14 @@ export function MilestonesTable({ title, columns, issues, startIndex = 0 }: Prop
               <div className={styles.rankNumber}>{startIndex + index + 1}</div>
             </td>
             <td className={styles.td}>
-              <span className={styles.idCell}>{item.ticket_code}</span>
+              <a 
+                href={`https://jira.viettelsoftware.com/browse/${item.ticket_code}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.idCell}
+              >
+                {item.ticket_code}
+              </a>
             </td>
             <td className={styles.td}>
               <span className={styles.summaryCell}>{item.milestone_name}</span>
