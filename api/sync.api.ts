@@ -29,6 +29,18 @@ export const syncFullIssuesApi = () => {
   });
 };
 
+export const syncCustomIssuesApi = (fromMonth: string, toMonth: string, projects: string[]) => {
+  const c = createNewController();
+  return axiosClient.get<SyncResponse>("/issues/sync/full_issues", {
+    params: {
+      period_from: fromMonth,
+      period_to: toMonth,
+      project_names: projects
+    },
+    signal: c.signal,
+  });
+};
+
 export const getSyncStatusApi = (mode: "last" | "full") => {
   return axiosClient.get<{ status: string }>(`/issues/sync/status/${mode}`);
 };

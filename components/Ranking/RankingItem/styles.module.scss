@@ -130,7 +130,7 @@
   font-weight: 600;
   flex-shrink: 0;
   border: 2px solid var(--surface);
-  color: white;
+  color: var(--foreground);
   
   @media (max-width: 768px) {
     width: 36px;
@@ -229,7 +229,7 @@
   font-weight: 700;
   font-size: 1.125rem;
   font-variant-numeric: tabular-nums;
-  color: white;
+  color: var(--foreground);
   
   @media (max-width: 768px) {
     font-size: 0.938rem;

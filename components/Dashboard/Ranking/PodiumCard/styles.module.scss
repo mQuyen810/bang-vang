@@ -168,8 +168,8 @@
   margin-bottom: 0.25rem;
   padding: 0.2rem 0.75rem;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface);
+  border: 1px solid var(--white-10);
   backdrop-filter: blur(10px);
 }
 
@@ -219,7 +219,7 @@
   width: 5.5rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: white;
+  color: var(--foreground);
   
   &.avatarLarge {
     height: 6.5rem;
@@ -233,7 +233,7 @@
   font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: white;
+  color: var(--foreground);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

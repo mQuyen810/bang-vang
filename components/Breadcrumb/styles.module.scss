@@ -36,7 +36,7 @@
   font-weight: 500;
 
   &:hover {
-    color: white;
+    color: var(--foreground);
   }
 }
 
@@ -59,12 +59,12 @@
   &:hover {
     background: rgba(79,124,255,.2);
 
-    color: white;
+    color: var(--foreground);
   }
 }
 
 .current {
-  color: white;
+  color: var(--foreground);
 
   font-weight: 700;
 

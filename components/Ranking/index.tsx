@@ -48,6 +48,7 @@ const filterRankingItems = <T extends CommonRankingItem>(
   return items.filter((item) => {
     const matchSearch =
       !q ||
+      item.name.toLowerCase().includes(q) ||
       item.username.toLowerCase().includes(q) ||
       item.id.toLowerCase().includes(q);
 

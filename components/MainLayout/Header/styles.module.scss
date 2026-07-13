@@ -16,7 +16,7 @@
 
   border-radius: 24px;
 
-  background: rgba(17, 25, 40, 0.72);
+  background: var(--header-bg, rgba(17, 25, 40, 0.72));
 
   backdrop-filter: blur(24px);
 
@@ -95,7 +95,7 @@
 
   strong {
     font-size: 14px;
-    color: white;
+    color: var(--foreground);
   }
 }
 
@@ -112,7 +112,7 @@
   font-size: 11px;
   font-weight: 600;
 
-  color: white;
+  color: var(--foreground);
 
   background: linear-gradient(135deg,#F59E0B,#F97316);
 }
@@ -129,7 +129,7 @@
 
   width: 290px;
 
-  background: rgba(15, 23, 42, 0.92);
+  background: var(--menu-bg, rgba(15, 23, 42, 0.92));
   backdrop-filter: blur(24px);
 
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -138,7 +138,7 @@
 
   box-shadow:
       0 15px 40px rgba(0,0,0,.45),
-      inset 0 1px rgba(255, 255, 255, 0.05);
+      inset 0 1px var(--surface);
 
   padding: 8px;
 
@@ -184,11 +184,11 @@
 
   transition: .2s;
 
-  color: white;
+  color: var(--foreground);
   position:relative;
   overflow:hidden;
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface);
   }
 }
 
@@ -247,7 +247,7 @@
   text-align: left;
 
   strong {
-    color: white;
+    color: var(--foreground);
   }
 
   small {
@@ -267,7 +267,7 @@
 
   background: linear-gradient(135deg,#F59E0B,#F97316);
 
-  color: white;
+  color: var(--foreground);
 }
 
 .actions {
@@ -307,7 +307,7 @@
 }
 
 .iconBtn:hover {
-  color: white;
+  color: var(--foreground);
 
   background: rgba(255, 255, 255, 0.08);
 
@@ -340,7 +340,7 @@
 
   border-radius: 14px;
 
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
 
   transition: .25s;
 }
@@ -356,7 +356,7 @@
 .userName {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: white;
+  color: var(--foreground);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -394,9 +394,9 @@
 
     border-radius: 12px;
 
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface);
 
-    color: white;
+    color: var(--foreground);
   }
 }
 
@@ -437,14 +437,14 @@
 }
 
 .breadcrumb :global(li:last-child .ant-breadcrumb-link) {
-  color: white !important;
+  color: var(--foreground) !important;
 
   font-weight: 600;
 }
 
 :global(.ant-dropdown) {
   .ant-dropdown-menu {
-    background: rgba(17, 25, 40, 0.95);
+    background: var(--menu-bg, rgba(17, 25, 40, 0.95));
 
     backdrop-filter: blur(24px);
 

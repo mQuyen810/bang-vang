@@ -18,7 +18,7 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--white-80);
   }
 
   &:active {
@@ -63,13 +63,13 @@
   font-size: 0.875rem;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--white-80);
   cursor: pointer;
   transition: all 150ms ease;
 
   &:hover {
     background: rgba(255, 255, 255, 0.06);
-    color: white;
+    color: var(--foreground);
   }
 
   &.danger {

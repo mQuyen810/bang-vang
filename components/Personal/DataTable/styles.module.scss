@@ -19,7 +19,7 @@
 .tableTitle {
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--foreground);
 }
 
 .tableCount {
@@ -89,7 +89,7 @@
 }
 
 .summaryCell {
-  color: white;
+  color: var(--foreground);
   font-weight: 500;
 }
 

@@ -43,9 +43,9 @@ export default function Dashboard() {
 
         <KPI data={kpiData} />
 
-        <Ranking title="Bảng xếp hạng Sản lượng" type="prod" />
-
         <Ranking title="Bảng xếp hạng Bug" type="bug" />
+
+        <Ranking title="Bảng xếp hạng Sản lượng" type="prod" />
 
         {/* <Activity /> */}
       </div>

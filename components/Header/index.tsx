@@ -20,6 +20,8 @@ import { useAuthStore } from "@/stores/auth.store";
 import styles from "./styles.module.scss";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import { useIssuesStore } from "@/stores/sync.store";
+import echo from "@/lib/echo";
+import SyncModal from "@/components/SyncModal";
 
 export default function Header() {
   const { setMobileOpen } = useSidebar();
@@ -34,6 +36,23 @@ export default function Header() {
   const { projects, selectedProjects, setSelectedProjects } =
     useDashboardStore();
   const [projectOpen, setProjectOpen] = useState(false);
+  const [syncProgress, setSyncProgress] = useState<number | null>(null);
+  const [syncModalOpen, setSyncModalOpen] = useState(false);
+
+  useEffect(() => {
+    const channel = echo.channel("jira-channel").listen("JiraSyncProgress", (e: { progress: number }) => {
+      console.log("Tiến độ đồng bộ:", e.progress, "%");
+      setSyncProgress(e.progress);
+      if (e.progress === 100) {
+        setTimeout(() => setSyncProgress(null), 3000);
+      }
+    });
+
+    return () => {
+      channel.stopListening("JiraSyncProgress");
+      echo.leaveChannel("jira-channel");
+    };
+  }, []);
 
   const { cancelSync } = useIssuesStore();
 
@@ -116,18 +135,7 @@ export default function Header() {
   }, []);
 
   const handleSync = async () => {
-    if (loading) return;
-    try {
-      setLoading(true);
-
-      await syncFromLastIssues();
-
-      message.success("Đồng bộ dữ liệu thành công!");
-    } catch (error) {
-      message.error("Đồng bộ dữ liệu thất bại!");
-    } finally {
-      setLoading(false);
-    }
+    setSyncModalOpen(true);
   };
 
   return (
@@ -232,8 +240,13 @@ export default function Header() {
           onClick={handleSync}
           disabled={loading}
         >
-          <RefreshCw size={18} className={loading ? styles.spinning : ""} />
+          <RefreshCw size={18} className={loading || syncProgress !== null ? styles.spinning : ""} />
         </button>
+        {syncProgress !== null && (
+          <span style={{ fontSize: '12px', color: '#666', fontWeight: 500, marginRight: '10px' }}>
+            {syncProgress}%
+          </span>
+        )}
 
         <button className={styles.iconBtn} onClick={() => setDark(!dark)}>
           {dark ? <Sun size={18} /> : <Moon size={18} />}
@@ -263,6 +276,11 @@ export default function Header() {
           </button>
         </Dropdown>
       </div>
+
+      <SyncModal
+        open={syncModalOpen}
+        onClose={() => setSyncModalOpen(false)}
+      />
     </header>
   );
 }

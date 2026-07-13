@@ -86,7 +86,16 @@ export default function LoginForm() {
       const e = err as unknown as {
         response?: { data?: { message?: string } };
       };
-      setError(e.response?.data?.message || "Sai tài khoản hoặc mật khẩu");
+      let errorMessage = e.response?.data?.message || "Sai tài khoản hoặc mật khẩu";
+
+      // Hide technical errors from users
+      if (errorMessage.includes("SQLSTATE") || errorMessage.includes("Connection: mysql")) {
+        errorMessage = "Lỗi kết nối cơ sở dữ liệu. Vui lòng liên hệ quản trị viên.";
+      } else if (errorMessage.includes("cURL error") || errorMessage.includes("Could not resolve host")) {
+        errorMessage = "Không thể kết nối đến hệ thống Jira. Vui lòng liên hệ quản trị viên.";
+      }
+
+      setError(errorMessage);
     }
 
   };
