@@ -6,7 +6,7 @@ export interface DashboardFilter {
 }
 
 export interface LeaderboardFilter extends DashboardFilter {
-  user_name: string | null;
+  user_name?: string | null;
   page?: number;
   per_page?: number;
 }
@@ -210,7 +210,7 @@ export type MilestonesReportType = "MISSING" | "EXCEPTION";
 export interface MilestonesFilter extends DashboardFilter {
   report_type: MilestonesReportType;
   issuetype: string | null;
-  user_name: string | null;
+  user_name?: string | null;
   ticket_code?: string | null;
   page?: number;
   per_page?: number;

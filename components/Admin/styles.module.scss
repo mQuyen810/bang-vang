@@ -262,6 +262,7 @@ $bg-input: rgba(255, 255, 255, 0.06);
 
 .filterSelect {
   width: 100%;
+  height: 42px;
 
   :global(.ant-select-selector) {
     height: 42px !important;

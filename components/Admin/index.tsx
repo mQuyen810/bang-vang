@@ -59,14 +59,21 @@ export default function Admin() {
     return () => clearTimeout(handler);
   }, [filters.q]);
 
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+
   // Load lại khi search hoặc role thay đổi
   useEffect(() => {
     // Luôn gửi cả role và username hiện tại khi call API
     // Kiểm tra và xử lý role = 'all' -> truyền undefined
     const roleParam = filters.role === 'all' ? undefined : filters.role;
-    fetchManagerList(1, 10, roleParam, debouncedUsername);
-  }, [filters.role, debouncedUsername, fetchManagerList]);
+    fetchManagerList(1, 1000, roleParam);
+  }, [filters.role, fetchManagerList]);
 
+  // Reset page when search changes
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedUsername, filters.role]);
 
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
@@ -90,7 +97,8 @@ export default function Admin() {
     }
     const load = async () => {
       try {
-        await fetchManagerList(1, 10, filters.role);
+        const roleParam = filters.role === 'all' ? undefined : filters.role;
+        await fetchManagerList(1, 1000, roleParam);
       } catch (error) {
         console.error("Failed to load manager list:", error);
       }
@@ -100,8 +108,21 @@ export default function Admin() {
   }, [isAuthenticated, fetchManagerList, router, filters.role]);
 
   const filteredUsers = useMemo(() => {
-    return managerList;
-  }, [managerList]);
+    let list = managerList;
+    if (debouncedUsername.trim()) {
+      const q = debouncedUsername.trim().toLowerCase();
+      list = list.filter((item) => 
+        item.jira_username?.toLowerCase().includes(q) || 
+        item.jira_display_name?.toLowerCase().includes(q)
+      );
+    }
+    return list;
+  }, [managerList, debouncedUsername]);
+
+  const totalResults = filteredUsers.length;
+  const totalPages = Math.ceil(totalResults / pageSize) || 1;
+  const effectivePage = page > totalPages ? totalPages : page;
+  const currentList = filteredUsers.slice((effectivePage - 1) * pageSize, effectivePage * pageSize);
 
   const resetFilters = () => {
     setFilters(EMPTY_FILTERS);
@@ -115,7 +136,8 @@ export default function Admin() {
 
   const refresh = () => {
     setLoading(true);
-    fetchManagerList(pagination.current, pagination.pageSize, filters.role).finally(() => setLoading(false));
+    const roleParam = filters.role === 'all' ? undefined : filters.role;
+    fetchManagerList(1, 1000, roleParam).finally(() => setLoading(false));
   };
 
   const handleToggleAdmin = (id: number, isAdmin: boolean) => {
@@ -145,7 +167,8 @@ export default function Admin() {
       });
 
       message.success("Cập nhật quyền thành công!");
-      await fetchManagerList(pagination.current, pagination.pageSize, filters.role, debouncedUsername);
+      const roleParam = filters.role === 'all' ? undefined : filters.role;
+      await fetchManagerList(1, 1000, roleParam);
     } catch (error) {
       message.error("Cập nhật quyền thất bại!");
     } finally {
@@ -242,12 +265,12 @@ export default function Admin() {
                 ]}
                 className={styles.filterSelect}
                 classNames={{ popup: { root: styles.filterSelectPopup } }}
-                size="middle"
+                size="large"
               />
             </div>
             
             <div className={styles.resultCount}>
-               {pagination.total} kết quả
+               {totalResults} kết quả
             </div>
 
             {(filters.q || filters.role !== "all") && (
@@ -263,16 +286,18 @@ export default function Admin() {
 
       <div className={styles.tableWrapper}>
         <UserTable
-          users={managerList}
+          users={currentList}
           loading={loadingManager}
           onToggleAdmin={handleToggleAdmin}
-          startIndex={(pagination.current - 1) * pagination.pageSize}
+          startIndex={(effectivePage - 1) * pageSize}
         />
-        <PaginationBar
-            page={pagination.current}
-            totalPages={Math.ceil(pagination.total / pagination.pageSize)}
-            onChange={(page) => fetchManagerList(page, pagination.pageSize, filters.role, debouncedUsername)}
-        />
+        {totalResults > 0 && (
+          <PaginationBar
+            page={effectivePage}
+            totalPages={totalPages}
+            onChange={setPage}
+          />
+        )}
       </div>
 
 
