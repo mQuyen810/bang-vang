@@ -6,63 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a19a1ee8-5995-4468-9b45-6b5d53d0cf94" name="Changes" comment="Update UI Link Hưng">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/milestones.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/milestones.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/sync.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/sync.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/globals.scss" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/ActionMenu/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/ActionMenu/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/Avartar/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/Avartar/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/CofirmDialog/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/CofirmDialog/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/EmptyState/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/EmptyState/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/RoleBadge/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/RoleBadge/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/UserRow/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/UserRow/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/UserTable/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/UserTable/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Auth/LoginForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Auth/LoginForm/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Auth/LoginForm/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Auth/LoginForm/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Breadcrumb/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Breadcrumb/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dashboard/Activity/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Activity/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dashboard/Hero/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Hero/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dashboard/KPI/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/KPI/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dashboard/Ranking/ChampionPodium/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Ranking/ChampionPodium/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dashboard/Ranking/PodiumCard/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Ranking/PodiumCard/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dashboard/Ranking/RankRow/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Ranking/RankRow/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dashboard/Ranking/RankingTable/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Ranking/RankingTable/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dashboard/Ranking/SectionHeader/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Ranking/SectionHeader/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Header/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Header/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Header/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MainLayout/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MainLayout/Header/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MainLayout/Header/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/MainLayout/Header/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MainLayout/Sidebar/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/MainLayout/Sidebar/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Milestone/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Milestone/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Overdue/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Overdue/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/OverdueLogWork/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/OverdueLogWork/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/PageBreadcrumb/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/PageBreadcrumb/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Personal/DataTable/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Personal/DataTable/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Personal/ProfileHero/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Personal/ProfileHero/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Personal/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Personal/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Ranking/FilterBar/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Ranking/FilterBar/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Ranking/PaginationBar/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Ranking/PaginationBar/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Ranking/Podium/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Ranking/Podium/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Ranking/RankingItem/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Ranking/RankingItem/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Ranking/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Ranking/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Ranking/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Ranking/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Sidebar/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Sidebar/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/USBudget/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/USBudget/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/Issue/IssueTable/OverdueLogWorkTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/Issue/IssueTable/OverdueLogWorkTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/Issue/IssueTable/OverdueTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/Issue/IssueTable/OverdueTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/Issue/IssueTable/USBudget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/Issue/IssueTable/USBudget.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/Issue/IssueTable/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/Issue/IssueTable/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/Issue/IssueTabs/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/Issue/IssueTabs/styles.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/Leaderboard/FilterBarUsernameType/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/Leaderboard/FilterBarUsernameType/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/Leaderboard/FilterBarUsernameType/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/Leaderboard/FilterBarUsernameType/styles.module.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/sync.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/services/sync.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stores/sync.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/stores/sync.store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/dashboard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/dashboard.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/rankingBug.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/rankingBug.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/rankingProductivity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/rankingProductivity.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,27 +73,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;fix-sync&quot;,
-    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\laragon\\www\\bang-vang\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "main",
+    "js.debugger.nextJs.config.created.client": "true",
+    "js.debugger.nextJs.config.created.server": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\laragon\\www\\bang-vang\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="npm.Next.js: server-side">
     <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
       <method v="2" />
