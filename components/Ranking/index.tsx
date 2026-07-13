@@ -66,7 +66,6 @@ const RankingsPage: React.FC = () => {
 
   const tab: TabType = searchParams?.get("tab") === "bug" ? "bug" : "prod";
   const [search, setSearch] = useState("");
-  const [debouncedUsername, setDebouncedUsername] = useState("");
   const [isImporting, setIsImporting] = useState(false);
 
   const [page, setPage] = useState(1);
@@ -110,65 +109,52 @@ const RankingsPage: React.FC = () => {
   );
 
   const base = tab === "prod" ? filteredProductivityData : filteredBugData;
-  const activeMeta =
-    tab === "prod"
-      ? leaderboardSlsxRatio?.issues.details.meta
-      : leaderboardBugRatio?.issues.details.meta;
+  const totalResults = base.length;
+  const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE) || 1;
 
-  const list = base;
-  const totalPages = activeMeta?.last_page ?? 1;
-  const rankStart = activeMeta?.from ?? 1;
-  const pageSize = activeMeta?.per_page ?? DEFAULT_PAGE_SIZE;
-  const totalResults = activeMeta?.total ?? list.length;
+  const effectivePage = page > totalPages ? totalPages : page;
+  const list = base.slice((effectivePage - 1) * DEFAULT_PAGE_SIZE, effectivePage * DEFAULT_PAGE_SIZE);
+  const rankStart = (effectivePage - 1) * DEFAULT_PAGE_SIZE + 1;
 
   const productivityRankById = useMemo(
     () =>
       new Map(
-        productivityData.map((item, index) => [item.id, rankStart + index]),
+        productivityData.map((item, index) => [item.id, index + 1]),
       ),
-    [productivityData, rankStart],
+    [productivityData],
   );
 
   const bugRankById = useMemo(
-    () => new Map(bugData.map((item, index) => [item.id, rankStart + index])),
-    [bugData, rankStart],
+    () => new Map(bugData.map((item, index) => [item.id, index + 1])),
+    [bugData],
   );
 
   const handleReset = () => {
     setSearch("");
+    setPage(1);
   };
 
   const handleMonthChange = (month: string) => {
     if (!month) return;
-
     setRankingPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
   };
 
+  // When search changes, reset page to 1
   useEffect(() => {
-    const t = window.setTimeout(() => {
-      setDebouncedUsername(search.trim() ? search.trim() : "");
-    }, 500);
-
-    return () => {
-      window.clearTimeout(t);
-    };
+    setPage(1);
   }, [search]);
 
   useEffect(() => {
-    const userNameParam = debouncedUsername ? debouncedUsername : null;
-
+    // Fetch all records (e.g. 1000) for client-side search and pagination
     if (tab === "prod") {
-      fetchLeaderboardSlsxRatio(userNameParam, page, pageSize, rankingPeriod);
+      fetchLeaderboardSlsxRatio(null, 1, 1000, rankingPeriod);
       return;
     }
 
-    fetchLeaderboardBugRatio(userNameParam, page, pageSize, rankingPeriod);
+    fetchLeaderboardBugRatio(null, 1, 1000, rankingPeriod);
   }, [
     tab,
-    page,
     rankingPeriod,
-    pageSize,
-    debouncedUsername,
     selectedProjects,
     fetchLeaderboardBugRatio,
     fetchLeaderboardSlsxRatio,
@@ -191,11 +177,11 @@ const RankingsPage: React.FC = () => {
       const res = await importLeaderboardApi(file);
       message.success({ content: res.data?.message || "Import dữ liệu thành công!", key: "import-leaderboard" });
       
-      // Refresh list
+      // Refresh list by fetching all
       if (tab === "prod") {
-        fetchLeaderboardSlsxRatio(debouncedUsername || null, page, pageSize, rankingPeriod);
+        fetchLeaderboardSlsxRatio(null, 1, 1000, rankingPeriod);
       } else {
-        fetchLeaderboardBugRatio(debouncedUsername || null, page, pageSize, rankingPeriod);
+        fetchLeaderboardBugRatio(null, 1, 1000, rankingPeriod);
       }
     } catch (error) {
       message.error({ content: "Import thất bại!", key: "import-leaderboard" });
@@ -206,7 +192,6 @@ const RankingsPage: React.FC = () => {
 
   // Note: We intentionally avoid resetting page via useEffect to satisfy ESLint rule
   // `react-hooks/set-state-in-effect`.
-  const effectivePage = page > totalPages ? totalPages : page;
 
   return (
     <div className={styles.container}>

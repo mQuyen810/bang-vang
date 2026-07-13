@@ -93,6 +93,8 @@ export default function LoginForm() {
         errorMessage = "Lỗi kết nối cơ sở dữ liệu. Vui lòng liên hệ quản trị viên.";
       } else if (errorMessage.includes("cURL error") || errorMessage.includes("Could not resolve host")) {
         errorMessage = "Không thể kết nối đến hệ thống Jira. Vui lòng liên hệ quản trị viên.";
+      } else if (errorMessage.includes("403 Forbidden") || errorMessage.includes("Client error") || errorMessage.includes("401 Unauthorized")) {
+        errorMessage = "Tài khoản đang bị khóa (yêu cầu CAPTCHA) hoặc sai mật khẩu. Vui lòng đăng nhập trực tiếp trên Jira bằng trình duyệt để mở khóa, sau đó thử lại.";
       }
 
       setError(errorMessage);

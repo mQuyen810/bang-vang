@@ -266,7 +266,7 @@ export default function Header() {
             onClick={handleSync}
             disabled={loadingLast || loadingFull}
           >
-            <RefreshCw size={18} className={loadingLast ? styles.spinning : ""} />
+            <RefreshCw size={18} className={loadingLast || loadingFull ? styles.spinning : ""} />
           </button>
         )}
 

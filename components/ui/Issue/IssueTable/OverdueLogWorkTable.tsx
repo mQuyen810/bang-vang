@@ -25,9 +25,7 @@ export function OverdueLogWorkTable({ title, columns, issues, startIndex = 0 }: 
       ) : (
         issues.map((item, index) => (
           <tr key={item.id} className={styles.tr}>
-            <td className={styles.td}>
-              <div className={styles.rankNumber}>{startIndex + index + 1}</div>
-            </td>
+
             <td className={styles.td}>
               <a 
                 href={`https://jira.viettelsoftware.com/browse/${item.key}`}

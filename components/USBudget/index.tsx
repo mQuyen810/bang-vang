@@ -16,15 +16,14 @@ import { USBudgetTable } from "../ui/Issue/IssueTable/USBudget";
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
-  "STT",
   "Mã",
   "Tóm tắt",
   "Người phụ trách",
   "Loại issue",
   "Trạng thái",
-  "Ngân sách Story",
-  "Ngân sách Sub-task",
-  "Vượt ngân sách",
+  "Budget Story",
+  "Budget Sub-task",
+  "Vượt Budget",
 ];
 
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
@@ -35,7 +34,6 @@ export default function USBudgetPage() {
     useIssuePeriodStore();
 
   const [search, setSearch] = useState("");
-  const [debouncedUsername, setDebouncedUsername] = useState("");
 
   const [issueType, setIssueType] = useState("all");
   const [page, setPage] = useState(1);
@@ -43,24 +41,17 @@ export default function USBudgetPage() {
   const selectedMonth = dayjs(usBudgetPeriod, "MM-YYYY").format("YYYY-MM");
 
   useEffect(() => {
-    const t = window.setTimeout(() => {
-      setDebouncedUsername(search.trim() ? search.trim() : "");
-    }, 500);
-
-    return () => {
-      window.clearTimeout(t);
-    };
-  }, [search]);
-
-  useEffect(() => {
-    const userNameParam = debouncedUsername ? debouncedUsername : null;
-
     fetchUSBudget({
-      userName: userNameParam,
-      page,
-      perPage: DEFAULT_PAGE_SIZE,
+      userName: null,
+      page: 1,
+      perPage: 1000,
     });
-  }, [page, usBudgetPeriod, selectedProjects, debouncedUsername]);
+  }, [usBudgetPeriod, selectedProjects]);
+
+  // When search changes, reset page to 1
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   const issues = useMemo(() => {
     const list = usBudget?.issues.details.list ?? [];
@@ -70,13 +61,21 @@ export default function USBudgetPage() {
     return list.filter((item) => item.issuetype === issueType);
   }, [usBudget, issueType]);
 
-  const filteredIssues = useMemo(() => issues, [issues]);
+  const filteredIssues = useMemo(() => {
+    if (!search.trim()) return issues;
+    const q = search.trim().toLowerCase();
+    return issues.filter((item: any) => 
+      item.key?.toLowerCase().includes(q) || 
+      item.assignee?.toLowerCase().includes(q) ||
+      item.display_name?.toLowerCase().includes(q)
+    );
+  }, [issues, search]);
 
-  const meta = usBudget?.issues.details.meta;
+  const totalResults = filteredIssues.length;
+  const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE) || 1;
 
-  const currentPage = meta?.current_page ?? page;
-  const totalPages = meta?.last_page ?? 1;
-  const totalResults = meta?.total ?? filteredIssues.length;
+  const effectivePage = page > totalPages ? totalPages : page;
+  const currentList = filteredIssues.slice((effectivePage - 1) * DEFAULT_PAGE_SIZE, effectivePage * DEFAULT_PAGE_SIZE);
 
   const handleReset = () => {
     setSearch("");
@@ -114,13 +113,13 @@ export default function USBudgetPage() {
       <USBudgetTable
         title="Các issue vượt ngân sách"
         columns={columns}
-        issues={filteredIssues}
-        startIndex={(currentPage - 1) * DEFAULT_PAGE_SIZE}
+        issues={currentList}
+        startIndex={(effectivePage - 1) * DEFAULT_PAGE_SIZE}
       />
 
       {totalResults > 0 && (
         <PaginationBar
-          page={currentPage}
+          page={effectivePage}
           totalPages={totalPages}
           onChange={setPage}
         />

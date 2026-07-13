@@ -88,9 +88,7 @@ export const FilterBarUsernameType: React.FC<FilterBarUsernameTypeProps> = ({
                 onChange={select.onChange}
                 options={select.options}
                 className={styles.filterSelect}
-                classNames={{
-                  popup: styles.filterSelectPopup
-                }}
+                classNames={{ popup: { root: styles.filterSelectPopup } }}
                 size="middle"
               />
             </div>
@@ -106,9 +104,7 @@ export const FilterBarUsernameType: React.FC<FilterBarUsernameTypeProps> = ({
                   placeholder="Chọn tháng"
                   format="MM/YYYY"
                   className={styles.monthPicker}
-                  classNames={{
-                    popup: styles.monthPickerPopup
-                  }}
+                  classNames={{ popup: { root: styles.monthPickerPopup } }}
                   suffixIcon={
                     <Calendar size={14} className={styles.calendarIcon} />
                   }

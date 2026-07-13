@@ -28,7 +28,6 @@ const STATUS_MAP = {
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
-  "STT",
   "Mã",
   "Tóm tắt",
   "Người phụ trách",
@@ -50,7 +49,6 @@ export default function OverdueLogWork() {
   const [activeTab, setActiveTab] = useState<OverdueTab>("missing");
 
   const [search, setSearch] = useState("");
-  const [debouncedUsername, setDebouncedUsername] = useState("");
 
   const [issueType, setIssueType] = useState("all");
 
@@ -93,47 +91,46 @@ export default function OverdueLogWork() {
   ] as const;
 
   useEffect(() => {
-    const t = window.setTimeout(() => {
-      setDebouncedUsername(search.trim() ? search.trim() : "");
-    }, 500);
-
-    return () => {
-      window.clearTimeout(t);
-    };
-  }, [search]);
-
-  useEffect(() => {
-    const userNameParam = debouncedUsername ? debouncedUsername : null;
-
     fetchOverdueLogWork({
       issuetype: issueType === "all" ? null : issueType,
       statusLogWork: STATUS_MAP[activeTab],
       table_id: 2,
-      userName: userNameParam,
-      page,
-      perPage: DEFAULT_PAGE_SIZE,
+      userName: null,
+      page: 1,
+      perPage: 1000,
     });
   }, [
     activeTab,
     issueType,
-    page,
     overdueLogWorkPeriod,
     selectedProjects,
-    debouncedUsername,
   ]);
+
+  // When search or issueType changes, reset page to 1
+  useEffect(() => {
+    setPage(1);
+  }, [search, issueType]);
 
   const issues = useMemo(
     () => overdueLogWork?.issues.details.list ?? [],
     [overdueLogWork],
   );
 
-  const filteredIssues = useMemo(() => issues, [issues]);
+  const filteredIssues = useMemo(() => {
+    if (!search.trim()) return issues;
+    const q = search.trim().toLowerCase();
+    return issues.filter((item) => 
+      item.key?.toLowerCase().includes(q) || 
+      item.assignee?.toLowerCase().includes(q) ||
+      (item as any).display_name?.toLowerCase().includes(q)
+    );
+  }, [issues, search]);
 
-  const meta = overdueLogWork?.issues.details.meta;
+  const totalResults = filteredIssues.length;
+  const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE) || 1;
 
-  const currentPage = meta?.current_page ?? page;
-  const totalPages = meta?.last_page ?? 1;
-  const totalResults = meta?.total ?? filteredIssues.length;
+  const effectivePage = page > totalPages ? totalPages : page;
+  const currentList = filteredIssues.slice((effectivePage - 1) * DEFAULT_PAGE_SIZE, effectivePage * DEFAULT_PAGE_SIZE);
 
   const handleReset = () => {
     setSearch("");
@@ -179,12 +176,12 @@ export default function OverdueLogWork() {
                 : "Thiếu Log Work"
           }
           columns={columns}
-          issues={filteredIssues}
-          startIndex={(currentPage - 1) * DEFAULT_PAGE_SIZE}
+          issues={currentList}
+          startIndex={(effectivePage - 1) * DEFAULT_PAGE_SIZE}
         />
 
         <PaginationBar
-          page={currentPage}
+          page={effectivePage}
           totalPages={totalPages}
           onChange={setPage}
         />

@@ -20,7 +20,7 @@ type MilestoneTab = "missing" | "exception";
 
 const DEFAULT_PAGE_SIZE = 10;
 
-const columns = ["STT", "Mã Phiếu", "Milestone", "Loại Issue"];
+const columns = ["Mã Phiếu", "Milestone", "Loại Issue"];
 
 export default function Milestone() {
   const { milestones, milestonesPeriod, fetchMilestones, setMilestonesPeriod } =
@@ -31,7 +31,6 @@ export default function Milestone() {
 
   const [activeTab, setActiveTab] = useState<MilestoneTab>("missing");
   const [search, setSearch] = useState("");
-  const [debouncedUsername, setDebouncedUsername] = useState("");
 
   const [issueType, setIssueType] = useState("all");
   const [page, setPage] = useState(1);
@@ -58,42 +57,35 @@ export default function Milestone() {
   ];
 
   useEffect(() => {
-    const t = window.setTimeout(() => {
-      setDebouncedUsername(search.trim() ? search.trim() : "");
-    }, 500);
-
-    return () => window.clearTimeout(t);
-  }, [search]);
-
-  useEffect(() => {
-    const userNameParam = debouncedUsername ? debouncedUsername : null;
-
     fetchMilestones({
       report_type: activeTab === "missing" ? "MISSING" : "EXCEPTION",
       issuetype: issueType === "all" ? null : issueType,
-      ticketCode: userNameParam,
-      page,
-      perPage: DEFAULT_PAGE_SIZE,
+      ticketCode: null,
+      page: 1,
+      perPage: 1000,
     });
   }, [
     activeTab,
     issueType,
-    page,
     milestonesPeriod,
     selectedProjects,
-    debouncedUsername,
     fetchMilestones,
   ]);
 
-  const issues = useMemo(
-    () => milestones?.issues.details.list ?? [],
-    [milestones],
-  );
+  const issues = useMemo(() => {
+    const list = milestones?.issues.details.list ?? [];
+    if (!search.trim()) return list;
+    const q = search.trim().toLowerCase();
+    return list.filter((item) => 
+      item.ticket_code?.toLowerCase().includes(q) || 
+      item.milestone_name?.toLowerCase().includes(q)
+    );
+  }, [milestones, search]);
 
-  const meta = milestones?.issues.details.meta;
-  const currentPage = meta?.current_page ?? page;
-  const totalPages = meta?.last_page ?? 1;
-  const totalResults = meta?.total ?? issues.length;
+  const totalResults = issues.length;
+  const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE) || 1;
+  const effectivePage = page > totalPages ? totalPages : page;
+  const currentList = issues.slice((effectivePage - 1) * DEFAULT_PAGE_SIZE, effectivePage * DEFAULT_PAGE_SIZE);
 
   const handleTabChange = (nextTab: string) => {
     setActiveTab(nextTab as MilestoneTab);
@@ -151,13 +143,13 @@ export default function Milestone() {
             activeTab === "missing" ? "Missing Issues" : "Exception Issues"
           }
           columns={columns}
-          issues={issues}
-          startIndex={(currentPage - 1) * DEFAULT_PAGE_SIZE}
+          issues={currentList}
+          startIndex={(effectivePage - 1) * DEFAULT_PAGE_SIZE}
         />
 
         {totalResults > 0 && (
           <PaginationBar
-            page={currentPage}
+            page={effectivePage}
             totalPages={totalPages}
             onChange={setPage}
           />

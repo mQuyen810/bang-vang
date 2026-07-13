@@ -106,7 +106,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => {
     return {
       period: periodOverride ?? period,
       project_names: selectedProjects.length ? selectedProjects : null,
-      user_name: userName ?? null,
+      ...(userName ? { user_name: userName } : {}),
       page,
       per_page: perPage,
     };

@@ -22,7 +22,6 @@ type OverdueTab = "overdue" | "warning";
 const DEFAULT_PAGE_SIZE = 10;
 
 const columns = [
-  "STT",
   "Mã",
   "Tóm tắt",
   "Người phụ trách",
@@ -42,7 +41,6 @@ export default function Overdue() {
 
   const [activeTab, setActiveTab] = useState<OverdueTab>("overdue");
   const [search, setSearch] = useState("");
-  const [debouncedUsername, setDebouncedUsername] = useState("");
 
   const [issueType, setIssueType] = useState("all");
 
@@ -70,53 +68,43 @@ export default function Overdue() {
 
 
   useEffect(() => {
-    const t = window.setTimeout(() => {
-      setDebouncedUsername(search.trim() ? search.trim() : "");
-    }, 500);
-
-    return () => {
-      window.clearTimeout(t);
-    };
-  }, [search]);
-
-  useEffect(() => {
-    const userNameParam = debouncedUsername ? debouncedUsername : null;
-
     fetchOverdue({
       issuetype: issueType === "all" ? null : issueType,
       status: activeTab === "overdue" ? "Overdue" : "Warning",
-
-
       table_id: 1,
-      userName: userNameParam,
-      page,
-      perPage: DEFAULT_PAGE_SIZE,
+      userName: null,
+      page: 1,
+      perPage: 1000,
     });
   }, [
     activeTab,
     issueType,
     overduePeriod,
-    page,
     selectedProjects,
-    debouncedUsername,
   ]);
 
-  // Note: Avoid page/count resets inside useEffect to satisfy ESLint
-  // `react-hooks/set-state-in-effect`.
+  // When search or issueType changes, reset page to 1
+  useEffect(() => {
+    setPage(1);
+  }, [search, issueType]);
 
   const issues = useMemo(() => overdue?.issues.details.list ?? [], [overdue]);
 
+  const filteredIssues = useMemo(() => {
+    if (!search.trim()) return issues;
+    const q = search.trim().toLowerCase();
+    return issues.filter((item) => 
+      item.key?.toLowerCase().includes(q) || 
+      item.assignee?.toLowerCase().includes(q) ||
+      item.display_name?.toLowerCase().includes(q)
+    );
+  }, [issues, search]);
 
+  const totalResults = filteredIssues.length;
+  const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE) || 1;
 
-  const filteredIssues = useMemo(() => issues, [issues]);
-
-  const meta = overdue?.issues.details.meta;
-
-  const currentPage = meta?.current_page ?? page;
-  const totalPages = meta?.last_page ?? 1;
-  const totalResults = meta?.total ?? filteredIssues.length;
-
-
+  const effectivePage = page > totalPages ? totalPages : page;
+  const currentList = filteredIssues.slice((effectivePage - 1) * DEFAULT_PAGE_SIZE, effectivePage * DEFAULT_PAGE_SIZE);
 
   const handleReset = () => {
     setSearch("");
@@ -172,12 +160,12 @@ export default function Overdue() {
           title={activeTab === "overdue" ? "Các issue quá hạn" : "Các issue cần cảnh báo"}
 
           columns={columns}
-          issues={filteredIssues}
-          startIndex={(currentPage - 1) * DEFAULT_PAGE_SIZE}
+          issues={currentList}
+          startIndex={(effectivePage - 1) * DEFAULT_PAGE_SIZE}
         />
         {totalResults > 0 && (
           <PaginationBar
-            page={currentPage}
+            page={effectivePage}
             totalPages={totalPages}
             onChange={setPage}
           />

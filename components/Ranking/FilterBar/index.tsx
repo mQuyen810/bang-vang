@@ -105,7 +105,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   placeholder="Chọn tháng"
                   format="MM/YYYY"
                   className={styles.monthPicker}
-                  popupClassName={styles.monthPickerPopup}
+                  classNames={{ popup: { root: styles.monthPickerPopup } }}
                   suffixIcon={
                     <Calendar size={14} className={styles.calendarIcon} />
                   }

@@ -23,7 +23,6 @@ export function TableWrapper({
     >
       <div className={`${styles.dataTable} glass-card`}>
 
-
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
             <thead>

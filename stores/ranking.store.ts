@@ -57,7 +57,7 @@ export const useRankingStore = create<RankingState>((set, get) => ({
       const filter = {
         period: periodFinal,
         project_names,
-        user_name: userName ?? null,
+        ...(userName ? { user_name: userName } : {}),
         page,
         per_page: perPage,
       };
@@ -87,7 +87,7 @@ export const useRankingStore = create<RankingState>((set, get) => ({
       const filter = {
         period: periodFinal,
         project_names,
-        user_name: userName ?? null,
+        ...(userName ? { user_name: userName } : {}),
         page,
         per_page: perPage,
       };

@@ -134,7 +134,7 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
         const period = getOverduePeriod(periodOverride);
         const filter = {
           ...getCommonParams(period),
-          user_name: userName ?? null,
+          ...(userName ? { user_name: userName } : {}),
           page,
           per_page: perPage,
           table_id,
@@ -168,7 +168,7 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
         const period = getOverdueLogWorkPeriod(periodOverride);
         const filter = {
           ...getCommonParams(period),
-          user_name: userName ?? null,
+          ...(userName ? { user_name: userName } : {}),
           page,
           per_page: perPage,
           table_id,
@@ -203,8 +203,8 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
         const filter = {
           ...getCommonParams(period),
           report_type,
-          user_name: userName ?? null,
-          ticket_code: ticketCode ?? null,
+          ...(userName ? { user_name: userName } : {}),
+          ...(ticketCode ? { ticket_code: ticketCode } : {}),
           page,
           per_page: perPage,
           issuetype,
@@ -232,7 +232,7 @@ export const useIssuePeriodStore = create<IssuePeriodState>((set, get) => {
         const period = getUsBudgetPeriod(periodOverride);
         const filter = {
           ...getCommonParams(period),
-          user_name: userName ?? null,
+          ...(userName ? { user_name: userName } : {}),
           page,
           per_page: perPage,
         };
