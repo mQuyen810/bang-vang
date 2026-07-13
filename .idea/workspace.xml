@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a19a1ee8-5995-4468-9b45-6b5d53d0cf94" name="Changes" comment="Update UI Link Hưng">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SyncModal/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/SyncModal/styles.module.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

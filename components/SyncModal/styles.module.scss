@@ -107,11 +107,11 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  &::not(:empty)::before {
+  &:not(:empty)::before {
     margin-right: 12px;
   }
 
-  &::not(:empty)::after {
+  &:not(:empty)::after {
     margin-left: 12px;
   }
 }
