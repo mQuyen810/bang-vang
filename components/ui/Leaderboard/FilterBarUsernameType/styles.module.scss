@@ -42,7 +42,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
-  color: white;
+  color: var(--foreground);
   font-size: 0.875rem;
   transition: all 0.3s ease;
 
@@ -74,7 +74,7 @@
   transition: all 0.3s ease;
 
   &:hover {
-    color: white;
+    color: var(--foreground);
     background: var(--card);
   }
 
@@ -129,7 +129,7 @@
     background: var(--surface) !important;
     border: 1px solid var(--border) !important;
     border-radius: 0.75rem !important;
-    color: white !important;
+    color: var(--foreground) !important;
     font-size: 0.875rem;
     transition: all 0.3s ease;
     box-shadow: none !important;
@@ -145,7 +145,7 @@
   }
 
   :global(.ant-select-selection-item) {
-    color: white;
+    color: var(--foreground);
   }
 
   :global(.ant-select-selection-placeholder) {
@@ -161,7 +161,7 @@
     color: #94a3b8;
 
     &:hover {
-      color: white;
+      color: var(--foreground);
     }
   }
 }
@@ -177,7 +177,7 @@
   }
 
   :global(.ant-select-item) {
-    color: white;
+    color: var(--foreground);
     border-radius: 0.5rem;
     transition: all 0.2s;
   }
@@ -192,12 +192,12 @@
       var(--primary),
       var(--secondary)
     );
-    color: white;
+    color: var(--foreground);
     font-weight: 600;
   }
 
   :global(.ant-select-item-option-selected .ant-select-item-option-state) {
-    color: white;
+    color: var(--foreground);
   }
 }
 
@@ -210,7 +210,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 0.75rem;
-    color: white;
+    color: var(--foreground);
     font-size: 0.875rem;
     transition: all 0.3s ease;
     min-width: 140px;
@@ -231,7 +231,7 @@
     }
 
     input {
-      color: white;
+      color: var(--foreground);
 
       &::placeholder {
         color: #94a3b8;
@@ -248,7 +248,7 @@
       color: #94a3b8;
 
       &:hover {
-        color: white;
+        color: var(--foreground);
       }
     }
   }
@@ -270,7 +270,7 @@
       border-bottom: 1px solid var(--border);
 
       .ant-picker-header-view {
-        color: white;
+        color: var(--foreground);
         font-weight: 600;
       }
 
@@ -278,7 +278,7 @@
         color: #94a3b8;
 
         &:hover {
-          color: white;
+          color: var(--foreground);
         }
       }
     }
@@ -289,7 +289,7 @@
       .ant-picker-month-panel {
         .ant-picker-cell {
           .ant-picker-cell-inner {
-            color: white;
+            color: var(--foreground);
             border-radius: 0.5rem;
 
             &:hover {
@@ -300,14 +300,14 @@
 
         &-in-view {
           .ant-picker-cell-inner {
-            color: white;
+            color: var(--foreground);
           }
         }
 
         &-selected {
           .ant-picker-cell-inner {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            color: var(--foreground);
 
             &:hover {
               background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -364,7 +364,7 @@
   white-space: nowrap;
 
   &:hover {
-    color: white;
+    color: var(--foreground);
     border-color: var(--border);
     background: var(--card);
   }

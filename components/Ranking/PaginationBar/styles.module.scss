@@ -26,11 +26,11 @@
 .idle {
   border-color: var(--border);
   background: color-mix(in srgb, var(--card) 78%, transparent);
-  color: #94a3b8;
+  color: var(--muted-foreground);
 
   &:hover {
     transform: translateY(-1px);
-    color: white;
+    color: var(--foreground);
     border-color: color-mix(in srgb, var(--border) 90%, white 10%);
     background: color-mix(in srgb, var(--card) 92%, transparent);
   }
@@ -39,8 +39,8 @@
 .active {
   border-color: transparent;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: white;
-  box-shadow: 0 6px 20px -8px rgba(246, 196, 83, 0.55);
+  color: #ffffff;
+  box-shadow: 0 6px 20px -8px var(--white-50);
 }
 
 .disabled {
@@ -76,7 +76,7 @@
   height: 36px;
   display: grid;
   place-items: center;
-  color: #94a3b8;
+  color: var(--muted-foreground);
 }
 
 .mobileSummary {
@@ -89,7 +89,7 @@
   background: color-mix(in srgb, var(--card) 78%, transparent);
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
-  color: #94a3b8;
+  color: var(--muted-foreground);
 
   @media (max-width: 640px) {
     display: inline-flex;
@@ -97,7 +97,7 @@
 }
 
 .current {
-  color: white;
+  color: var(--foreground);
   font-weight: 700;
 }
 

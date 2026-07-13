@@ -13,6 +13,7 @@ interface IssuesStore {
   setLoadingFull: (loading: boolean) => void;
   syncFromLastIssues: () => Promise<SyncResponse>;
   syncFullIssues: () => Promise<SyncResponse>;
+  syncCustomIssues: (fromMonth: string, toMonth: string, projects: string[]) => Promise<SyncResponse>;
   cancelSync: () => void;
 }
 
@@ -52,6 +53,17 @@ export const useIssuesStore = create<IssuesStore>((set) => ({
   syncFullIssues: async () => {
     try {
       return await issuesService.syncFullIssues();
+    } catch (err) {
+      if (isAbortError(err)) {
+        throw err;
+      }
+      throw err;
+    }
+  },
+
+  syncCustomIssues: async (fromMonth, toMonth, projects) => {
+    try {
+      return await issuesService.syncCustomIssues(fromMonth, toMonth, projects);
     } catch (err) {
       if (isAbortError(err)) {
         throw err;

@@ -68,7 +68,7 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--white-80);
   }
 }
 
@@ -131,7 +131,7 @@
   text-align: center;
   font-size: 1.125rem;
   font-weight: 600;
-  color: white;
+  color: var(--foreground);
   margin-bottom: 0.5rem;
 }
 
@@ -162,7 +162,7 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.06);
-    color: white;
+    color: var(--foreground);
   }
 }
 
@@ -172,7 +172,7 @@
   border-radius: 0.5rem;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: white;
+  color: var(--foreground);
   cursor: pointer;
   transition: all 150ms ease;
 

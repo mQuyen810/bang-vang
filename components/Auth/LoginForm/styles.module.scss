@@ -172,7 +172,7 @@
   border: none;
   outline: none;
   font-size: 0.875rem;
-  color: white;
+  color: var(--foreground);
   
   &::placeholder {
     color: rgba(128, 200, 255, 0.4);
@@ -187,8 +187,8 @@
   &:-webkit-autofill:hover, 
   &:-webkit-autofill:focus, 
   &:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
-    -webkit-text-fill-color: white !important;
+    -webkit-text-fill-color: var(--foreground) !important;
+    transition: background-color 99999s ease-in-out 0s, color 99999s ease-in-out 0s;
   }
 }
 
@@ -226,7 +226,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  color: white;
+  color: var(--foreground);
   cursor: pointer;
   background: linear-gradient(90deg, #4FC3F7 0%, #6a7dfb 50%, #8B5CF6 100%);
   box-shadow: 0 10px 30px rgba(79, 195, 247, 0.35), 0 10px 30px rgba(139, 92, 246, 0.35);
@@ -294,13 +294,13 @@
   font-size: 0.625rem;
   font-weight: 500;
   color: rgba(128, 200, 255, 0.7);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface);
+  border: 1px solid var(--white-10);
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--white-10);
     color: rgba(128, 200, 255, 1);
   }
 }

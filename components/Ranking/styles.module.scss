@@ -47,6 +47,7 @@
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.2;
+  color: var(--foreground);
   
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -56,7 +57,7 @@
 .subtitle {
   margin-top: 6px;
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: var(--muted-foreground);
 }
 
 .tabGroup {
@@ -82,7 +83,7 @@
   border-radius: 1rem;
   border: none;
   background: transparent;
-  color: #94a3b8;
+  color: var(--muted-foreground);
   font-size: 0.813rem;
   font-weight: 500;
   cursor: pointer;
@@ -96,17 +97,17 @@
   }
   
   &:hover {
-    color: white;
+    color: var(--foreground);
   }
 }
 
 .tabActive {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: white;
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+  color: #ffffff;
+  box-shadow: 0 4px 16px var(--white-20);
   
   &:hover {
-    color: white;
+    color: #ffffff;
   }
 }
 
@@ -123,7 +124,7 @@
   padding: 64px 0;
   text-align: center;
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: var(--muted-foreground);
 }
 
 .rankingHeader {
@@ -151,7 +152,7 @@
 }
 
 .headerCol {
-  color: #94a3b8;
+  color: var(--muted-foreground);
   font-size: 0.688rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -187,9 +188,9 @@
   padding: 8px 16px;
   height: 40px;
   border-radius: 1.25rem;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: white;
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
   font-size: 0.813rem;
   font-weight: 500;
   cursor: pointer;
@@ -197,8 +198,9 @@
   backdrop-filter: blur(12px);
   
   &:hover:not(:disabled) {
-    background: var(--surface);
-    border-color: var(--primary);
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 4px 12px var(--white-10);
   }
   
   &:disabled {

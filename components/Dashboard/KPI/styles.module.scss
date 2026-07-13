@@ -13,9 +13,9 @@
   position: relative;
   overflow: hidden;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--card);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface);
   border-radius: 1.5rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
@@ -62,8 +62,8 @@
   height: 2.25rem;
   width: 2.25rem;
   border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--surface);
+  border: 1px solid var(--border);
 }
 
 .icon {
@@ -78,7 +78,7 @@
   font-weight: 700;
   letter-spacing: -0.025em;
   font-variant-numeric: tabular-nums;
-  color: white;
+  color: var(--foreground);
 }
 
 .trend {

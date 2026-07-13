@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   Bell,
   RefreshCw,
-  Moon,
-  Sun,
   ChevronDown,
   Menu,
   User,
@@ -21,6 +19,7 @@ import { useAuthStore } from "@/stores/auth.store";
 import styles from "./styles.module.scss";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import { useIssuesStore } from "@/stores/sync.store";
+import SyncModal from "@/components/SyncModal";
 
 const pollSync = async (mode: "last" | "full") => {
   return new Promise<void>((resolve, reject) => {
@@ -55,10 +54,11 @@ export default function Header() {
   const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
   const fullName = match?.[1] ?? user?.display_name;
   const router = useRouter();
-  const [dark, setDark] = useState(true);
+
   const { projects, selectedProjects, setSelectedProjects, fetchProjects } =
     useDashboardStore();
   const [projectOpen, setProjectOpen] = useState(false);
+  const [syncModalOpen, setSyncModalOpen] = useState(false);
 
   const handleLogout = async () => {
     cancelSync();
@@ -68,25 +68,6 @@ export default function Header() {
   };
 
   const userItems: MenuProps["items"] = [
-    ...((user?.is_admin === 1 || user?.super_admin === 1)
-      ? [
-          {
-            key: "settings",
-            icon: (
-              <Settings
-                size={14}
-                className={loadingFull ? styles.spinning : ""}
-              />
-            ),
-            label: loadingFull ? "Đang đồng bộ dữ liệu" : "Đồng bộ dữ liệu",
-            onClick: () => handleSyncAll(),
-            disabled: loadingLast || loadingFull,
-          },
-          {
-            type: "divider" as const,
-          },
-        ]
-      : []),
     {
       key: "logout",
       icon: <LogOut size={14} />,
@@ -164,19 +145,7 @@ export default function Header() {
   }, []);
 
   const handleSync = async () => {
-    if (loadingLast || loadingFull) return;
-    try {
-      setLoadingLast(true);
-      const res = await syncFromLastIssues();
-
-      message.info(res.message || "Đã nhận yêu cầu đồng bộ, đang xử lý nền...");
-      await pollSync("last");
-      message.success("Đã đồng bộ xong dữ liệu mới nhất!");
-    } catch {
-      message.error("Có lỗi xảy ra khi đồng bộ!");
-    } finally {
-      setLoadingLast(false);
-    }
+    setSyncModalOpen(true);
   };
   const handleSyncAll = async () => {
     if (loadingLast || loadingFull) return;
@@ -301,10 +270,6 @@ export default function Header() {
           </button>
         )}
 
-        <button className={styles.iconBtn} onClick={() => setDark(!dark)}>
-          {dark ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
-
         {/* <Dropdown menu={{ items: notificationItems }} trigger={["click"]}>
           <Badge count={3}>
             <button className={styles.iconBtn}>
@@ -329,6 +294,11 @@ export default function Header() {
           </button>
         </Dropdown>
       </div>
+
+      <SyncModal
+        open={syncModalOpen}
+        onClose={() => setSyncModalOpen(false)}
+      />
     </header>
   );
 }

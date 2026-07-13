@@ -6,11 +6,11 @@ export const mapBugRanking = (list: BugRatio[]): RankingBug[] =>
     .map((item) => ({
       id: String(item.id),
 
-      name: item.user_name,
+      name: item.display_name || item.user_name,
 
       username: item.user_name,
 
-      avatar: item.user_name.charAt(0).toUpperCase(),
+      avatar: (item.display_name || item.user_name).charAt(0).toUpperCase(),
 
       department: item.project_name,
 

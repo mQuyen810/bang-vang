@@ -42,7 +42,7 @@ export function OverdueLogWorkTable({ title, columns, issues, startIndex = 0 }: 
               <span className={styles.summaryCell}>{item.summary}</span>
             </td>
             <td className={styles.td}>
-              <span className={styles.otherCell}>{item.assignee}</span>
+              <span className={styles.otherCell}>{item.display_name || item.assignee}</span>
             </td>
             <td className={styles.td}>
               <PriorityBadge priority={item.issuetype} />
@@ -54,7 +54,8 @@ export function OverdueLogWorkTable({ title, columns, issues, startIndex = 0 }: 
               <StatusBadge status={item.status} />
             </td>
             <td className={styles.td}>
-              <AlertBadge text={(item as any).statusText ?? ""} />
+              {/* @ts-expect-error item might not have statusText */}
+              <AlertBadge text={item.statusText ?? ""} />
             </td>
           </tr>
         ))

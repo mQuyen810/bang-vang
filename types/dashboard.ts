@@ -92,6 +92,8 @@ export interface BugRatio {
 
   user_name: string;
 
+  display_name?: string;
+
   subtask_count: number;
 
   bug_count: number;
@@ -118,11 +120,13 @@ export interface SlsxRatio {
 
   user_name: string;
 
-  ulnl_sum: string;
+  display_name?: string;
+
+  standard: string;
 
   slsx_sum: string;
 
-  slsx_vs_ulnl_ratio: string;
+  slsx_nltc_ratio: number | string;
 
   created_at: string;
 
@@ -134,6 +138,7 @@ export interface OverdueIssue {
   summary: string;
   issuetype: string;
   assignee: string;
+  display_name?: string;
   status: string;
   statusText: string;
   enddate: string;
@@ -145,6 +150,7 @@ export interface OverdueLogWorkIssue {
   summary: string;
   issuetype: string;
   assignee: string;
+  display_name?: string;
   status: string;
   enddate: string;
   actual_date?: string;
@@ -216,6 +222,7 @@ export interface USBudget {
   summary: string;
   issuetype: string;
   assignee: string;
+  display_name?: string;
   status: string;
   slsx: number;
   sumSLSXSubTask: number;

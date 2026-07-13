@@ -1,7 +1,7 @@
 import axiosClient from "./axios";
 import { ApiResponse } from "@/types/api";
 
-type MilestonesResponseType = any;
+type MilestonesResponseType = unknown;
 
 
 
