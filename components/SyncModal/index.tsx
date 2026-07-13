@@ -13,11 +13,11 @@ interface SyncModalProps {
 
 export default function SyncModal({ open, onClose }: SyncModalProps) {
   const { projects } = useDashboardStore();
-  const { 
-    syncFromLastIssues, 
+  const {
+    syncFromLastIssues,
     syncCustomIssues,
     setLoadingLast,
-    setLoadingFull
+    setLoadingFull,
   } = useIssuesStore();
   const { message } = App.useApp();
 
@@ -127,7 +127,7 @@ export default function SyncModal({ open, onClose }: SyncModalProps) {
           onClick={handleSmartSync}
           disabled={loading}
         >
-          {loading ? "Đang xử lý..." : "🚀 BẮT ĐẦU ĐỒNG BỘ Nhanh"}
+          {loading ? "Đang xử lý..." : "🚀 Bắt đầu đồng bộ nhanh"}
         </button>
       </div>
 

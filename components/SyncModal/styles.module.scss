@@ -3,27 +3,29 @@
     background: rgba(30, 30, 35, 0.85);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
     border-radius: 16px;
-    padding: 24px;
+    padding: 22px;
     color: #e5e7eb;
   }
 
   :global(.ant-modal-header) {
     background: transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 16px;
-    margin-bottom: 24px;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
   }
 
   :global(.ant-modal-title) {
     color: #f3f4f6;
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 650;
+    letter-spacing: -0.02em;
   }
 
   :global(.ant-modal-close) {
     color: #9ca3af;
+    top: 14px;
     &:hover {
       color: #fff;
     }
@@ -33,18 +35,32 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 14px;
+  margin-bottom: 18px;
+
+  // Glass inner card
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 
   .info {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     color: #9ca3af;
     font-size: 14px;
-    
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     strong {
       color: #f3f4f6;
+      font-weight: 700;
     }
   }
 }
@@ -52,43 +68,70 @@
 .primaryBtn {
   background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   border: none;
-  border-radius: 8px;
-  color: white;
+  border-radius: 10px;
+  color: #fff;
   height: 48px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   width: 100%;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.25);
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 38px rgba(139, 92, 246, 0.35);
+    filter: saturate(1.05);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35), 0 14px 38px rgba(139, 92, 246, 0.35);
   }
 
   &:disabled {
-    opacity: 0.7;
+    opacity: 0.65;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
   }
 }
 
 .secondaryBtn {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
   color: #e5e7eb;
   height: 40px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   width: 100%;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.09);
     border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.28);
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
   }
 }
 
@@ -96,15 +139,17 @@
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 24px 0;
+  margin: 16px 0;
   color: #6b7280;
   font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 
   &::before,
   &::after {
     content: "";
     flex: 1;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   &:not(:empty)::before {
@@ -124,14 +169,18 @@
   label {
     font-size: 13px;
     color: #9ca3af;
+    font-weight: 600;
   }
 }
 
-:global(.ant-picker), :global(.ant-select-selector) {
-  background-color: rgba(0, 0, 0, 0.2) !important;
+// Antd Inputs / Pickers styling
+:global(.ant-picker),
+:global(.ant-select-selector) {
+  background-color: rgba(0, 0, 0, 0.18) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #e5e7eb !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 :global(.ant-select-selection-item) {
@@ -141,3 +190,31 @@
 :global(.ant-picker-input) > input {
   color: #e5e7eb !important;
 }
+
+:global(.ant-picker:hover),
+:global(.ant-select-selector:hover) {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+:global(.ant-picker-focused),
+:global(.ant-select-focused) {
+  border-color: rgba(59, 130, 246, 0.55) !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18) !important;
+}
+
+:global(.ant-select-selection-search-input),
+:global(.ant-picker-input input) {
+  caret-color: #8b5cf6;
+}
+
+:global(.ant-select-selection-overflow) {
+  gap: 6px !important;
+}
+
+:global(.ant-select-selection-item .ant-tag),
+:global(.ant-select-selection-item .ant-tag) {
+  background: rgba(139, 92, 246, 0.18) !important;
+  border: 1px solid rgba(139, 92, 246, 0.28) !important;
+  color: #f3f4f6 !important;
+}
+
