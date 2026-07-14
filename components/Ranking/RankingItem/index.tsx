@@ -90,9 +90,13 @@ export const RankingItem: React.FC<RankingItemProps> = ({
     .format("YYYY-MM-DD");
 
   const jql =
-    tab === "bug"
-      ? `project in (${project}) AND issuetype = Bug AND created >= ${startDate} AND created <= ${endDate} AND "Người gây lỗi" in (${userName})`
-      : `project in (${project}) AND issuetype = Sub-task AND status = Done AND "Start date" >= ${startDate} AND "Start date" <= ${endDate} AND assignee in (${userName})`;
+    project.length >= 1
+      ? tab === "bug"
+        ? `project in (${project}) AND issuetype = Bug AND created >= ${startDate} AND created <= ${endDate} AND "Người gây lỗi" in (${userName})`
+        : `project in (${project}) AND issuetype = Sub-task AND status = Done AND "Start date" >= ${startDate} AND "Start date" <= ${endDate} AND assignee in (${userName})`
+      : tab === "bug"
+        ? `issuetype = Bug AND created >= ${startDate} AND created <= ${endDate} AND "Người gây lỗi" in (${userName})`
+        : `issuetype = Sub-task AND status = Done AND "Start date" >= ${startDate} AND "Start date" <= ${endDate} AND assignee in (${userName})`;
 
   const jiraUrl = `https://jira.viettelsoftware.com/issues/?jql=${encodeURIComponent(jql)}`;
 
