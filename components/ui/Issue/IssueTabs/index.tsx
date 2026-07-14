@@ -5,7 +5,6 @@ import styles from "./styles.module.scss";
 export interface TabItem<T extends string> {
   key: T;
   label: string;
-  count: number;
   icon: LucideIcon;
 }
 

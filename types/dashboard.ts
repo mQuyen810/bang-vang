@@ -142,6 +142,7 @@ export interface OverdueIssue {
   status: string;
   statusText: string;
   enddate: string;
+  note: string;
 }
 
 export interface OverdueLogWorkIssue {
