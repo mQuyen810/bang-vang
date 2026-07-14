@@ -76,12 +76,7 @@ export default function LoginForm() {
       const userData = await login(username, password);
 
       message.success("Đăng nhập thành công!");
-
-      if (userData?.super_admin === 1) {
-        router.push("/admin");
-      } else {
-        router.push("/dashboard");
-      }
+      router.push("/dashboard");
     } catch (err) {
       const e = err as unknown as {
         response?: { data?: { message?: string } };

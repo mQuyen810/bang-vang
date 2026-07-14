@@ -3,7 +3,7 @@ import { ApiResponse } from "@/types/api";
 
 export interface ToggleAdminRequest {
   user_name: string;
-  is_admin: 0 | 1;
+  super_admin: 0 | 1;
 }
 
 // POST /admin/manager/user

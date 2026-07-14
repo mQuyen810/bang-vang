@@ -76,17 +76,30 @@ export default function Header() {
       label: "Cài đặt",
       onClick: () => router.push("/settings"),
     },
-    {
-      type: "divider",
-    },
+  ];
+
+  if (user?.super_admin === 1) {
+    userItems.push(
+      { type: "divider" },
+      {
+        key: "admin",
+        icon: <Settings size={14} />,
+        label: "Quản trị",
+        onClick: () => router.push("/admin"),
+      }
+    );
+  }
+
+  userItems.push(
+    { type: "divider" },
     {
       key: "logout",
       icon: <LogOut size={14} />,
       danger: true,
       label: "Đăng xuất",
       onClick: handleLogout,
-    },
-  ];
+    }
+  );
 
   const notificationItems: MenuProps["items"] = [
     {

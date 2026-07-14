@@ -19,7 +19,7 @@ export function UserRow({
   onToggleAdmin,
   onDelete,
 }: UserRowProps) {
-  const isAdmin = Boolean(user.is_admin);
+  const isAdmin = Boolean(user.super_admin);
 
   const handleToggleAdmin = () => {
     if (onToggleAdmin) {
@@ -45,24 +45,24 @@ export function UserRow({
         <span className={styles.displayName}>{user.jira_display_name}</span>
       </td>
       <td className={styles.cell}>
-        <RoleBadge isAdmin={isAdmin} />
+        <RoleBadge isAdmin={isAdmin} roleName={user.role_name} />
       </td>
       <td className={`${styles.cell} ${styles.actionsCell}`}>
         <div className={styles.actionWrapper}>
           <button
             className={`${styles.actionBtn} ${isAdmin ? styles.removeAdmin : styles.grantAdmin}`}
             onClick={handleToggleAdmin}
-            title={isAdmin ? "Loại bỏ quyền Admin" : "Cấp quyền Admin"}
+            title={isAdmin ? "Loại bỏ quyền cao nhất" : "Cấp quyền cao nhất"}
           >
             {isAdmin ? (
               <>
                 <ShieldOff className={styles.btnIcon} />
-                <span>Loại bỏ Admin</span>
+                <span>Loại bỏ quyền cao nhất</span>
               </>
             ) : (
               <>
                 <Shield className={styles.btnIcon} />
-                <span>Cấp Admin</span>
+                <span>Cấp quyền cao nhất</span>
               </>
             )}
           </button>

@@ -62,13 +62,7 @@ export default function Admin() {
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  // Load lại khi search hoặc role thay đổi
-  useEffect(() => {
-    // Luôn gửi cả role và username hiện tại khi call API
-    // Kiểm tra và xử lý role = 'all' -> truyền undefined
-    const roleParam = filters.role === 'all' ? undefined : filters.role;
-    fetchManagerList(1, 1000, roleParam);
-  }, [filters.role, fetchManagerList]);
+  // Removed duplicate fetchManagerList on filter change
 
   // Reset page when search changes
   useEffect(() => {
@@ -97,18 +91,26 @@ export default function Admin() {
     }
     const load = async () => {
       try {
-        const roleParam = filters.role === 'all' ? undefined : filters.role;
-        await fetchManagerList(1, 1000, roleParam);
+        await fetchManagerList(1, 1000);
       } catch (error) {
         console.error("Failed to load manager list:", error);
       }
     };
 
     load();
-  }, [isAuthenticated, fetchManagerList, router, filters.role]);
+  }, [isAuthenticated, fetchManagerList, router]);
 
   const filteredUsers = useMemo(() => {
     let list = managerList;
+
+    // Ẩn tài khoản "admin"
+    list = list.filter((item) => item.jira_username?.toLowerCase() !== "admin");
+
+    if (filters.role !== "all") {
+      const isSuper = filters.role === "1" ? 1 : 0;
+      list = list.filter((item) => item.super_admin === isSuper);
+    }
+
     if (debouncedUsername.trim()) {
       const q = debouncedUsername.trim().toLowerCase();
       list = list.filter((item) => 
@@ -117,7 +119,7 @@ export default function Admin() {
       );
     }
     return list;
-  }, [managerList, debouncedUsername]);
+  }, [managerList, debouncedUsername, filters.role]);
 
   const totalResults = filteredUsers.length;
   const totalPages = Math.ceil(totalResults / pageSize) || 1;
@@ -136,8 +138,7 @@ export default function Admin() {
 
   const refresh = () => {
     setLoading(true);
-    const roleParam = filters.role === 'all' ? undefined : filters.role;
-    fetchManagerList(1, 1000, roleParam).finally(() => setLoading(false));
+    fetchManagerList(1, 1000).finally(() => setLoading(false));
   };
 
   const handleToggleAdmin = (id: number, isAdmin: boolean) => {
@@ -163,12 +164,11 @@ export default function Admin() {
 
       await toggleAdmin({
         user_name: confirmDialog.userName,
-        is_admin: confirmDialog.isAdmin ? 0 : 1,
+        super_admin: confirmDialog.isAdmin ? 0 : 1,
       });
 
       message.success("Cập nhật quyền thành công!");
-      const roleParam = filters.role === 'all' ? undefined : filters.role;
-      await fetchManagerList(1, 1000, roleParam);
+      await fetchManagerList(1, 1000);
     } catch (error) {
       message.error("Cập nhật quyền thất bại!");
     } finally {
@@ -260,8 +260,8 @@ export default function Admin() {
                 }
                 options={[
                   { value: "all", label: "Tất cả" },
-                  { value: "1", label: "Admin" },
-                  { value: "0", label: "Member" },
+                  { value: "1", label: "Super Admin" },
+                  { value: "0", label: "User" },
                 ]}
                 className={styles.filterSelect}
                 classNames={{ popup: { root: styles.filterSelectPopup } }}
@@ -304,12 +304,12 @@ export default function Admin() {
         <ConfirmDialog
           isOpen={confirmDialog.isOpen}
           title={
-            confirmDialog.isAdmin ? "Loại bỏ quyền Admin" : "Cấp quyền Admin"
+            confirmDialog.isAdmin ? "Loại bỏ quyền cao nhất" : "Cấp quyền cao nhất"
           }
           message={
             confirmDialog.isAdmin
-              ? `Bạn có chắc chắn muốn loại bỏ quyền Admin của "${confirmDialog.userName}"?`
-              : `Bạn có chắc chắn muốn cấp quyền Admin cho "${confirmDialog.userName}"?`
+              ? `Bạn có chắc chắn muốn loại bỏ quyền cao nhất của "${confirmDialog.userName}"?`
+              : `Bạn có chắc chắn muốn cấp quyền cao nhất cho "${confirmDialog.userName}"?`
           }
           confirmLabel={confirmDialog.isAdmin ? "Loại bỏ" : "Cấp quyền"}
           isDanger={confirmDialog.isAdmin}

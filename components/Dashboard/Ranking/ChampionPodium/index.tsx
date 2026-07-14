@@ -99,7 +99,7 @@ export function ChampionPodium({
             place={5}
             emp={fifth}
             variant={variant}
-            className="sm:mb-0"
+            className={`sm:mb-0 ${styles.hideOnLaptop}`}
           />
         )}
 
@@ -128,7 +128,7 @@ export function ChampionPodium({
             place={4}
             emp={fourth}
             variant={variant}
-            className="sm:mb-0"
+            className={`sm:mb-0 ${styles.hideOnLaptop}`}
           />
         )}
       </div>

@@ -9,6 +9,7 @@ import { FilterBar } from "@/components/Ranking/FilterBar";
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
 import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
+import { useIssuesStore } from "@/stores/sync.store";
 
 import styles from "./styles.module.scss";
 import { USBudgetTable } from "../ui/Issue/IssueTable/USBudget";
@@ -32,6 +33,7 @@ export default function USBudgetPage() {
   const { selectedProjects } = useDashboardStore();
   const { usBudget, usBudgetPeriod, fetchUSBudget, setUsBudgetPeriod } =
     useIssuePeriodStore();
+  const { syncTimestamp } = useIssuesStore();
 
   const [search, setSearch] = useState("");
 
@@ -46,7 +48,7 @@ export default function USBudgetPage() {
       page: 1,
       perPage: 1000,
     });
-  }, [usBudgetPeriod, selectedProjects]);
+  }, [usBudgetPeriod, selectedProjects, syncTimestamp]);
 
   // When search changes, reset page to 1
   useEffect(() => {

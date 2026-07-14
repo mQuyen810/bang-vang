@@ -8,6 +8,7 @@ import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUser
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
 import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
+import { useIssuesStore } from "@/stores/sync.store";
 
 import type { OverdueLogWorkIssue } from "@/types/dashboard";
 import { AlertTriangle, Clock3, CircleAlert } from "lucide-react";
@@ -45,6 +46,7 @@ export default function OverdueLogWork() {
     setOverdueLogWorkPeriod,
   } = useIssuePeriodStore();
   const { selectedProjects } = useDashboardStore();
+  const { syncTimestamp } = useIssuesStore();
 
   const [activeTab, setActiveTab] = useState<OverdueTab>("missing");
 
@@ -104,6 +106,7 @@ export default function OverdueLogWork() {
     issueType,
     overdueLogWorkPeriod,
     selectedProjects,
+    syncTimestamp,
   ]);
 
   // When search or issueType changes, reset page to 1

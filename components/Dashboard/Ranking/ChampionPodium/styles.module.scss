@@ -131,12 +131,22 @@
   padding: 5rem 1rem 3.5rem;
 
   @media (min-width: 640px) {
-    /* 5 cards on one row */
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    /* 3 cards on one row for tablet/laptop */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
     padding: 5rem 0.75rem 3.5rem;
   }
 
+  @media (min-width: 1600px) {
+    /* 5 cards on one row for PC */
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1599px) {
+  .hideOnLaptop {
+    display: none !important;
+  }
 }
 
 .podiumFloor {

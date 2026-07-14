@@ -4,12 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a19a1ee8-5995-4468-9b45-6b5d53d0cf94" name="Changes" comment="Update UI Link Hưng">
+    <list default="true" id="303afb14-9732-4512-9eb1-0d1406f519d3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/admin.action.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.action.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dashboard/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashboard/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Admin/RoleBadge/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/RoleBadge/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Admin/UserRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/UserRow/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Admin/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Admin/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Admin/styles.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Auth/LoginForm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Auth/LoginForm/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Dashboard/Ranking/ChampionPodium/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Ranking/ChampionPodium/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Dashboard/Ranking/ChampionPodium/styles.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dashboard/Ranking/ChampionPodium/styles.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Header/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MainLayout/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MainLayout/Header/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Milestone/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Milestone/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Overdue/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Overdue/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/OverdueLogWork/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/OverdueLogWork/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Ranking/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Ranking/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SyncModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SyncModal/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/USBudget/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/USBudget/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/dashboard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/dashboard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stores/sync.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/stores/sync.store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/admin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/admin.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,155 +34,21 @@
   <component name="ComposerSettings">
     <execution />
   </component>
-  <component name="CopilotPersistence">
-    <persistenceIdMap>
-      <entry key="_C:/laragon/www/bang-vang" value="3GGQTlhrxPUMz4tVo3SohH0DZtX" />
-    </persistenceIdMap>
-  </component>
-  <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="205" />
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="fix-sync" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;IamHuin&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/mQuyen810/bang-vang.git&quot;,
-    &quot;accountId&quot;: &quot;f6515900-18fe-4845-930c-65ea6d16991f&quot;
-  }
-}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\laragon\bin\php\php-8.4.20-nts-Win32-vs17-x64\php.exe" />
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 0,
-  &quot;fromUser&quot;: false
-}</component>
-  <component name="ProjectId" id="3GGQTlhrxPUMz4tVo3SohH0DZtX" />
-  <component name="ProjectSessionTemplates">
-    <option name="panelTemplate">
-      <template>
-        <option name="modeId" value="Agent" />
-        <option name="model">
-          <model>
-            <option name="modelType" value="builtin_id" />
-            <option name="modelValue" value="auto" />
-          </model>
-        </option>
-        <option name="targetType" value="BACKGROUND" />
-        <option name="worktreeMode" value="WORKSPACE" />
-      </template>
-    </option>
-  </component>
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\laragon\\www\\bang-vang\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "main",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "ts.external.directory.path": "C:\\laragon\\www\\bang-vang\\node_modules\\typescript\\lib"
   }
-}</component>
-  <component name="RunManager" selected="npm.Next.js: server-side">
-    <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
-      <method v="2" />
-    </configuration>
-    <configuration name="Next.js: server-side" type="js.build_tools.npm">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="dev" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3bd3a6803838-JavaScript-PS-261.22158.283" />
-        <option value="bundled-php-predefined-a98d8de5180a-a9a4ea3ee0f4-com.jetbrains.php.sharedIndexes-PS-261.22158.283" />
-      </set>
-    </attachedChunks>
-  </component>
+}]]></component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="a19a1ee8-5995-4468-9b45-6b5d53d0cf94" name="Changes" comment="update Hưng ảnh" />
-      <created>1783595435605</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1783595435605</updated>
-      <workItem from="1783595436684" duration="575000" />
-      <workItem from="1783596578662" duration="551000" />
-      <workItem from="1783646060959" duration="51000" />
-      <workItem from="1783646293218" duration="16908000" />
-      <workItem from="1783672704286" duration="1509000" />
-      <workItem from="1783680822851" duration="6000" />
-      <workItem from="1783691337130" duration="3110000" />
-      <workItem from="1783737182812" duration="2398000" />
-      <workItem from="1783741336872" duration="2172000" />
-      <workItem from="1783745642332" duration="657000" />
-      <workItem from="1783767605379" duration="1888000" />
-      <workItem from="1783865151211" duration="5000" />
-      <workItem from="1783911967188" duration="3171000" />
-    </task>
-    <task id="LOCAL-00001" summary="Update UI Hưng">
-      <option name="closed" value="true" />
-      <created>1783672572240</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1783672572240</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update UI Hưng" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update UI Hưng" />
   </component>
 </project>

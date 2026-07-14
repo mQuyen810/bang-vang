@@ -15,6 +15,8 @@ interface IssuesStore {
   syncFullIssues: () => Promise<SyncResponse>;
   syncCustomIssues: (fromMonth: string, toMonth: string, projects: string[]) => Promise<SyncResponse>;
   cancelSync: () => void;
+  syncTimestamp: number;
+  triggerRefresh: () => void;
 }
 
 type AbortLikeError = {
@@ -38,6 +40,8 @@ export const useIssuesStore = create<IssuesStore>((set) => ({
   loadingFull: false,
   setLoadingLast: (loading) => set({ loadingLast: loading }),
   setLoadingFull: (loading) => set({ loadingFull: loading }),
+  syncTimestamp: Date.now(),
+  triggerRefresh: () => set({ syncTimestamp: Date.now() }),
 
   syncFromLastIssues: async () => {
     try {

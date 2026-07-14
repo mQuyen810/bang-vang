@@ -13,6 +13,7 @@ import { PaginationBar } from "./PaginationBar";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import { useRankingStore } from "@/stores/ranking.store";
+import { useIssuesStore } from "@/stores/sync.store";
 import { getCurrentPeriod } from "@/utils/date";
 
 import { mapBugRanking } from "@/utils/rankingBug";
@@ -70,6 +71,7 @@ const RankingsPage: React.FC = () => {
 
   const [page, setPage] = useState(1);
   const { selectedProjects } = useDashboardStore();
+  const { syncTimestamp } = useIssuesStore();
 
   const {
     leaderboardBugRatio,
@@ -151,6 +153,7 @@ const RankingsPage: React.FC = () => {
     tab,
     rankingPeriod,
     selectedProjects,
+    syncTimestamp,
     fetchLeaderboardBugRatio,
     fetchLeaderboardSlsxRatio,
   ]);

@@ -49,7 +49,8 @@ export default function Header() {
     loadingLast,
     loadingFull,
     setLoadingLast,
-    setLoadingFull
+    setLoadingFull,
+    triggerRefresh
   } = useIssuesStore();
   const match = user?.display_name?.match(/^(.*?)\s*\((.*?)\)$/);
   const fullName = match?.[1] ?? user?.display_name;
@@ -67,15 +68,27 @@ export default function Header() {
     router.push("/login");
   };
 
-  const userItems: MenuProps["items"] = [
-    {
-      key: "logout",
-      icon: <LogOut size={14} />,
-      danger: true,
-      label: "Đăng xuất",
-      onClick: handleLogout,
-    },
-  ];
+  const userItems: MenuProps["items"] = [];
+
+  if (user?.super_admin === 1) {
+    userItems.push({
+      key: "admin",
+      icon: <Settings size={14} />,
+      label: "Quản trị",
+      onClick: () => router.push("/admin"),
+    });
+    userItems.push({
+      type: "divider",
+    });
+  }
+
+  userItems.push({
+    key: "logout",
+    icon: <LogOut size={14} />,
+    danger: true,
+    label: "Đăng xuất",
+    onClick: handleLogout,
+  });
 
   const toggleProject = (name: string) => {
     if (selectedProjects.includes(name)) {
@@ -127,11 +140,13 @@ export default function Header() {
           await pollSync("last");
           message.success("Đã đồng bộ xong dữ liệu mới nhất!");
           setLoadingLast(false);
+          triggerRefresh();
         } else if (fullRes.status === "running") {
           setLoadingFull(true);
           await pollSync("full");
           message.success("Đã đồng bộ xong toàn bộ dữ liệu!");
           setLoadingFull(false);
+          triggerRefresh();
         }
       } catch (e) {
         // Ignore error if check fails
@@ -156,6 +171,7 @@ export default function Header() {
       message.info(res.message || "Đã nhận yêu cầu đồng bộ, đang xử lý nền...");
       await pollSync("full");
       message.success("Đã đồng bộ xong toàn bộ dữ liệu!");
+      triggerRefresh();
     } catch {
       message.error("Có lỗi xảy ra khi đồng bộ!");
     } finally {

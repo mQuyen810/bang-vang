@@ -8,6 +8,7 @@ import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUser
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
 import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
 import { useDashboardStore } from "@/stores/dashboard.store";
+import { useIssuesStore } from "@/stores/sync.store";
 
 import type { OverdueIssue } from "@/types/dashboard";
 import { AlertTriangle, Clock3 } from "lucide-react";
@@ -36,6 +37,7 @@ export default function Overdue() {
   const { overdue, overduePeriod, fetchOverdue, setOverduePeriod } =
     useIssuePeriodStore();
   const { selectedProjects } = useDashboardStore();
+  const { syncTimestamp } = useIssuesStore();
 
   const [activeTab, setActiveTab] = useState<OverdueTab>("overdue");
   const [search, setSearch] = useState("");
@@ -68,7 +70,7 @@ export default function Overdue() {
       page: 1,
       perPage: 1000,
     });
-  }, [activeTab, issueType, overduePeriod, selectedProjects]);
+  }, [activeTab, issueType, overduePeriod, selectedProjects, syncTimestamp]);
 
   // Reset page to 1 when search/issueType change (removed to satisfy eslint rule)
 

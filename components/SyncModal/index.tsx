@@ -18,6 +18,7 @@ export default function SyncModal({ open, onClose }: SyncModalProps) {
     syncCustomIssues,
     setLoadingLast,
     setLoadingFull,
+    triggerRefresh,
   } = useIssuesStore();
   const { message } = App.useApp();
 
@@ -58,6 +59,7 @@ export default function SyncModal({ open, onClose }: SyncModalProps) {
 
       await pollSync("last");
       message.success("Đồng bộ thành công!");
+      triggerRefresh();
     } catch (error) {
       message.error("Đồng bộ dữ liệu thất bại!");
     } finally {
@@ -94,6 +96,7 @@ export default function SyncModal({ open, onClose }: SyncModalProps) {
 
       await pollSync("full");
       message.success("Đồng bộ thành công!");
+      triggerRefresh();
     } catch (error) {
       message.error("Đồng bộ dữ liệu thất bại!");
     } finally {

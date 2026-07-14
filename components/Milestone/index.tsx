@@ -8,6 +8,7 @@ import { FilterBarUsernameType } from "@/components/ui/Leaderboard/FilterBarUser
 import { PaginationBar } from "@/components/Ranking/PaginationBar";
 import { useDashboardStore } from "@/stores/dashboard.store";
 import { useIssuePeriodStore } from "@/stores/issuePeriod.store";
+import { useIssuesStore } from "@/stores/sync.store";
 
 import { AlertTriangle, Clock3 } from "lucide-react";
 
@@ -28,6 +29,7 @@ export default function Milestone() {
 
   // giữ để refetch khi thay đổi project filter
   const { selectedProjects } = useDashboardStore();
+  const { syncTimestamp } = useIssuesStore();
 
   const [activeTab, setActiveTab] = useState<MilestoneTab>("missing");
   const [search, setSearch] = useState("");
@@ -71,6 +73,7 @@ export default function Milestone() {
     issueType,
     milestonesPeriod,
     selectedProjects,
+    syncTimestamp,
     fetchMilestones,
   ]);
 
