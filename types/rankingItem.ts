@@ -7,8 +7,12 @@ export interface RankingBug {
 
   avatar: string;
 
+  project: string;
+
   bugPercent: number;
+
   bugCountMissing: number;
+
   bugCount: number;
 
   subtaskCount: number;
@@ -22,6 +26,8 @@ export interface RankingProductivity {
   username: string;
 
   avatar: string;
+
+  project: string;
 
   ratio: number;
 

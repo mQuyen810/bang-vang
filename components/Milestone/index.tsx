@@ -42,7 +42,9 @@ export default function Milestone() {
       key: "missing" as const,
       label: "Thiếu Milestone",
       count:
-        activeTab === "missing" ? (milestones?.issues.details.meta?.total ?? 0) : 0,
+        activeTab === "missing"
+          ? (milestones?.issues.details.meta?.total ?? 0)
+          : 0,
       icon: Clock3,
     },
     {
@@ -76,16 +78,20 @@ export default function Milestone() {
     const list = milestones?.issues.details.list ?? [];
     if (!search.trim()) return list;
     const q = search.trim().toLowerCase();
-    return list.filter((item) => 
-      item.ticket_code?.toLowerCase().includes(q) || 
-      item.milestone_name?.toLowerCase().includes(q)
+    return list.filter(
+      (item) =>
+        item.ticket_code?.toLowerCase().includes(q) ||
+        item.milestone_name?.toLowerCase().includes(q),
     );
   }, [milestones, search]);
 
   const totalResults = issues.length;
   const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE) || 1;
   const effectivePage = page > totalPages ? totalPages : page;
-  const currentList = issues.slice((effectivePage - 1) * DEFAULT_PAGE_SIZE, effectivePage * DEFAULT_PAGE_SIZE);
+  const currentList = issues.slice(
+    (effectivePage - 1) * DEFAULT_PAGE_SIZE,
+    effectivePage * DEFAULT_PAGE_SIZE,
+  );
 
   const handleTabChange = (nextTab: string) => {
     setActiveTab(nextTab as MilestoneTab);
@@ -136,7 +142,11 @@ export default function Milestone() {
       />
 
       <div className={styles.tabsSection}>
-        <IssueTabs activeTab={activeTab} tabs={tabs} onChange={handleTabChange} />
+        <IssueTabs
+          activeTab={activeTab}
+          tabs={tabs}
+          onChange={handleTabChange}
+        />
 
         <MilestonesTable
           title={
@@ -144,6 +154,7 @@ export default function Milestone() {
           }
           columns={columns}
           issues={currentList}
+          project={selectedProjects}
           startIndex={(effectivePage - 1) * DEFAULT_PAGE_SIZE}
         />
 

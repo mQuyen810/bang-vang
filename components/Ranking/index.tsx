@@ -309,6 +309,7 @@ const RankingsPage: React.FC = () => {
                   tab={tab}
                   index={i}
                   period={rankingPeriod}
+                  project={selectedProjects}
                   output={emp.slsx}
                   capacity={emp.ulnl}
                   ratio={emp.ratio}
@@ -325,6 +326,7 @@ const RankingsPage: React.FC = () => {
                   tab={tab}
                   index={i}
                   period={rankingPeriod}
+                  project={selectedProjects}
                   bugMissing={emp.bugCountMissing}
                   bugCount={emp.bugCount}
                   subtaskCount={emp.subtaskCount}
