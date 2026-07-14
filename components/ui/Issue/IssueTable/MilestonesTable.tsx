@@ -11,9 +11,18 @@ interface Props {
   columns: string[];
   issues: MilestoneIssue[];
   startIndex?: number;
+  project: string[];
 }
 
-export function MilestonesTable({ title, columns, issues, startIndex = 0 }: Props) {
+export function MilestonesTable({
+  title,
+  columns,
+  issues,
+  startIndex = 0,
+  project,
+}: Props) {
+  // console.log(issues);
+
   return (
     <TableWrapper title={title} columns={columns} count={issues.length}>
       {issues.length === 0 ? (
@@ -25,17 +34,27 @@ export function MilestonesTable({ title, columns, issues, startIndex = 0 }: Prop
       ) : (
         issues.map((item, index) => (
           <tr key={item.id} className={styles.tr}>
-
             <td className={styles.td}>
-              <a 
-                href={`https://jira.viettelsoftware.com/issues/?jql=issuetype%20%3D%20Milestone%20AND%20text%20~%20%22${item.ticket_code}%22%20ORDER%20BY%20updated%20DESC`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.idCell}
-              >
-                {item.ticket_code}
-              </a>
+              {(() => {
+                const projects = project?.length ? project.join(", ") : "";
+                const jql = projects.length
+                  ? `project in (${project}) AND issuetype = Milestone AND text ~ "${item.ticket_code}" ORDER BY updated DESC`
+                  : `issuetype = Milestone AND text ~ "${item.ticket_code}" ORDER BY updated DESC`;
+                const jiraUrl = `https://jira.viettelsoftware.com/issues/?jql=${encodeURIComponent(jql)}`;
+
+                return (
+                  <a
+                    href={jiraUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.idCell}
+                  >
+                    {item.ticket_code}
+                  </a>
+                );
+              })()}
             </td>
+
             <td className={styles.td}>
               <span className={styles.summaryCell}>{item.milestone_name}</span>
             </td>
