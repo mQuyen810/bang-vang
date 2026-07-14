@@ -3,12 +3,16 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styles from "./styles.module.scss";
+import dayjs from "dayjs";
 
 interface RankingItemProps {
   rank: number;
   name: string;
+  userName: string;
   id: string;
   avatar: string;
+  period: string;
+  project: string[];
 
   tab: "prod" | "bug";
 
@@ -27,6 +31,7 @@ interface RankingItemProps {
 export const RankingItem: React.FC<RankingItemProps> = ({
   rank,
   name,
+  userName,
   id,
   avatar,
   output,
@@ -37,6 +42,8 @@ export const RankingItem: React.FC<RankingItemProps> = ({
   ratio,
   tab,
   index,
+  period,
+  project,
 }) => {
   const gradientClass =
     tab === "bug" ? styles.bugGradient : styles.defaultGradient;
@@ -71,8 +78,28 @@ export const RankingItem: React.FC<RankingItemProps> = ({
 
   const medal = getMedal(rank);
   const match = name.match(/^(.*?)\s*\((.*?)\)$/);
+
   const fullName = match?.[1] ?? name;
   const userId = match?.[2] ?? id;
+
+  const [month, year] = period.split("-");
+
+  const startDate = dayjs(`${year}-${month}-01`).format("YYYY-MM-DD");
+  const endDate = dayjs(`${year}-${month}-01`)
+    .endOf("month")
+    .format("YYYY-MM-DD");
+
+  const jql =
+    tab === "bug"
+      ? `project in (${project}) AND issuetype = Bug AND created >= ${startDate} AND created <= ${endDate} AND "Người gây lỗi" in (${userName})`
+      : `project in (${project}) AND issuetype = Sub-task AND status = Done AND "Start date" >= ${startDate} AND "Start date" <= ${endDate} AND assignee in (${userName})`;
+
+  const jiraUrl = `https://jira.viettelsoftware.com/issues/?jql=${encodeURIComponent(jql)}`;
+
+  const handleNameClick = () => {
+    window.open(jiraUrl, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}
@@ -93,14 +120,19 @@ export const RankingItem: React.FC<RankingItemProps> = ({
       <div className={styles.userColumn}>
         <div className={styles.avatar}>{avatar}</div>
         <div className={styles.userInfo}>
-          <div className={styles.userName}>{fullName}</div>
+          <button
+            type="button"
+            className={styles.userName}
+            onClick={handleNameClick}
+          >
+            {fullName}
+          </button>
           <div className={styles.userMeta}>{userId}</div>
         </div>
       </div>
 
       <div className={styles.bugMissingColumn}>
-        <div className={styles.bugMissingHeader}>
-        </div>
+        <div className={styles.bugMissingHeader}></div>
         <div className={styles.bugMissingValue}>
           {tab === "bug" ? (bugMissing ?? "—") : ""}
         </div>
@@ -113,9 +145,7 @@ export const RankingItem: React.FC<RankingItemProps> = ({
           </span>
 
           <span className={styles.progressValue}>
-            {tab === "prod"
-              ? `${output}/${capacity}`
-              : `${pct}%`}
+            {tab === "prod" ? `${output}/${capacity}` : `${pct}%`}
           </span>
         </div>
         <div className={styles.progressBar}>
