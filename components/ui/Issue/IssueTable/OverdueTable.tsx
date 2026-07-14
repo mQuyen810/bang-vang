@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { AlertBadge } from "../IssueTypeBadge";
 import { PriorityBadge } from "../PriorityBadge";
 import { StatusBadge } from "../StatusBadge";
@@ -14,7 +15,12 @@ interface Props {
   startIndex?: number;
 }
 
-export function OverdueTable({ title, columns, issues, startIndex = 0 }: Props) {
+export function OverdueTable({
+  title,
+  columns,
+  issues,
+  startIndex = 0,
+}: Props) {
   return (
     <TableWrapper title={title} columns={columns} count={issues.length}>
       {issues.length === 0 ? (
@@ -26,9 +32,8 @@ export function OverdueTable({ title, columns, issues, startIndex = 0 }: Props) 
       ) : (
         issues.map((item, index) => (
           <tr key={item.id} className={styles.tr}>
-
             <td className={styles.td}>
-              <a 
+              <a
                 href={`https://jira.viettelsoftware.com/browse/${item.key}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -41,19 +46,26 @@ export function OverdueTable({ title, columns, issues, startIndex = 0 }: Props) 
               <span className={styles.summaryCell}>{item.summary}</span>
             </td>
             <td className={styles.td}>
-              <span className={styles.otherCell}>{item.display_name || item.assignee}</span>
+              <span className={styles.otherCell}>
+                {item.display_name || item.assignee}
+              </span>
             </td>
             <td className={styles.td}>
               <PriorityBadge priority={item.issuetype} />
             </td>
             <td className={styles.td}>
-              <span className={styles.otherCell}>{item.enddate}</span>
+              <span className={styles.otherCell}>
+                {dayjs(item.enddate).format("DD/MM/YYYY")}
+              </span>
             </td>
             <td className={styles.td}>
               <StatusBadge status={item.status} />
             </td>
             <td className={styles.td}>
               <AlertBadge text={item.statusText} />
+            </td>
+            <td className={styles.td}>
+              <AlertBadge text={item.note} />
             </td>
           </tr>
         ))

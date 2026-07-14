@@ -113,14 +113,14 @@ const RankingsPage: React.FC = () => {
   const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE) || 1;
 
   const effectivePage = page > totalPages ? totalPages : page;
-  const list = base.slice((effectivePage - 1) * DEFAULT_PAGE_SIZE, effectivePage * DEFAULT_PAGE_SIZE);
+  const list = base.slice(
+    (effectivePage - 1) * DEFAULT_PAGE_SIZE,
+    effectivePage * DEFAULT_PAGE_SIZE,
+  );
   const rankStart = (effectivePage - 1) * DEFAULT_PAGE_SIZE + 1;
 
   const productivityRankById = useMemo(
-    () =>
-      new Map(
-        productivityData.map((item, index) => [item.id, index + 1]),
-      ),
+    () => new Map(productivityData.map((item, index) => [item.id, index + 1])),
     [productivityData],
   );
 
@@ -138,11 +138,6 @@ const RankingsPage: React.FC = () => {
     if (!month) return;
     setRankingPeriod(dayjs(month, "YYYY-MM").format("MM-YYYY"));
   };
-
-  // When search changes, reset page to 1
-  useEffect(() => {
-    setPage(1);
-  }, [search]);
 
   useEffect(() => {
     // Fetch all records (e.g. 1000) for client-side search and pagination
@@ -173,10 +168,16 @@ const RankingsPage: React.FC = () => {
 
     try {
       setIsImporting(true);
-      message.loading({ content: "Đang import dữ liệu...", key: "import-leaderboard" });
+      message.loading({
+        content: "Đang import dữ liệu...",
+        key: "import-leaderboard",
+      });
       const res = await importLeaderboardApi(file);
-      message.success({ content: res.data?.message || "Import dữ liệu thành công!", key: "import-leaderboard" });
-      
+      message.success({
+        content: res.data?.message || "Import dữ liệu thành công!",
+        key: "import-leaderboard",
+      });
+
       // Refresh list by fetching all
       if (tab === "prod") {
         fetchLeaderboardSlsxRatio(null, 1, 1000, rankingPeriod);
@@ -202,9 +203,7 @@ const RankingsPage: React.FC = () => {
             Vinh danh
           </div>
           <h1 className={styles.title}>
-            {tab === "prod"
-              ? "Bảng xếp hạng Sản lượng"
-              : "Bảng xếp hạng Bug"}
+            {tab === "prod" ? "Bảng xếp hạng Sản lượng" : "Bảng xếp hạng Bug"}
             <span className="text-gradient"> ✦</span>
           </h1>
 
@@ -216,12 +215,12 @@ const RankingsPage: React.FC = () => {
         <div className={styles.headerActions}>
           {isAdmin && tab === "prod" && (
             <>
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleFileChange} 
-                style={{ display: "none" }} 
-                accept=".xlsx, .xls, .csv" 
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                accept=".xlsx, .xls, .csv"
               />
               <button
                 className={styles.importBtn}
@@ -269,9 +268,13 @@ const RankingsPage: React.FC = () => {
       >
         {list.length > 0 && (
           <div className={styles.rankingHeader}>
-            <div className={`${styles.headerCol} ${styles.headerCenter}`}>STT</div>
+            <div className={`${styles.headerCol} ${styles.headerCenter}`}>
+              STT
+            </div>
             <div className={styles.headerCol}>Tên nhân viên</div>
-            <div className={`${styles.headerCol} ${styles.headerCenter} ${styles.headerBugMissing}`}>
+            <div
+              className={`${styles.headerCol} ${styles.headerCenter} ${styles.headerBugMissing}`}
+            >
               {tab === "prod" ? "" : "Bug missing"}
             </div>
             <div className={`${styles.headerCol} ${styles.headerProgress}`}>
@@ -299,11 +302,13 @@ const RankingsPage: React.FC = () => {
                 <RankingItem
                   key={emp.id}
                   rank={productivityRankById.get(emp.id) ?? rankStart}
+                  userName={emp.username}
                   name={emp.name}
                   id={emp.id}
                   avatar={emp.avatar}
                   tab={tab}
                   index={i}
+                  period={rankingPeriod}
                   output={emp.slsx}
                   capacity={emp.ulnl}
                   ratio={emp.ratio}
@@ -313,11 +318,13 @@ const RankingsPage: React.FC = () => {
                 <RankingItem
                   key={emp.id}
                   rank={bugRankById.get(emp.id) ?? rankStart}
+                  userName={emp.username}
                   name={emp.name}
                   id={emp.id}
                   avatar={emp.avatar}
                   tab={tab}
                   index={i}
+                  period={rankingPeriod}
                   bugMissing={emp.bugCountMissing}
                   bugCount={emp.bugCount}
                   subtaskCount={emp.subtaskCount}

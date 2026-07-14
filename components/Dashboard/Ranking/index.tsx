@@ -43,8 +43,8 @@ export function Ranking({ title, type }: RankingProps) {
         },
       };
 
-  const podiumData = ranking.slice(0, 3);
-  const tableData = ranking.slice(3);
+  const podiumData = ranking.slice(0, 5);
+  const tableData = ranking.slice(5);
 
   return (
     <section className={styles.section}>
@@ -54,6 +54,8 @@ export function Ranking({ title, type }: RankingProps) {
         first={podiumData[0]}
         second={podiumData[1]}
         third={podiumData[2]}
+        fourth={podiumData[3]}
+        fifth={podiumData[4]}
         variant={isBug ? "bug" : "default"}
       />
 

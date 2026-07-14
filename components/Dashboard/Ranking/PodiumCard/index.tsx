@@ -10,7 +10,7 @@ import { RankingBug, RankingProductivity } from "@/types/rankingItem";
 type PodiumVariant = "default" | "bug";
 
 interface PodiumCardProps {
-  place: 1 | 2 | 3;
+  place: 1 | 2 | 3 | 4 | 5;
   emp: RankingProductivity | RankingBug;
   className?: string;
   variant?: PodiumVariant;
@@ -64,19 +64,45 @@ export function PodiumCard({
           badgeGrad:
             "linear-gradient(180deg,#E6EFFF 0%,#A9C6FF 45%,#5A77BA 100%)",
         }
-      : {
-          hex: "#D88955",
-          soft: "rgba(216,137,85,",
-          label: "Bronze",
-          badgeGrad:
-            "linear-gradient(180deg,#F2B68A 0%,#D88955 45%,#7E4622 100%)",
-        };
+      : place === 3
+        ? {
+            hex: "#D88955",
+            soft: "rgba(216,137,85,",
+            label: "Bronze",
+            badgeGrad:
+              "linear-gradient(180deg,#F2B68A 0%,#D88955 45%,#7E4622 100%)",
+          }
+        : {
+            // neutral for 4 & 5
+            hex: "#9AA7B6",
+            soft: "rgba(154,167,182,",
+            label: "Top",
+            badgeGrad:
+              "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(154,167,182,0.95) 55%, rgba(70,80,96,1) 100%)",
+          };
 
   const glow1 = `${theme.soft}0.55)`;
   const glow2 = `${theme.soft}0.18)`;
 
-  const placeText = isFirst ? "1st" : place === 2 ? "2nd" : "3rd";
-  const placeColor = isFirst ? "#F6C453" : place === 2 ? "#A9C6FF" : "#D88955";
+  const placeText =
+    place === 1
+      ? "1st"
+      : place === 2
+        ? "2nd"
+        : place === 3
+          ? "3rd"
+          : place === 4
+            ? "4th"
+            : "5th";
+
+  const placeColor =
+    place === 1
+      ? "#F6C453"
+      : place === 2
+        ? "#A9C6FF"
+        : place === 3
+          ? "#D88955"
+          : "#9AA7B6";
 
   return (
     <motion.div
@@ -272,7 +298,9 @@ export function PodiumCard({
           <div className={styles.podiumProgress}>
             <div className={styles.podiumProgressHeader}>
               <span className={styles.podiumProgressLabel}>
-                {variant === "bug" ? `Tỷ lệ Bug: ${current}/${capacity}` : `Tỷ lệ Sản lượng: ${current}/${capacity}`}
+                {variant === "bug"
+                  ? `Tỷ lệ Bug: ${current}/${capacity}`
+                  : `Tỷ lệ Sản lượng: ${current}/${capacity}`}
               </span>
               <span
                 className={styles.podiumProgressValue}

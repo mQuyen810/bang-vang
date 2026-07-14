@@ -8,9 +8,11 @@ import { RankingBug, RankingProductivity } from "@/types/rankingItem";
 type PodiumVariant = "bug" | "default";
 
 interface ChampionPodiumProps {
-  first: RankingBug | RankingProductivity;
-  second: RankingBug | RankingProductivity;
-  third: RankingBug | RankingProductivity;
+  first?: RankingBug | RankingProductivity;
+  second?: RankingBug | RankingProductivity;
+  third?: RankingBug | RankingProductivity;
+  fourth?: RankingBug | RankingProductivity;
+  fifth?: RankingBug | RankingProductivity;
 
   variant?: PodiumVariant;
 }
@@ -19,6 +21,8 @@ export function ChampionPodium({
   first,
   second,
   third,
+  fourth,
+  fifth,
   variant = "default",
 }: ChampionPodiumProps) {
   return (
@@ -90,6 +94,15 @@ export function ChampionPodium({
       </div>
 
       <div className={styles.podiumGrid}>
+        {fifth && (
+          <PodiumCard
+            place={5}
+            emp={fifth}
+            variant={variant}
+            className="sm:mb-0"
+          />
+        )}
+
         {second && (
           <PodiumCard
             place={2}
@@ -107,6 +120,15 @@ export function ChampionPodium({
             emp={third}
             variant={variant}
             className="sm:mb-2"
+          />
+        )}
+
+        {fourth && (
+          <PodiumCard
+            place={4}
+            emp={fourth}
+            variant={variant}
+            className="sm:mb-0"
           />
         )}
       </div>
