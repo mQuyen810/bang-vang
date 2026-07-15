@@ -12,7 +12,7 @@ export function RoleBadge({ isAdmin, roleName }: RoleBadgeProps) {
     <span
       className={`${styles.badge} ${isAdmin ? styles.admin : styles.member}`}
     >
-      {roleName || (isAdmin ? "Super Admin" : "Người dùng")}
+      {roleName || (isAdmin ? "Super Admin" : "User")}
     </span>
   );
 }
