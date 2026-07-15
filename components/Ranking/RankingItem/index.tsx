@@ -113,56 +113,58 @@ export const RankingItem: React.FC<RankingItemProps> = ({
       whileHover={{ x: 2 }}
       className={`${styles.rankingItem} ${isTop3 ? styles.rankingItemTop : ""}`}
     >
-      <div className={styles.rankColumn}>
-        {medal ? (
-          <div className={`${styles.medal} ${medal.className}`}>{rank}</div>
-        ) : (
-          <div className={styles.rankNumber}>{rank}</div>
-        )}
-      </div>
-
-      <div className={styles.userColumn}>
-        <div className={styles.avatar}>{avatar}</div>
-        <div className={styles.userInfo}>
-          <button
-            type="button"
-            className={styles.userName}
-            onClick={handleNameClick}
-          >
-            {fullName}
-          </button>
-          <div className={styles.userMeta}>{userId}</div>
+      <button
+        type="button"
+        className={styles.userButton}
+        onClick={handleNameClick}
+      >
+        <div className={styles.rankColumn}>
+          {medal ? (
+            <div className={`${styles.medal} ${medal.className}`}>{rank}</div>
+          ) : (
+            <div className={styles.rankNumber}>{rank}</div>
+          )}
         </div>
-      </div>
 
-      <div className={styles.bugMissingColumn}>
-        <div className={styles.bugMissingHeader}></div>
-        <div className={styles.bugMissingValue}>
-          {tab === "bug" ? (bugMissing ?? "—") : ""}
+        <div className={styles.userColumn}>
+          <div className={styles.avatar}>{avatar}</div>
+          <div className={styles.userInfo}>
+            <div className={styles.userName}>{fullName}</div>
+            <div className={styles.userMeta}>{userId}</div>
+          </div>
         </div>
-      </div>
 
-      <div className={styles.progressColumn}>
-        <div className={styles.progressHeader}>
-          <span className={styles.progressValue}>
-            {tab === "prod" ? "" : `${bugCount}/${subtaskCount}`}
-          </span>
-
-          <span className={styles.progressValue}>
-            {tab === "prod" ? `${output}/${capacity}` : `${pct}%`}
-          </span>
+        <div className={styles.bugMissingColumn}>
+          <div className={styles.bugMissingHeader}></div>
+          <div className={styles.bugMissingValue}>
+            {tab === "bug" ? (bugMissing ?? "—") : ""}
+          </div>
         </div>
-        <div className={styles.progressBar}>
-          <div
-            className={`${styles.progressFill} ${gradientClass}`}
-            style={{ width: `${pct}%` }}
-          />
-        </div>
-      </div>
 
-      <div className={`${styles.scoreColumn} ${medal ? medal.textColor : ""}`}>
-        {tab === "prod" ? `${ratio}%` : bugCount}
-      </div>
+        <div className={styles.progressColumn}>
+          <div className={styles.progressHeader}>
+            <span className={styles.progressValue}>
+              {tab === "prod" ? "" : `${bugCount}/${subtaskCount}`}
+            </span>
+
+            <span className={styles.progressValue}>
+              {tab === "prod" ? `${output}/${capacity}` : `${pct}%`}
+            </span>
+          </div>
+          <div className={styles.progressBar}>
+            <div
+              className={`${styles.progressFill} ${gradientClass}`}
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+        </div>
+
+        <div
+          className={`${styles.scoreColumn} ${medal ? medal.textColor : ""}`}
+        >
+          {tab === "prod" ? `${ratio}%` : bugCount}
+        </div>
+      </button>
     </motion.div>
   );
 };
