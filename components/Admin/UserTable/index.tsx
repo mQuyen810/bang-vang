@@ -11,9 +11,16 @@ interface UserTableProps {
   loading: boolean;
   onToggleAdmin?: (id: number, isAdmin: boolean) => void;
   startIndex?: number;
+  currentUserDisplayName?: string | null;
 }
 
-export function UserTable({ users, loading, onToggleAdmin, startIndex = 0 }: UserTableProps) {
+export function UserTable({
+  users,
+  loading,
+  onToggleAdmin,
+  startIndex = 0,
+  currentUserDisplayName,
+}: UserTableProps) {
   const hasUsers = users && Array.isArray(users) && users.length > 0;
 
   if (loading) {
@@ -51,14 +58,13 @@ export function UserTable({ users, loading, onToggleAdmin, startIndex = 0 }: Use
     <div className={styles.tableWrap}>
       <table className={styles.table}>
         <thead className={styles.thead}>
-            <tr>
-              <th className={styles.th}>STT</th>
-              <th className={styles.th}>USERNAME</th>
-              <th className={styles.th}>TÊN NHÂN VIÊN</th>
-              <th className={styles.th}>VAI TRÒ</th>
-              <th className={`${styles.th} ${styles.actionsTh}`}>HÀNH ĐỘNG</th>
-            </tr>
-
+          <tr>
+            <th className={styles.th}>STT</th>
+            <th className={styles.th}>USERNAME</th>
+            <th className={styles.th}>TÊN NHÂN VIÊN</th>
+            <th className={styles.th}>VAI TRÒ</th>
+            <th className={`${styles.th} ${styles.actionsTh}`}>HÀNH ĐỘNG</th>
+          </tr>
         </thead>
         <tbody>
           {users.map((user, index) => (
@@ -67,6 +73,7 @@ export function UserTable({ users, loading, onToggleAdmin, startIndex = 0 }: Use
               index={startIndex + index + 1}
               user={user}
               onToggleAdmin={onToggleAdmin}
+              currentUserDisplayName={currentUserDisplayName}
             />
           ))}
         </tbody>
