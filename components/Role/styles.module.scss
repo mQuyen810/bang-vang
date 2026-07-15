@@ -1,3 +1,4 @@
+        
 
 :root {
   --primary: #8b5cf6;
@@ -140,6 +141,80 @@ $bg-input: rgba(255, 255, 255, 0.06);
     margin-top: 0;
   }
 }
+
+/* Action buttons right side (parallel with header) */
+.tableTopActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  /* keep on same horizontal line as header */
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    margin-top: 0.75rem;
+  }
+}
+/* Let header and actions align reliably */
+.headerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+/* Keep “Refresh” aligned with subtitle */
+.headerActions {
+  margin-top: 0;
+}
+
+/* Align “Thêm” button with header row */
+.tableTopActions {
+  margin-top: -0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .tableTopActions {
+    margin-top: 0.75rem;
+  }
+}
+
+
+
+
+
+.addBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 200ms ease;
+  backdrop-filter: blur(14px) saturate(140%);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    filter: brightness(1.05);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.addIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
 
 // Welcome
 .welcome {

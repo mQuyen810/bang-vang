@@ -76,4 +76,24 @@ export const breadcrumbMap: Record<
       href: "/milestone",
     },
   ],
+  "/admin": [
+    {
+      title: "Trang chủ",
+      href: "/admin",
+    },
+    {
+      title: "Admin",
+      href: "/admin",
+    },
+  ],
+  "/role": [
+    {
+      title: "Trang chủ",
+      href: "/admin",
+    },
+    {
+      title: "Role",
+      href: "/role",
+    },
+  ],
 };

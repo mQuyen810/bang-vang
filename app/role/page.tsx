@@ -1,10 +1,10 @@
-import Admin from "@/components/Admin";
+import Role from "@/components/Role";
 import AdminLayout from "@/layouts/AdminLayout";
 
-export default function AdminPage() {
+export default function RolePage() {
   return (
     <AdminLayout>
-      <Admin />
+      <Role />
     </AdminLayout>
   );
 }
